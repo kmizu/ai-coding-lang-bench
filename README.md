@@ -177,19 +177,19 @@ Real development depends on ecosystems and standard workflows. That is exactly w
 Fast path on Ubuntu 24.04:
 
 ```bash
-./scripts/run-canonical-all.sh --trials 1
+./run.sh
 ```
 
 If you want the canonical suite plus a staged result set ready for commit:
 
 ```bash
-./scripts/run-canonical-all.sh --trials 1 --stage-results
+./run.sh --stage-results
 ```
 
 If you want a full run and an immediate commit:
 
 ```bash
-./scripts/run-canonical-all.sh --trials 1 --commit "Refresh canonical benchmark results"
+./run.sh --commit "Refresh canonical benchmark results"
 ```
 
 The lower-level wrapper is still available when you want to choose specific workflows:
@@ -206,14 +206,16 @@ This wrapper does all of the following:
 - rebuilds `results/report.md`
 - regenerates plots via `uv run --with matplotlib --with numpy --with pandas`
 
+`./run.sh` is an alias for the default canonical suite runner. It uses one trial by default so the zero-option path stays reasonably cheap.
+
 ### Common Recipes
 
 Canonical workflows:
 
 ```bash
-./scripts/run-canonical-all.sh --trials 1
-./scripts/run-canonical-all.sh --trials 1 --include-secondary
-./scripts/run-canonical-all.sh --trials 1 --include-secondary --include-reference --dry-run
+./run.sh
+./run.sh --include-secondary
+./run.sh --include-secondary --include-reference --dry-run
 
 ./scripts/run-benchmark.sh --toolchains python-uv,rust-cargo --trials 1
 ./scripts/run-benchmark.sh --tiers primary,secondary --trials 1
@@ -254,7 +256,7 @@ Skip parts of the pipeline:
 
 Run `./scripts/run-benchmark.sh --help` for the full list.
 
-`scripts/run-canonical-all.sh` is the highest-level wrapper. By default it resolves every `canonical: true` entry from `config/toolchains.yml`, runs the canonical benchmark suite, and can optionally:
+`./run.sh` delegates to `scripts/run-canonical-all.sh`, which is the highest-level wrapper. By default it resolves every `canonical: true` entry from `config/toolchains.yml`, runs the canonical benchmark suite with one trial, and can optionally:
 
 - include `secondary` workflows via `--include-secondary`
 - include `reference` workflows via `--include-reference`

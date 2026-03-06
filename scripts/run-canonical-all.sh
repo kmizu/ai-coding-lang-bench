@@ -8,7 +8,7 @@ TOOLCHAINS_CONFIG="${REPO_ROOT}/config/toolchains.yml"
 
 INCLUDE_SECONDARY=0
 INCLUDE_REFERENCE=0
-TRIALS=""
+TRIALS="1"
 START=""
 SEED=""
 DRY_RUN=0
@@ -28,14 +28,14 @@ Runs the canonical benchmark suite with one command.
 By default, this means every toolchain with `canonical: true` in config/toolchains.yml.
 
 Examples:
-  ./scripts/run-canonical-all.sh --trials 1
-  ./scripts/run-canonical-all.sh --trials 1 --include-secondary
-  ./scripts/run-canonical-all.sh --trials 1 --stage-results
-  ./scripts/run-canonical-all.sh --trials 1 --commit "Refresh canonical benchmark results"
-  ./scripts/run-canonical-all.sh --trials 1 --commit "Refresh canonical benchmark results" --push
+  ./scripts/run-canonical-all.sh
+  ./scripts/run-canonical-all.sh --include-secondary
+  ./scripts/run-canonical-all.sh --stage-results
+  ./scripts/run-canonical-all.sh --commit "Refresh canonical benchmark results"
+  ./scripts/run-canonical-all.sh --commit "Refresh canonical benchmark results" --push
 
 Options:
-  --trials N              number of trials
+  --trials N              number of trials (default: 1)
   --start N               starting trial number
   --seed N                shuffle seed
   --include-secondary     include non-canonical secondary workflows

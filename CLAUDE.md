@@ -53,8 +53,8 @@ logs/                # Claude JSON output logs
 ## Key Commands
 
 ```bash
-./scripts/run-canonical-all.sh --trials 1
-./scripts/run-canonical-all.sh --trials 1 --commit "Refresh canonical benchmark results"
+./run.sh
+./run.sh --commit "Refresh canonical benchmark results"
 
 ./scripts/run-benchmark.sh --toolchains python-uv,rust-cargo --trials 1
 
@@ -67,7 +67,7 @@ ruby report.rb
 python3 plot.py results/results.json --track canonical --tiers primary,secondary
 ```
 
-`scripts/run-canonical-all.sh` is the shortest path for the canonical suite. It resolves all canonical toolchains, delegates to `scripts/run-benchmark.sh`, and can optionally stage/commit/push generated result artifacts. `scripts/run-benchmark.sh` remains the more general entry point for custom workflow selections.
+`./run.sh` is the zero-option entry point for the default canonical suite. It delegates to `scripts/run-canonical-all.sh`, which resolves all canonical toolchains, delegates to `scripts/run-benchmark.sh`, and can optionally stage/commit/push generated result artifacts. `scripts/run-benchmark.sh` remains the more general entry point for custom workflow selections.
 
 ## Supported Subjects
 
