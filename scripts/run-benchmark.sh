@@ -174,9 +174,44 @@ resolve_legacy_install_toolchains() {
   '
 }
 
+source_env_if_present() {
+  local env_file="$1"
+  if [[ -f "${env_file}" ]]; then
+    # shellcheck disable=SC1090
+    source "${env_file}"
+  fi
+}
+
+toolchains_needing_bootstrap() {
+  ruby -ryaml -e '
+    config = YAML.load_file(ARGV[0])
+    ids = ENV.fetch("TOOLCHAIN_IDS").split(",").map(&:strip).reject(&:empty?)
+    selected = config.fetch("toolchains").select { |tc| ids.include?(tc.fetch("id")) }
+    selected.each do |tc|
+      puts [tc.fetch("id"), tc.fetch("version_cmd")].join("\t")
+    end
+  ' "${REPO_ROOT}/config/toolchains.yml"
+}
+
+any_missing_selected_toolchain() {
+  local ids="$1"
+  [[ -z "${ids}" ]] && return 1
+
+  source_env_if_present "${INSTALL_ROOT}/env.sh"
+
+  while IFS=$'\t' read -r _id version_cmd; do
+    if ! bash -lc "${version_cmd}" >/dev/null 2>&1; then
+      return 0
+    fi
+  done < <(TOOLCHAIN_IDS="${ids}" toolchains_needing_bootstrap)
+
+  return 1
+}
+
 bootstrap_if_needed() {
   local env_file="${INSTALL_ROOT}/env.sh"
   local should_bootstrap=0
+  local resolved_toolchains=""
 
   case "${BOOTSTRAP_MODE}" in
     always)
@@ -190,12 +225,7 @@ bootstrap_if_needed() {
       ;;
   esac
 
-  if [[ "${should_bootstrap}" -eq 0 ]]; then
-    return
-  fi
-
   local install_args=(--install-root "${INSTALL_ROOT}")
-  local resolved_toolchains=""
 
   if [[ "${TRACK}" == "canonical" ]]; then
     if [[ -n "${TOOLCHAINS}" ]]; then
@@ -214,6 +244,16 @@ bootstrap_if_needed() {
     if [[ -z "${resolved_toolchains}" ]]; then
       install_args+=(--group primary)
     fi
+  fi
+
+  if [[ "${BOOTSTRAP_MODE}" == "auto" && "${should_bootstrap}" -eq 0 && -n "${resolved_toolchains}" ]]; then
+    if any_missing_selected_toolchain "${resolved_toolchains}"; then
+      should_bootstrap=1
+    fi
+  fi
+
+  if [[ "${should_bootstrap}" -eq 0 ]]; then
+    return
   fi
 
   if [[ -n "${resolved_toolchains}" ]]; then

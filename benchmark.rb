@@ -86,6 +86,10 @@ def run_cmd(cmd, dir: nil, timeout: 600)
   end
 end
 
+def monotonic_now
+  Process.clock_gettime(Process::CLOCK_MONOTONIC)
+end
+
 def parse_claude_output(raw_output)
   raw_output = raw_output.dup.force_encoding('UTF-8')
   event = JSON.parse(raw_output.strip)
@@ -107,9 +111,9 @@ end
 
 def run_claude(prompt, dir:, log_path: nil)
   cmd = "claude -p #{Shellwords.escape(prompt)} --dangerously-skip-permissions --output-format json"
-  started_at = Time.now
+  started_at = monotonic_now
   result = run_cmd(cmd, dir: dir, timeout: 1_200)
-  elapsed = Time.now - started_at
+  elapsed = monotonic_now - started_at
 
   if log_path
     FileUtils.mkdir_p(File.dirname(log_path))
@@ -228,7 +232,7 @@ def canonical_prompt(subject, phase)
 end
 
 def prepare_workspace(track:, subject:, phase:, dir:, previous_dir: nil, dry_run:)
-  started_at = Time.now
+  started_at = monotonic_now
   FileUtils.rm_rf(dir)
 
   if phase == 'v2'
@@ -260,7 +264,7 @@ def prepare_workspace(track:, subject:, phase:, dir:, previous_dir: nil, dry_run
   FileUtils.cp(File.join(BASE_DIR, spec), dir)
   FileUtils.cp(File.join(BASE_DIR, test), dir)
 
-  (Time.now - started_at).round(1)
+  (monotonic_now - started_at).round(1)
 end
 
 options = {

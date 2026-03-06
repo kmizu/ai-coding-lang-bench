@@ -7,6 +7,8 @@ Core orchestration lives in `benchmark.rb`, report generation in `report.rb`, an
 Use the Ruby runner as the main entry point:
 
 ```bash
+./scripts/run-canonical-all.sh --trials 1
+
 ./scripts/run-benchmark.sh --toolchains python-uv,rust-cargo --trials 1
 
 bash scripts/setup/ubuntu24/install-toolchains.sh --group primary
@@ -30,8 +32,9 @@ There is no separate unit-test framework for the harness; the shell scripts are 
 Keep commit subjects short, imperative, and capitalized, matching recent history such as `Fix incorrect relative path in "log with no commits" test`. In pull requests, describe the benchmark impact, list touched scripts/specs, and mention regenerated artifacts when `results/` or `figures/` change. Include before/after notes for methodology changes so readers can judge comparability.
 
 ## Environment & Data Notes
-Contributors need Ruby, Python 3, the `claude` CLI, and any language/toolchain pairs being benchmarked. Prefer `scripts/run-benchmark.sh` for local Ubuntu 24 runs, or the provided setup scripts and Docker image when you need more control over the environment. Treat generated Claude logs as reproducibility data: useful, but often large. Avoid committing ad hoc run directories to `main`.
+Contributors need Ruby, Python 3, the `claude` CLI, and any language/toolchain pairs being benchmarked. Prefer `scripts/run-canonical-all.sh` when you want the default canonical suite in one shot, or `scripts/run-benchmark.sh` when you need custom workflow selection. Treat generated Claude logs as reproducibility data: useful, but often large. Avoid committing ad hoc run directories to `main`.
 
 ## Session Notes
 2026-03-07: The benchmark was reworked to separate `greenfield` startup measurements from `canonical` workflow measurements, and to label weakly canonical Perl/Lua/Scheme entries as reference-only.
 2026-03-07: Added `scripts/run-benchmark.sh` so Ubuntu 24 users can bootstrap toolchains, run benchmarks, rebuild reports, and regenerate plots with one command.
+2026-03-07: Added `scripts/run-canonical-all.sh` so the default canonical suite can run end-to-end, and optionally stage or commit the generated benchmark artifacts in one command.

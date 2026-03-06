@@ -174,7 +174,7 @@ def go_go
   write_file('go.mod', <<~MOD)
     module example.com/minigit
 
-    go 1.24.0
+    go 1.26.0
   MOD
 
   write_file('build.sh', <<~BASH, executable: true)

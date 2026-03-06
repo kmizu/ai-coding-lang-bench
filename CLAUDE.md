@@ -53,6 +53,9 @@ logs/                # Claude JSON output logs
 ## Key Commands
 
 ```bash
+./scripts/run-canonical-all.sh --trials 1
+./scripts/run-canonical-all.sh --trials 1 --commit "Refresh canonical benchmark results"
+
 ./scripts/run-benchmark.sh --toolchains python-uv,rust-cargo --trials 1
 
 bash scripts/setup/ubuntu24/install-toolchains.sh --group primary
@@ -64,7 +67,7 @@ ruby report.rb
 python3 plot.py results/results.json --track canonical --tiers primary,secondary
 ```
 
-`scripts/run-benchmark.sh` is the one-shot entry point for Ubuntu 24.04. It bootstraps toolchains if needed, sources the benchmark environment, runs the benchmark, regenerates the report, and uses `uv` to run the plotting step with transient Python dependencies.
+`scripts/run-canonical-all.sh` is the shortest path for the canonical suite. It resolves all canonical toolchains, delegates to `scripts/run-benchmark.sh`, and can optionally stage/commit/push generated result artifacts. `scripts/run-benchmark.sh` remains the more general entry point for custom workflow selections.
 
 ## Supported Subjects
 

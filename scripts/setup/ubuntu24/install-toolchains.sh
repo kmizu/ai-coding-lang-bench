@@ -112,6 +112,17 @@ install_rust() {
   curl https://sh.rustup.rs -sSf | env CARGO_HOME="${INSTALL_ROOT}/cargo" RUSTUP_HOME="${INSTALL_ROOT}/rustup" sh -s -- -y --profile minimal --default-toolchain stable
 }
 
+install_go() {
+  local go_dir="${INSTALL_ROOT}/go"
+  if [[ -x "${go_dir}/bin/go" ]] && "${go_dir}/bin/go" version | grep -q "go${GO_VERSION}"; then
+    return
+  fi
+
+  rm -rf "${go_dir}"
+  curl -fsSL "https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz" -o "${INSTALL_ROOT}/dist/go${GO_VERSION}.linux-amd64.tar.gz"
+  tar -C "${INSTALL_ROOT}" -xzf "${INSTALL_ROOT}/dist/go${GO_VERSION}.linux-amd64.tar.gz"
+}
+
 install_maven() {
   local dir="${INSTALL_ROOT}/apache-maven-${MAVEN_VERSION}"
   if [[ -x "${dir}/bin/mvn" ]]; then
@@ -197,7 +208,7 @@ export JAVA_HOME="${java_home}"
 export CARGO_HOME="${INSTALL_ROOT}/cargo"
 export RUSTUP_HOME="${INSTALL_ROOT}/rustup"
 export OPAMROOT="${INSTALL_ROOT}/opam"
-export PATH="${INSTALL_ROOT}/uv-bin:${INSTALL_ROOT}/bun/bin:${INSTALL_ROOT}/bin:${INSTALL_ROOT}/node-v${NODE_VERSION}-linux-x64/bin:${INSTALL_ROOT}/apache-maven-${MAVEN_VERSION}/bin:${INSTALL_ROOT}/gradle-${GRADLE_VERSION}/bin:${INSTALL_ROOT}/sbt-${SBT_VERSION}/bin:${INSTALL_ROOT}/cargo/bin:${INSTALL_ROOT}/.ghcup/bin:\$PATH"
+export PATH="${INSTALL_ROOT}/uv-bin:${INSTALL_ROOT}/bun/bin:${INSTALL_ROOT}/bin:${INSTALL_ROOT}/go/bin:${INSTALL_ROOT}/node-v${NODE_VERSION}-linux-x64/bin:${INSTALL_ROOT}/apache-maven-${MAVEN_VERSION}/bin:${INSTALL_ROOT}/gradle-${GRADLE_VERSION}/bin:${INSTALL_ROOT}/sbt-${SBT_VERSION}/bin:${INSTALL_ROOT}/cargo/bin:${INSTALL_ROOT}/.ghcup/bin:${INSTALL_ROOT}/opam/default/bin:\$PATH"
 EOF
 }
 
@@ -262,7 +273,7 @@ main() {
         [[ "${id}" == "typescript-bun" ]] && install_bun
         ;;
       go-go)
-        apt_install golang-go
+        install_go
         ;;
       java-maven|kotlin-maven)
         install_maven

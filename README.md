@@ -177,6 +177,24 @@ Real development depends on ecosystems and standard workflows. That is exactly w
 Fast path on Ubuntu 24.04:
 
 ```bash
+./scripts/run-canonical-all.sh --trials 1
+```
+
+If you want the canonical suite plus a staged result set ready for commit:
+
+```bash
+./scripts/run-canonical-all.sh --trials 1 --stage-results
+```
+
+If you want a full run and an immediate commit:
+
+```bash
+./scripts/run-canonical-all.sh --trials 1 --commit "Refresh canonical benchmark results"
+```
+
+The lower-level wrapper is still available when you want to choose specific workflows:
+
+```bash
 ./scripts/run-benchmark.sh --toolchains python-uv,rust-cargo --trials 1
 ```
 
@@ -193,6 +211,10 @@ This wrapper does all of the following:
 Canonical workflows:
 
 ```bash
+./scripts/run-canonical-all.sh --trials 1
+./scripts/run-canonical-all.sh --trials 1 --include-secondary
+./scripts/run-canonical-all.sh --trials 1 --include-secondary --include-reference --dry-run
+
 ./scripts/run-benchmark.sh --toolchains python-uv,rust-cargo --trials 1
 ./scripts/run-benchmark.sh --tiers primary,secondary --trials 1
 ./scripts/run-benchmark.sh --toolchains scala-sbt,kotlin-gradle --trials 1 --dry-run
@@ -231,6 +253,14 @@ Skip parts of the pipeline:
 - `--install-root PATH`
 
 Run `./scripts/run-benchmark.sh --help` for the full list.
+
+`scripts/run-canonical-all.sh` is the highest-level wrapper. By default it resolves every `canonical: true` entry from `config/toolchains.yml`, runs the canonical benchmark suite, and can optionally:
+
+- include `secondary` workflows via `--include-secondary`
+- include `reference` workflows via `--include-reference`
+- stage generated outputs via `--stage-results`
+- create a commit via `--commit "message"`
+- push after committing via `--push`
 
 ### Manual Workflow
 
