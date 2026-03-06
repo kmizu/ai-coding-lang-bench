@@ -2,7 +2,10 @@
 
 ## Overview
 
-Benchmark that has Claude Code (Opus) implement "MiniGit" (a minimal git clone) in multiple languages, comparing generation time, LOC, token usage, and pass rate.
+Benchmark harness for having Claude Code implement "MiniGit" under two separate tracks:
+
+- `greenfield`: empty-directory startup with a generic prompt
+- `canonical`: benchmark-owned scaffolds for specific language/toolchain pairs such as `python/uv`, `rust/cargo`, and `scala/sbt`
 
 ## Repository Structure
 
@@ -14,6 +17,10 @@ test-v2.sh           # v2 test suite (30 tests)
 benchmark.rb         # Benchmark runner (Ruby)
 report.rb            # Report generator (results.json -> report.md)
 plot.py              # Graph generator (results.json -> figures/*.png)
+config/toolchains.yml # Canonical workflow definitions
+scripts/scaffold/    # Canonical scaffold generator
+scripts/setup/       # Ubuntu 24 toolchain installers
+docker/              # Reproducible Ubuntu 24 image
 results/
   results.json       # Raw result data
   meta.json          # Environment metadata
@@ -33,31 +40,38 @@ logs/                # Claude JSON output logs
 
 ## How It Works
 
-1. Run `ruby benchmark.rb`
-2. For each language x trial:
-   - v1: Create `generated/minigit-{lang}-{trial}-v1/`, copy spec and tests, invoke `claude -p`
-   - v2: Copy v1 result to `minigit-{lang}-{trial}-v2/`, invoke `claude -p` to extend
+1. Run `ruby benchmark.rb --track ...`
+2. For each selected subject x trial:
+   - `greenfield`: create an empty directory, copy spec/tests, invoke `claude -p`
+   - `canonical`: generate a benchmark-owned scaffold, optionally pre-run the chosen workspace setup command, copy spec/tests, invoke `claude -p`
+   - v2 always copies the v1 workspace and extends it
 3. Run test scripts independently to verify
-4. Measure wall-clock time, LOC, token usage, and cost
+4. Measure setup time separately from agent time, plus LOC, token usage, and cost
 5. Run `ruby report.rb` to generate the report
 6. Run `python3 plot.py` to generate graphs
 
 ## Key Commands
 
 ```bash
-ruby benchmark.rb                                    # All languages x 3 trials
-ruby benchmark.rb --lang python --trials 1           # Single language test
-ruby benchmark.rb --trials 10 --start 11             # Trials 11-20
-ruby benchmark.rb --dry-run                           # Dry run
-ruby report.rb                                        # Generate report
-python3 plot.py                                       # Generate graphs
+./scripts/run-benchmark.sh --toolchains python-uv,rust-cargo --trials 1
+
+bash scripts/setup/ubuntu24/install-toolchains.sh --group primary
+source ~/.local/share/ai-coding-lang-bench/env.sh
+ruby benchmark.rb --track greenfield --lang python --trials 1
+ruby benchmark.rb --track canonical --toolchains python-uv,rust-cargo --trials 1
+ruby benchmark.rb --track canonical --tiers primary,secondary --dry-run
+ruby report.rb
+python3 plot.py results/results.json --track canonical --tiers primary,secondary
 ```
 
-## Supported Languages (LANGUAGES hash in benchmark.rb)
+`scripts/run-benchmark.sh` is the one-shot entry point for Ubuntu 24.04. It bootstraps toolchains if needed, sources the benchmark environment, runs the benchmark, regenerates the report, and uses `uv` to run the plotting step with transient Python dependencies.
 
-rust, go, c, typescript, javascript, java, perl, python, python/mypy, ruby, ruby/steep, lua, scheme, ocaml, haskell
+## Supported Subjects
 
-To add a language, add an entry to the `LANGUAGES` hash. Tests just call `./minigit`, so the implementation only needs to produce an executable with that name.
+- Legacy `greenfield`: defined in `LEGACY_LANGUAGES` inside `benchmark.rb`
+- `canonical`: defined in `config/toolchains.yml`
+
+To add a canonical workflow, add an entry to `config/toolchains.yml` and teach `scripts/scaffold/generate_scaffold.rb` how to generate the corresponding project skeleton. Tests still call `./minigit`, so each scaffold must provide either a launcher script or a `build.sh` that creates one.
 
 ## MiniGit Technical Notes
 
@@ -70,3 +84,4 @@ To add a language, add an entry to the `LANGUAGES` hash. Tests just call `./mini
 
 - This is not a git repository for MiniGit itself; individual implementations under `generated/` may use `git init` as part of their build process
 - The `data` branch is an orphan branch with no common history with `main`
+- Reference-only workflows such as `scheme/guile`, `perl/raw`, and `lua/raw` are kept for continuity with the original benchmark and should not be treated as canonical ecosystem representatives

@@ -1,0 +1,169 @@
+schema_version: 1
+toolchains:
+  - id: python-uv
+    label: Python / uv
+    language: python
+    workflow: uv
+    tier: primary
+    canonical: true
+    exts: [py]
+    version_cmd: uv --version && python3 --version
+    workspace_setup_cmd: uv sync
+    extra_prompt: Use the existing pyproject.toml and uv workflow. Keep the project structure intact.
+
+  - id: rust-cargo
+    label: Rust / Cargo
+    language: rust
+    workflow: cargo
+    tier: primary
+    canonical: true
+    exts: [rs]
+    version_cmd: cargo --version && rustc --version
+    extra_prompt: Use Cargo as the build workflow. Keep Cargo.toml intact unless a spec requirement forces a change.
+
+  - id: typescript-pnpm
+    label: TypeScript / pnpm
+    language: typescript
+    workflow: pnpm
+    tier: primary
+    canonical: true
+    exts: [ts]
+    version_cmd: pnpm --version && node --version
+    workspace_setup_cmd: pnpm install --frozen-lockfile=false
+    extra_prompt: Use the existing package.json, tsconfig.json, and pnpm workflow. Do not replace pnpm with another package manager.
+
+  - id: go-go
+    label: Go / go
+    language: go
+    workflow: go
+    tier: primary
+    canonical: true
+    exts: [go]
+    version_cmd: go version
+    extra_prompt: Use the existing go.mod and Go toolchain. Keep the project layout intact.
+
+  - id: java-maven
+    label: Java / Maven
+    language: java
+    workflow: maven
+    tier: primary
+    canonical: true
+    exts: [java]
+    version_cmd: mvn --version | head -1 && java --version 2>&1 | head -1
+    workspace_setup_cmd: mvn -q -DskipTests dependency:go-offline
+    extra_prompt: Use the existing pom.xml and Maven workflow. Keep the Java 25 toolchain target.
+
+  - id: ruby-bundler
+    label: Ruby / Bundler
+    language: ruby
+    workflow: bundler
+    tier: primary
+    canonical: true
+    exts: [rb]
+    version_cmd: bundle --version && ruby --version
+    workspace_setup_cmd: bundle install
+    extra_prompt: Use Bundler and keep the Gemfile-driven workflow.
+
+  - id: scala-sbt
+    label: Scala / sbt
+    language: scala
+    workflow: sbt
+    tier: primary
+    canonical: true
+    exts: [scala]
+    version_cmd: sbt --script-version && java --version 2>&1 | head -1
+    workspace_setup_cmd: sbt --batch update
+    extra_prompt: Use the existing sbt build with Scala 3.3.7 LTS. Keep build.sbt and project/build.properties as the canonical entry point.
+
+  - id: kotlin-gradle
+    label: Kotlin / Gradle
+    language: kotlin
+    workflow: gradle
+    tier: primary
+    canonical: true
+    exts: [kt]
+    version_cmd: gradle --version | head -3 && java --version 2>&1 | head -1
+    workspace_setup_cmd: gradle -q help
+    extra_prompt: Use the existing Gradle Kotlin DSL build with Kotlin 2.3.10 and Java 25.
+
+  - id: ocaml-dune
+    label: OCaml / Dune
+    language: ocaml
+    workflow: dune
+    tier: primary
+    canonical: true
+    exts: [ml, mli]
+    version_cmd: dune --version && ocaml --version
+    extra_prompt: Use Dune as the build workflow. Keep dune-project and bin/dune as the source of truth.
+
+  - id: haskell-cabal
+    label: Haskell / Cabal
+    language: haskell
+    workflow: cabal
+    tier: primary
+    canonical: true
+    exts: [hs]
+    version_cmd: cabal --version | head -1 && ghc --version
+    extra_prompt: Use the existing cabal file and Cabal workflow.
+
+  - id: typescript-bun
+    label: TypeScript / Bun
+    language: typescript
+    workflow: bun
+    tier: secondary
+    canonical: false
+    exts: [ts]
+    version_cmd: bun --version
+    workspace_setup_cmd: bun install
+    extra_prompt: Use Bun as the chosen runtime and package manager. Do not swap in npm or pnpm.
+
+  - id: scala-scala-cli
+    label: Scala / Scala CLI
+    language: scala
+    workflow: scala-cli
+    tier: secondary
+    canonical: false
+    exts: [scala]
+    version_cmd: scala-cli version | head -1
+    extra_prompt: Use Scala CLI as the chosen single-module workflow.
+
+  - id: kotlin-maven
+    label: Kotlin / Maven
+    language: kotlin
+    workflow: maven
+    tier: secondary
+    canonical: false
+    exts: [kt]
+    version_cmd: mvn --version | head -1 && java --version 2>&1 | head -1
+    workspace_setup_cmd: mvn -q -DskipTests dependency:go-offline
+    extra_prompt: Use the existing pom.xml and Kotlin Maven plugin configuration.
+
+  - id: scheme-guile
+    label: Scheme / Guile
+    language: scheme
+    workflow: guile
+    tier: reference
+    canonical: false
+    exts: [scm]
+    version_cmd: guile --version | head -1
+    extra_prompt: This is a reference workflow using Guile. Keep the simple script-based structure.
+
+  - id: perl-raw
+    label: Perl / raw
+    language: perl
+    workflow: raw
+    tier: reference
+    canonical: false
+    exts: [pl, pm]
+    version_cmd: perl --version | head -2 | tail -1
+    extra_prompt: This is a reference workflow using raw Perl. Keep the single-entry script structure.
+
+  - id: lua-raw
+    label: Lua / raw
+    language: lua
+    workflow: raw
+    tier: reference
+    canonical: false
+    exts: [lua]
+    version_cmd: lua -v
+    extra_prompt: This is a reference workflow using raw Lua. Keep the single-entry script structure.

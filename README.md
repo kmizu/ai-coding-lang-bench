@@ -1,27 +1,65 @@
 # Which Programming Language Is Best for AI Coding Agents?
 
-A quantitative benchmark comparing how efficiently [Claude Code](https://docs.anthropic.com/en/docs/claude-code) generates code across 13 programming languages.
+A benchmark harness for comparing how efficiently [Claude Code](https://docs.anthropic.com/en/docs/claude-code) implements the same MiniGit task under different language and workflow setups.
 
 For a detailed discussion, see the blog post: [Which Programming Language Is Best for Claude Code?](https://dev.to/mame/which-programming-language-is-best-for-claude-code-508a) / [日本語版](https://zenn.dev/mametter/articles/3e8580ec034201)
 
 ## TL;DR
 
-At least for prototyping-scale tasks, Ruby, Python, and JavaScript (not TypeScript) appear to be the best fit for Claude Code — fastest, cheapest, and most stable.
+The original results committed in this repository are **legacy greenfield results**: they mostly measure a mixture of bootstrap cost, tool-use structure, and implementation difficulty under a generic prompt.
+
+This repository now distinguishes:
+
+- **`greenfield`**: empty-directory startup cost under a generic workflow
+- **`canonical`**: language-specific workflows with preselected standard tooling such as `uv`, `cargo`, `pnpm`, `maven`, `sbt`, and `gradle`
+
+Treat the legacy tables below as exploratory data for the `greenfield` track, not as a language-level conclusion.
+
+## Status
+
+The committed `results/` and `figures/` still reflect the original single-track benchmark. The benchmark harness has been reworked so future runs can separate:
+
+- language/toolchain choice
+- setup cost outside the agent loop
+- agent time inside the Claude loop
+- primary canonical workflows vs. reference-only workflows
 
 ## Motivation
 
 "Static typing prevents AI hallucination bugs!" vs. "Dynamic typing saves tokens!" — qualitative arguments abound, but quantitative data is scarce. This experiment aims to fill that gap.
 
-## Experiment
+## Benchmark Design
 
-We asked Claude Code (Opus 4.6) to implement a **mini-git** — a simplified version of Git — in various programming languages, and measured the time, cost, and lines of code for each.
+We ask Claude Code to implement a **mini-git** and measure time, cost, turns, and lines of code. The task is split into two phases:
 
 The task is split into two phases:
 
 * **v1 (New project)**: Implement `init`, `add`, `commit`, and `log`.
 * **v2 (Feature extension)**: Add `status`, `diff`, `checkout`, `reset`, `rm`, and `show`.
 
-The prompt is simply: "Read [SPEC-v1.txt](./SPEC-v1.txt), implement it, and make sure [test-v1.sh](./test-v1.sh) passes." v2 is analogous.
+The harness now supports two tracks:
+
+- **`greenfield`**: start from an empty directory and use a generic prompt
+- **`canonical`**: start from a benchmark-owned scaffold that fixes the toolchain entry point for each workflow
+
+Examples of canonical workflows:
+
+- `python/uv`
+- `rust/cargo`
+- `typescript/pnpm`
+- `go/go`
+- `java/maven`
+- `ruby/bundler`
+- `scala/sbt`
+- `kotlin/gradle`
+- `ocaml/dune`
+- `haskell/cabal`
+
+Reference-only entries such as `scheme/guile`, `perl/raw`, and `lua/raw` are retained for continuity with the original benchmark, but they should not be read as canonical ecosystem representatives.
+
+## Legacy Greenfield Results
+
+The table and plots below are from the original single-track benchmark. They are preserved for continuity, but they should be read as **greenfield-only** results.
 
 ### Languages
 
@@ -96,11 +134,14 @@ Type-checker overhead: Python/mypy is 1.6–1.7× slower than Python; Ruby/Steep
 
 > The author is a Ruby committer, so take interpretations with a grain of salt. Data and code are available in this repository — verify for yourself if you're skeptical.
 
+The key methodological caveat is now explicit: the original numbers mix language difficulty with workflow bootstrapping. Empty-directory startup, manifest generation, build-tool selection, and tool-use structure can all affect the result. That is why the repository now separates `greenfield` from `canonical`.
+
 ### What causes the speed/cost differences?
 
-No single factor explains the results. Likely contributors:
+No single factor explains the results. Likely contributors in the legacy track include:
 
-- **Type system**: In this benchmark, dynamic languages are consistently faster and more stable.
+- **Workflow bootstrap**: Empty-directory setup penalizes ecosystems that normally start from `Cargo.toml`, `pom.xml`, `build.sbt`, `build.gradle.kts`, or `package.json`.
+- **Tool-use structure**: More build/test/install loops mean more agent turns and more opportunity for long logs.
 - **Conciseness**: Shorter code generally means faster generation, but OCaml/Haskell are compact yet slow (high thinking-token usage).
 - **Procedural vs. functional**: Excluding the top 3, there isn't a large gap between procedural and functional languages. OCaml notably achieved 47.1s in v2, rivaling JavaScript.
 - **Language difficulty**: C's memory management, Rust's ownership model, and Haskell's monads/purity may add overhead for the AI.
@@ -116,22 +157,126 @@ Personally, yes. In iterative development ("prompt → wait → think → prompt
 
 ### Isn't this too small-scale?
 
-Yes — static typing may shine at larger scales. A fair large-scale cross-language benchmark would be valuable. Contributions welcome.
+Yes. The current task is still small and implementation-heavy. The repository should eventually add refactoring and schema-evolution tasks so that compiler feedback and project tooling matter more directly.
 
 ### What about ecosystems and runtime performance?
 
-For real projects, framework availability matters — and if runtime speed is essential, a compiled language may be the better choice. This benchmark intentionally avoids external libraries to isolate language-level differences (using a custom hash instead of SHA-256).
+Real development depends on ecosystems and standard workflows. That is exactly why the new `canonical` track exists: it keeps the task fixed while letting each language use a benchmark-owned, language-appropriate entry point.
 
 ## Reproducing
 
+### Requirements
+
+- Ubuntu 24.04 for the provided bootstrap scripts
+- Ruby
+- Claude Code CLI (`claude`) with an authenticated session
+- `sudo` access for package installation during bootstrap
+
+### Quick Start
+
+Fast path on Ubuntu 24.04:
+
 ```bash
-ruby benchmark.rb                           # Run all languages × 3 trials
-ruby benchmark.rb --lang python --trials 1  # Single language quick test
-ruby report.rb                              # Generate results/report.md
-python3 plot.py                             # Generate figures/*.png
+./scripts/run-benchmark.sh --toolchains python-uv,rust-cargo --trials 1
 ```
 
-Requirements: Ruby, Claude Code CLI (`claude`), and the target language toolchains.
+This wrapper does all of the following:
+
+- bootstraps missing toolchains into `~/.local/share/ai-coding-lang-bench` for non-root users
+- sources the generated environment file
+- runs `benchmark.rb`
+- rebuilds `results/report.md`
+- regenerates plots via `uv run --with matplotlib --with numpy --with pandas`
+
+### Common Recipes
+
+Canonical workflows:
+
+```bash
+./scripts/run-benchmark.sh --toolchains python-uv,rust-cargo --trials 1
+./scripts/run-benchmark.sh --tiers primary,secondary --trials 1
+./scripts/run-benchmark.sh --toolchains scala-sbt,kotlin-gradle --trials 1 --dry-run
+```
+
+Legacy greenfield runs:
+
+```bash
+./scripts/run-benchmark.sh --track greenfield --lang python,rust --trials 1
+./scripts/run-benchmark.sh --track greenfield --lang ruby,go --trials 3 --seed 9001
+```
+
+Skip parts of the pipeline:
+
+```bash
+./scripts/run-benchmark.sh --toolchains python-uv --trials 1 --skip-plot
+./scripts/run-benchmark.sh --toolchains python-uv --trials 1 --skip-report
+./scripts/run-benchmark.sh --toolchains python-uv --trials 1 --no-bootstrap
+```
+
+### Wrapper Options
+
+`scripts/run-benchmark.sh` supports the options you are likely to need most:
+
+- `--track greenfield|canonical`
+- `--toolchains python-uv,rust-cargo,...`
+- `--tiers primary|secondary|reference` or comma-separated combinations
+- `--lang python,rust,...` for the legacy greenfield track
+- `--trials N`
+- `--start N`
+- `--seed N`
+- `--dry-run`
+- `--skip-report`
+- `--skip-plot`
+- `--bootstrap` / `--no-bootstrap`
+- `--install-root PATH`
+
+Run `./scripts/run-benchmark.sh --help` for the full list.
+
+### Manual Workflow
+
+If you want full control instead of the wrapper:
+
+```bash
+bash scripts/setup/ubuntu24/install-toolchains.sh --group primary
+source ~/.local/share/ai-coding-lang-bench/env.sh
+
+ruby benchmark.rb --track greenfield --lang python --trials 1
+ruby benchmark.rb --track canonical --toolchains python-uv,rust-cargo --trials 1
+ruby benchmark.rb --track canonical --tiers primary,secondary --trials 1 --dry-run
+
+ruby report.rb
+uv run --with matplotlib --with numpy --with pandas \
+  python3 plot.py results/results.json --track canonical --tiers primary,secondary
+```
+
+### Output Files
+
+The benchmark writes to these locations:
+
+- `generated/`: per-run workspaces
+- `logs/`: raw Claude JSON responses
+- `results/results.json`: accumulated raw benchmark rows
+- `results/meta.json`: metadata for the latest run
+- `results/report.md`: generated summary report
+- `figures/`: generated plots
+
+### Toolchain Groups
+
+The canonical track is organized into three tiers:
+
+- `primary`: benchmark-owner-chosen default workflows such as `python/uv`, `rust/cargo`, `scala/sbt`, `kotlin/gradle`
+- `secondary`: alternative but still meaningful workflows such as `typescript/bun`, `scala/scala-cli`, `kotlin/maven`
+- `reference`: weakly canonical continuity entries such as `scheme/guile`, `perl/raw`, and `lua/raw`
+
+### Docker
+
+To build the reproducible Ubuntu 24 image:
+
+```bash
+bash scripts/docker/build-ubuntu24-image.sh
+```
+
+The Docker image is for environment reproducibility. Image build time is not part of the benchmark score.
 
 ### Repository Structure
 
@@ -140,11 +285,13 @@ Requirements: Ruby, Claude Code CLI (`claude`), and the target language toolchai
 
 ## Summary
 
-At least for prototyping-scale tasks, Ruby, Python, and JavaScript (not TypeScript) appear to be the best fit for Claude Code.
+The old repository data is still useful, but only as a `greenfield` baseline. It should not be over-read as a clean comparison of programming languages themselves.
 
-Static typing may become advantageous at larger scales — someone should test this.
+The updated harness is designed to answer narrower questions more honestly:
 
-The classic strategy — start with a dynamic language, then migrate to a static one as the project matures — may still be the right call. Coding agents seem very capable at cross-language migration (needs verification), making this an increasingly realistic option.
+- How expensive is empty-directory startup?
+- How expensive is the agent loop once a canonical workflow is fixed?
+- How much of the difference comes from setup, tooling, or project structure rather than from the language alone?
 
 ## Notes
 

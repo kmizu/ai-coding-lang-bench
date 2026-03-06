@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
-Generate box-and-dot plots for the coding AI language benchmark.
+Generate plots for the AI coding language benchmark.
 
 Usage:
-    python plot.py results/results.json
-
-Generates figures/ directory with PNG files.
+    python3 plot.py results/results.json
+    python3 plot.py results/results.json --track canonical --tiers primary,secondary
 """
+
+from __future__ import annotations
 
 import argparse
 import json
@@ -18,173 +19,91 @@ import matplotlib.ticker as ticker
 import numpy as np
 import pandas as pd
 
-# ── Style ──────────────────────────────────────────────────────────────────
+plt.rcParams.update(
+    {
+        "figure.facecolor": "white",
+        "axes.facecolor": "white",
+        "axes.grid": True,
+        "grid.alpha": 0.3,
+        "font.size": 12,
+    }
+)
 
-plt.rcParams.update({
-    "figure.facecolor": "white",
-    "axes.facecolor": "white",
-    "axes.grid": True,
-    "grid.alpha": 0.3,
-    "font.size": 12,
-})
-
-# Language groups with display order.
-# Each group is separated by a gap in the plot.
-LANG_GROUPS = [
-    # Dynamic
-    ["ruby", "python", "javascript", "perl", "lua"],
-    # Dynamic + type checker
-    ["ruby/steep", "python/mypy"],
-    # Static (imperative)
-    ["typescript", "go", "rust", "c", "java"],
-    # Functional
-    ["scheme", "ocaml", "haskell"],
-]
-LANG_ORDER = [lang for group in LANG_GROUPS for lang in group]
-GROUP_GAP = 0.8  # extra space between groups
-
-# Display names for axis labels
-LANG_LABELS = {
-    "ruby": "Ruby",
-    "python": "Python",
-    "javascript": "JavaScript",
-    "perl": "Perl",
-    "lua": "Lua",
-    "scheme": "Scheme",
-    "ruby/steep": "Ruby/Steep",
-    "python/mypy": "Python/mypy",
-    "typescript": "TypeScript",
-    "go": "Go",
-    "rust": "Rust",
-    "c": "C",
-    "java": "Java",
-    "ocaml": "OCaml",
-    "haskell": "Haskell",
-}
-
-# Colour palette
-# Dynamic: warm (red/orange/yellow), Static: cool (blue/teal), Functional: grey/purple
-PALETTE = {
-    # Dynamic (warm)
-    "ruby":        "#CC342D",
-    "python":      "#E06030",
-    "javascript":  "#E8A020",
-    "perl":        "#D46B1A",
-    "lua":         "#C44040",
-    # Dynamic + type checker (warm, lighter)
-    "ruby/steep":  "#E8A0A0",
-    "python/mypy": "#F0C090",
-    # Static (cool)
-    "typescript":  "#2266BB",
-    "go":          "#00A0C8",
-    "rust":        "#3088B8",
-    "c":           "#2850A0",
-    "java":        "#50B0D0",
-    # Functional (grey/purple)
-    "scheme":      "#888888",
-    "ocaml":       "#A0A0A0",
-    "haskell":     "#606060",
+TIER_ORDER = {"primary": 0, "secondary": 1, "reference": 2, "legacy": 3}
+TIER_COLOURS = {
+    "primary": "#1f77b4",
+    "secondary": "#ff7f0e",
+    "reference": "#7f7f7f",
+    "legacy": "#2ca02c",
 }
 DEFAULT_COLOUR = "#999999"
 
 
-# ── Load data ─────────────────────────────────────────────────────────────
-
-def load_results(path):
-    """Load results.json and return a flat DataFrame."""
+def load_results(path: Path) -> pd.DataFrame:
     with open(path) as f:
         raw = json.load(f)
 
     rows = []
-    for r in raw:
-        lang = r["language"]
-        trial = r["trial"]
-        v1c = r.get("v1_claude", {})
-        v2c = r.get("v2_claude", {})
-        rows.append({
-            "language": lang,
-            "trial": trial,
-            "v1_time": r["v1_time"],
-            "v2_time": r["v2_time"],
-            "total_time": r["v1_time"] + r["v2_time"],
-            "v1_loc": r["v1_loc"],
-            "v2_loc": r["v2_loc"],
-            "v1_cost": v1c.get("cost_usd", 0),
-            "v2_cost": v2c.get("cost_usd", 0),
-            "total_cost": v1c.get("cost_usd", 0) + v2c.get("cost_usd", 0),
-            "v1_turns": v1c.get("num_turns", 0),
-            "v2_turns": v2c.get("num_turns", 0),
-            "total_turns": v1c.get("num_turns", 0) + v2c.get("num_turns", 0),
-            "v1_output_tokens": v1c.get("output_tokens", 0),
-            "v2_output_tokens": v2c.get("output_tokens", 0),
-            "v1_cache_read": v1c.get("cache_read_tokens", 0),
-            "v2_cache_read": v2c.get("cache_read_tokens", 0),
-        })
+    for record in raw:
+        v1 = record.get("v1_claude") or {}
+        v2 = record.get("v2_claude") or {}
+        rows.append(
+            {
+                "track": record.get("track", "greenfield"),
+                "tier": record.get("tier", "legacy"),
+                "subject_id": record.get("subject_id", record.get("language", "unknown")),
+                "subject_label": record.get("subject_label", record.get("language", "unknown").capitalize()),
+                "trial": record["trial"],
+                "v1_setup_time": record.get("v1_setup_time", 0),
+                "v2_setup_time": record.get("v2_setup_time", 0),
+                "v1_time": record.get("v1_time", 0),
+                "v2_time": record.get("v2_time", 0),
+                "total_setup_time": record.get("v1_setup_time", 0) + record.get("v2_setup_time", 0),
+                "total_agent_time": record.get("v1_time", 0) + record.get("v2_time", 0),
+                "v1_loc": record.get("v1_loc", 0),
+                "v2_loc": record.get("v2_loc", 0),
+                "v1_cost": v1.get("cost_usd", 0),
+                "v2_cost": v2.get("cost_usd", 0),
+                "total_cost": v1.get("cost_usd", 0) + v2.get("cost_usd", 0),
+                "v1_turns": v1.get("num_turns", 0),
+                "v2_turns": v2.get("num_turns", 0),
+                "total_turns": v1.get("num_turns", 0) + v2.get("num_turns", 0),
+            }
+        )
     return pd.DataFrame(rows)
 
 
-# ── Plotting helper ───────────────────────────────────────────────────────
-
-def _compute_positions(languages):
-    """Compute x positions with gaps between groups."""
-    # Build a set for quick lookup of group boundaries
-    group_starts = set()
-    pos = 0
-    for group in LANG_GROUPS:
-        for lang in group:
-            if lang in languages:
-                group_starts.add(lang)
-                break
-
-    positions = []
-    x = 0
-    for lang in languages:
-        if lang in group_starts and positions:
-            x += GROUP_GAP
-        positions.append(x)
-        x += 1
-    return positions
+def ordered_subjects(df: pd.DataFrame, include_track_in_label: bool) -> list[str]:
+    dedup = (
+        df[["subject_id", "subject_label", "track", "tier"]]
+        .drop_duplicates()
+        .sort_values(
+            by=["track", "tier", "subject_label"],
+            key=lambda col: col.map(TIER_ORDER).fillna(9) if col.name == "tier" else col,
+        )
+    )
+    labels = []
+    for _, row in dedup.iterrows():
+        label = row["subject_label"]
+        if include_track_in_label:
+            label = f"{label}\n[{row['track']}]"
+        labels.append(label)
+    return labels
 
 
-def _auto_ylim(all_values):
-    """Return a y-axis upper limit that clips extreme outliers, or None."""
-    if len(all_values) == 0:
-        return None
-    q75 = np.percentile(all_values, 75)
-    q25 = np.percentile(all_values, 25)
-    iqr = q75 - q25
-    fence = q75 + 2.0 * iqr
-    ymax = max(all_values)
-    if ymax > fence and fence > 0:
-        # Add some padding above the fence
-        return fence * 1.08
-    return None
-
-
-def boxdot(ax, df, value_col, *, ylabel, title, clip=True):
-    """Draw a box plot with overlaid dot (strip) plot.
-
-    clip: True for auto IQR clipping, False for no clipping,
-          or a number for a fixed upper limit.
-    """
-    languages = [l for l in LANG_ORDER if l in df["language"].unique()]
-    for l in sorted(df["language"].unique()):
-        if l not in languages:
-            languages.append(l)
-
-    data = [df.loc[df["language"] == lang, value_col].values for lang in languages]
-    colours = [PALETTE.get(lang, DEFAULT_COLOUR) for lang in languages]
-    labels = [LANG_LABELS.get(lang, lang) for lang in languages]
-    positions = _compute_positions(languages)
-
-    # Determine y-axis clipping
-    all_values = np.concatenate(data)
-    if isinstance(clip, (int, float)) and not isinstance(clip, bool):
-        ylim_upper = clip
-    elif clip:
-        ylim_upper = _auto_ylim(all_values)
+def add_display_label(df: pd.DataFrame, include_track_in_label: bool) -> pd.DataFrame:
+    df = df.copy()
+    if include_track_in_label:
+        df["display_label"] = df["subject_label"] + "\n[" + df["track"] + "]"
     else:
-        ylim_upper = None
+        df["display_label"] = df["subject_label"]
+    return df
+
+
+def boxdot(ax, df: pd.DataFrame, value_col: str, ylabel: str, title: str) -> None:
+    labels = ordered_subjects(df, include_track_in_label=df["track"].nunique() > 1)
+    positions = list(range(len(labels)))
+    data = [df.loc[df["display_label"] == label, value_col].values for label in labels]
 
     bp = ax.boxplot(
         data,
@@ -194,8 +113,9 @@ def boxdot(ax, df, value_col, *, ylabel, title, clip=True):
         showfliers=False,
         zorder=2,
     )
-    for patch, colour in zip(bp["boxes"], colours):
-        patch.set_facecolor(colour)
+    for patch, label in zip(bp["boxes"], labels):
+        tier = df.loc[df["display_label"] == label, "tier"].iloc[0]
+        patch.set_facecolor(TIER_COLOURS.get(tier, DEFAULT_COLOUR))
         patch.set_alpha(0.35)
     for element in ("whiskers", "caps", "medians"):
         for line in bp[element]:
@@ -203,47 +123,20 @@ def boxdot(ax, df, value_col, *, ylabel, title, clip=True):
             line.set_linewidth(1.2)
 
     rng = np.random.default_rng(42)
-    clipped_points = []  # (x, actual_value, display_y)
-    for i, (lang, pos, vals) in enumerate(zip(languages, positions, data)):
+    for pos, label in zip(positions, labels):
+        tier = df.loc[df["display_label"] == label, "tier"].iloc[0]
+        vals = df.loc[df["display_label"] == label, value_col].values
         jitter = rng.uniform(-0.15, 0.15, size=len(vals))
-        for j, v in enumerate(vals):
-            x = pos + jitter[j]
-            if ylim_upper is not None and v > ylim_upper:
-                # Draw at the top edge and record for annotation
-                clipped_points.append((x, v, ylim_upper * 0.97))
-            else:
-                ax.scatter(
-                    x, v,
-                    color=PALETTE.get(lang, DEFAULT_COLOUR),
-                    edgecolors="white",
-                    linewidths=0.5,
-                    s=50,
-                    alpha=0.85,
-                    zorder=3,
-                )
-
-    # Annotate clipped points
-    if ylim_upper is not None and clipped_points:
-        ax.set_ylim(top=ylim_upper)
-        for x, actual, display_y in clipped_points:
-            ax.scatter(
-                x, display_y,
-                marker="^",
-                color="#CC0000",
-                s=40,
-                zorder=4,
-            )
-            ax.annotate(
-                f"{actual:.0f}",
-                xy=(x, display_y),
-                xytext=(0, 10),
-                textcoords="offset points",
-                fontsize=8,
-                fontweight="bold",
-                ha="center",
-                va="bottom",
-                color="#CC0000",
-            )
+        ax.scatter(
+            pos + jitter,
+            vals,
+            color=TIER_COLOURS.get(tier, DEFAULT_COLOUR),
+            edgecolors="white",
+            linewidths=0.5,
+            s=50,
+            alpha=0.85,
+            zorder=3,
+        )
 
     ax.set_ylim(bottom=0)
     ax.set_xticks(positions)
@@ -252,22 +145,43 @@ def boxdot(ax, df, value_col, *, ylabel, title, clip=True):
     ax.set_title(title, pad=15)
 
 
-def save(fig, outdir, name):
+def save(fig, outdir: Path, name: str) -> None:
     path = outdir / f"{name}.png"
     fig.savefig(path, dpi=150, bbox_inches="tight")
     plt.close(fig)
     print(f"  saved {path}")
 
 
-# ── Main ──────────────────────────────────────────────────────────────────
+def scatter(ax, df: pd.DataFrame, x_col: str, y_col: str, title: str, ylabel: str) -> None:
+    labels = ordered_subjects(df, include_track_in_label=df["track"].nunique() > 1)
+    for label in labels:
+      sub = df[df["display_label"] == label]
+      tier = sub["tier"].iloc[0]
+      ax.scatter(
+          sub[x_col],
+          sub[y_col],
+          color=TIER_COLOURS.get(tier, DEFAULT_COLOUR),
+          edgecolors="white",
+          linewidths=0.5,
+          s=60,
+          alpha=0.85,
+          label=label,
+          zorder=3,
+      )
+    ax.set_xlabel("Agent Time (s)")
+    ax.set_ylabel(ylabel)
+    ax.set_xlim(left=0)
+    ax.set_ylim(bottom=0)
+    ax.set_title(title)
+    ax.legend(fontsize=8, ncol=3, loc="upper left", framealpha=0.8, borderpad=0.5)
 
-def main():
+
+def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("json", type=Path, help="Path to results.json")
-    parser.add_argument(
-        "-o", "--outdir", type=Path, default=Path("figures"),
-        help="Output directory (default: figures/)",
-    )
+    parser.add_argument("-o", "--outdir", type=Path, default=Path("figures"), help="Output directory")
+    parser.add_argument("--track", help="Filter to a specific track")
+    parser.add_argument("--tiers", help="Comma-separated list of tiers to include")
     args = parser.parse_args()
 
     if not args.json.exists():
@@ -276,151 +190,64 @@ def main():
     args.outdir.mkdir(parents=True, exist_ok=True)
     df = load_results(args.json)
 
-    # ── Total ─────────────────────────────────────────────────────────────
-    print("Generating total plots …")
+    if args.track:
+        df = df[df["track"] == args.track]
+    if args.tiers:
+        tiers = [tier.strip() for tier in args.tiers.split(",") if tier.strip()]
+        df = df[df["tier"].isin(tiers)]
+
+    if df.empty:
+        sys.exit("No rows remain after filtering")
+
+    df = add_display_label(df, include_track_in_label=df["track"].nunique() > 1)
+
+    title_suffix = args.track if args.track else "all tracks"
 
     fig, ax = plt.subplots(figsize=(10, 5))
-    boxdot(ax, df, "total_time", ylabel="Time (s)",
-           title="Time for Claude Code to Generate a Mini-Git (v1+v2, 20 trials)", clip=300)
+    boxdot(ax, df, "total_agent_time", ylabel="Agent Time (s)", title=f"MiniGit Agent Time (v1+v2, {title_suffix})")
     save(fig, args.outdir, "total_time")
 
     fig, ax = plt.subplots(figsize=(10, 5))
-    boxdot(ax, df, "total_cost", ylabel="Cost (USD)",
-           title="Cost for Claude Code to Generate a Mini-Git (v1+v2, 20 trials)", clip=False)
+    boxdot(ax, df, "total_setup_time", ylabel="Setup Time (s)", title=f"MiniGit Setup Time (v1+v2, {title_suffix})")
+    save(fig, args.outdir, "total_setup_time")
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+    boxdot(ax, df, "total_cost", ylabel="Cost (USD)", title=f"MiniGit Cost (v1+v2, {title_suffix})")
     ax.yaxis.set_major_formatter(ticker.FormatStrFormatter("$%.2f"))
     save(fig, args.outdir, "total_cost")
 
     fig, ax = plt.subplots(figsize=(10, 5))
-    boxdot(ax, df, "v2_loc", ylabel="Lines of code",
-           title="Lines of Code Generated by Claude Code (v2)", clip=False)
+    boxdot(ax, df, "v2_loc", ylabel="Lines of Code", title=f"MiniGit LOC (v2, {title_suffix})")
     save(fig, args.outdir, "total_lines")
 
-    # ── v1 ───────────────────────────────────────────────────────────
-    print("Generating v1 plots …")
-
     fig, ax = plt.subplots(figsize=(10, 5))
-    boxdot(ax, df, "v1_time", ylabel="Time (s)",
-           title="Time to Generate a Mini-Git v1 (New Project)", clip=200)
+    boxdot(ax, df, "v1_time", ylabel="Agent Time (s)", title=f"MiniGit Agent Time v1 ({title_suffix})")
     save(fig, args.outdir, "v1_time")
 
     fig, ax = plt.subplots(figsize=(10, 5))
-    boxdot(ax, df, "v1_cost", ylabel="Cost (USD)",
-           title="Cost to Generate a Mini-Git v1 (New Project)", clip=False)
-    ax.yaxis.set_major_formatter(ticker.FormatStrFormatter("$%.2f"))
-    save(fig, args.outdir, "v1_cost")
-
-    fig, ax = plt.subplots(figsize=(10, 5))
-    boxdot(ax, df, "v1_loc", ylabel="Lines of code",
-           title="Lines of Code Generated by Claude Code (v1)", clip=False)
-    save(fig, args.outdir, "v1_lines")
-
-    # ── v2 ───────────────────────────────────────────────────────────
-    print("Generating v2 plots …")
-
-    fig, ax = plt.subplots(figsize=(10, 5))
-    boxdot(ax, df, "v2_time", ylabel="Time (s)",
-           title="Time to Generate a Mini-Git v2 (Feature Extension)", clip=150)
+    boxdot(ax, df, "v2_time", ylabel="Agent Time (s)", title=f"MiniGit Agent Time v2 ({title_suffix})")
     save(fig, args.outdir, "v2_time")
 
     fig, ax = plt.subplots(figsize=(10, 5))
-    boxdot(ax, df, "v2_cost", ylabel="Cost (USD)",
-           title="Cost to Generate a Mini-Git v2 (Feature Extension)", clip=False)
-    ax.yaxis.set_major_formatter(ticker.FormatStrFormatter("$%.2f"))
-    save(fig, args.outdir, "v2_cost")
-
-    fig, ax = plt.subplots(figsize=(10, 5))
-    boxdot(ax, df, "v2_loc", ylabel="Lines of code",
-           title="Lines of Code Generated by Claude Code (v2)", clip=False)
-    save(fig, args.outdir, "v2_lines")
-
-    # ── Turns ─────────────────────────────────────────────────────────────
-    print("Generating turn count plots …")
-
-    fig, ax = plt.subplots(figsize=(10, 5))
-    boxdot(ax, df, "v1_turns", ylabel="Turns",
-           title="Agent Turns to Generate a Mini-Git v1", clip=25)
+    boxdot(ax, df, "v1_turns", ylabel="Turns", title=f"MiniGit Turns v1 ({title_suffix})")
     save(fig, args.outdir, "v1_turns")
 
     fig, ax = plt.subplots(figsize=(10, 5))
-    boxdot(ax, df, "v2_turns", ylabel="Turns",
-           title="Agent Turns to Generate a Mini-Git v2", clip=25)
+    boxdot(ax, df, "v2_turns", ylabel="Turns", title=f"MiniGit Turns v2 ({title_suffix})")
     save(fig, args.outdir, "v2_turns")
 
     fig, ax = plt.subplots(figsize=(10, 5))
-    boxdot(ax, df, "total_turns", ylabel="Turns",
-           title="Agent Turns to Generate a Mini-Git (v1+v2)", clip=45)
+    boxdot(ax, df, "total_turns", ylabel="Turns", title=f"MiniGit Turns (v1+v2, {title_suffix})")
     save(fig, args.outdir, "total_turns")
 
-    # ── Scatter: Time vs Cost ─────────────────────────────────────────────
-    print("Generating scatter plots …")
+    fig, ax = plt.subplots(figsize=(8, 6))
+    scatter(ax, df, "total_agent_time", "total_cost", title=f"Agent Time vs Cost ({title_suffix})", ylabel="Cost (USD)")
+    ax.yaxis.set_major_formatter(ticker.FormatStrFormatter("$%.2f"))
+    save(fig, args.outdir, "total_time_vs_cost")
 
-    for time_col, cost_col, suffix, title in [
-        ("total_time", "total_cost", "total", "Time vs Cost to Generate a Mini-Git (v1+v2)"),
-        ("v1_time", "v1_cost", "v1", "Time vs Cost to Generate a Mini-Git v1"),
-        ("v2_time", "v2_cost", "v2", "Time vs Cost to Generate a Mini-Git v2"),
-    ]:
-        fig, ax = plt.subplots(figsize=(8, 6))
-        for lang in LANG_ORDER:
-            sub = df[df["language"] == lang]
-            if sub.empty:
-                continue
-            ax.scatter(
-                sub[time_col], sub[cost_col],
-                color=PALETTE.get(lang, DEFAULT_COLOUR),
-                edgecolors="white",
-                linewidths=0.5,
-                s=60,
-                alpha=0.85,
-                label=LANG_LABELS.get(lang, lang),
-                zorder=3,
-            )
-        ax.set_xlabel("Time (s)")
-        ax.set_ylabel("Cost (USD)")
-        ax.set_xlim(left=0)
-        ax.set_ylim(bottom=0)
-        ax.yaxis.set_major_formatter(ticker.FormatStrFormatter("$%.2f"))
-        ax.set_title(title)
-        ax.legend(
-            fontsize=8, ncol=3, loc="upper left",
-            framealpha=0.8, borderpad=0.5,
-        )
-        save(fig, args.outdir, f"{suffix}_time_vs_cost")
-
-    # ── Scatter: Time vs LOC ──────────────────────────────────────────────
-    print("Generating time vs LOC scatter plots …")
-
-    for time_col, loc_col, suffix, title in [
-        ("total_time", "v2_loc", "total", "Time vs LOC to Generate a Mini-Git (v1+v2)"),
-        ("v1_time", "v1_loc", "v1", "Time vs LOC to Generate a Mini-Git v1"),
-        ("v2_time", "v2_loc", "v2", "Time vs LOC to Generate a Mini-Git v2"),
-    ]:
-        fig, ax = plt.subplots(figsize=(8, 6))
-        for lang in LANG_ORDER:
-            sub = df[df["language"] == lang]
-            if sub.empty:
-                continue
-            ax.scatter(
-                sub[time_col], sub[loc_col],
-                color=PALETTE.get(lang, DEFAULT_COLOUR),
-                edgecolors="white",
-                linewidths=0.5,
-                s=60,
-                alpha=0.85,
-                label=LANG_LABELS.get(lang, lang),
-                zorder=3,
-            )
-        ax.set_xlabel("Time (s)")
-        ax.set_ylabel("Lines of code")
-        ax.set_xlim(left=0)
-        ax.set_ylim(bottom=0)
-        ax.set_title(title)
-        ax.legend(
-            fontsize=8, ncol=3, loc="upper left",
-            framealpha=0.8, borderpad=0.5,
-        )
-        save(fig, args.outdir, f"{suffix}_time_vs_loc")
-
-    print("Done.")
+    fig, ax = plt.subplots(figsize=(8, 6))
+    scatter(ax, df, "total_agent_time", "v2_loc", title=f"Agent Time vs LOC ({title_suffix})", ylabel="Lines of Code")
+    save(fig, args.outdir, "total_time_vs_loc")
 
 
 if __name__ == "__main__":
