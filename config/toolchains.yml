@@ -181,6 +181,17 @@ toolchains:
     version_cmd: scala-cli version | head -1
     extra_prompt: Use Scala CLI as the chosen single-module workflow.
 
+  - id: java-gradle
+    label: Java / Gradle
+    language: java
+    workflow: gradle
+    tier: secondary
+    canonical: true
+    exts: [java]
+    version_cmd: gradle --version | head -3 && java --version 2>&1 | head -1
+    workspace_setup_cmd: gradle -q help
+    extra_prompt: Use the existing Gradle build with Java 25 toolchain. Keep build.gradle.kts and settings.gradle.kts intact.
+
   - id: kotlin-maven
     label: Kotlin / Maven
     language: kotlin

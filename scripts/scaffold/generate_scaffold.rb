@@ -531,6 +531,69 @@ def scala_scala_cli
   SCALA
 end
 
+def java_gradle
+  write_file('build.gradle.kts', <<~KOTLIN)
+    import org.gradle.api.tasks.SourceSetContainer
+
+    plugins {
+      java
+      application
+    }
+
+    group = "bench"
+    version = "0.1.0"
+
+    java {
+      toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+      }
+    }
+
+    application {
+      mainClass = "minigit.Main"
+    }
+
+    tasks.register("writeRuntimeClasspath") {
+      doLast {
+        val sourceSets = project.extensions.getByType(SourceSetContainer::class.java)
+        val outFile = layout.buildDirectory.file("runtime-classpath.txt").get().asFile
+        outFile.parentFile.mkdirs()
+        outFile.writeText(sourceSets.getByName("main").runtimeClasspath.asPath + System.lineSeparator())
+      }
+    }
+  KOTLIN
+
+  write_file('settings.gradle.kts', <<~KOTLIN)
+    rootProject.name = "minigit"
+  KOTLIN
+
+  write_file('build.sh', <<~BASH, executable: true)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    gradle -q classes writeRuntimeClasspath
+    cat > minigit <<'EOF'
+    #!/usr/bin/env bash
+    set -euo pipefail
+    CP="$(cat build/runtime-classpath.txt)"
+    exec java -cp "$CP" minigit.Main "$@"
+    EOF
+    chmod +x minigit
+  BASH
+
+  write_file('src/main/java/minigit/Main.java', <<~JAVA)
+    package minigit;
+
+    public final class Main {
+      private Main() {}
+
+      public static void main(String[] args) {
+        System.err.println("Not implemented");
+        System.exit(1);
+      }
+    }
+  JAVA
+end
+
 def kotlin_gradle
   write_file('build.gradle.kts', <<~KOTLIN)
     import org.gradle.api.tasks.SourceSetContainer
@@ -775,6 +838,7 @@ when 'python-pip' then python_pip
 when 'scala-sbt-2-13' then scala_sbt_2_13
 when 'scala-sbt-server' then scala_sbt_server
 when 'scala-scala-cli' then scala_scala_cli
+when 'java-gradle' then java_gradle
 when 'kotlin-gradle' then kotlin_gradle
 when 'kotlin-maven' then kotlin_maven
 when 'ocaml-dune' then ocaml_dune
