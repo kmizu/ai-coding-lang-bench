@@ -255,6 +255,8 @@ def main() -> None:
     fig, ax = plt.subplots(figsize=(10, 5))
     boxdot(ax, df, "total_cost", ylabel="Cost (USD)", title=f"MiniGit Cost (v1+v2, {title_suffix})")
     ax.yaxis.set_major_formatter(ticker.FormatStrFormatter("$%.2f"))
+    cost_min = df["total_cost"].min()
+    ax.set_ylim(bottom=max(0, cost_min * 0.7))
     save(fig, args.outdir, "total_cost")
 
     fig, ax = plt.subplots(figsize=(10, 5))
@@ -284,6 +286,8 @@ def main() -> None:
     fig, ax = plt.subplots(figsize=(8, 6))
     scatter(ax, df, "total_agent_time", "total_cost", title=f"Agent Time vs Cost ({title_suffix})", ylabel="Cost (USD)")
     ax.yaxis.set_major_formatter(ticker.FormatStrFormatter("$%.2f"))
+    cost_min = df["total_cost"].min()
+    ax.set_ylim(bottom=max(0, cost_min * 0.7))
     save(fig, args.outdir, "total_time_vs_cost")
 
     fig, ax = plt.subplots(figsize=(8, 6))
@@ -300,7 +304,8 @@ def main() -> None:
     if not loc_df.empty:
         fig, ax = plt.subplots(figsize=(10, 5))
         boxdot(ax, loc_df, "time_per_100loc", ylabel="Agent Time per 100 LOC (s)", title=f"LOC-Normalised Agent Time ({title_suffix})")
-        ax.set_ylim(bottom=0, top=1000)
+        max_val = loc_df["time_per_100loc"].max()
+        ax.set_ylim(bottom=0, top=max_val * 1.3)
         save(fig, args.outdir, "time_per_100loc")
 
         fig, ax = plt.subplots(figsize=(10, 5))
