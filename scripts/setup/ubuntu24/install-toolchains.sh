@@ -312,7 +312,7 @@ main() {
       kotlin-gradle|java-gradle)
         install_gradle
         ;;
-      fsharp-dotnet)
+      csharp-dotnet|vbnet-dotnet|fsharp-dotnet)
         install_dotnet
         ;;
       clojure-lein)

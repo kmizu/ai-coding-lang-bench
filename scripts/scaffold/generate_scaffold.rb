@@ -531,6 +531,68 @@ def scala_scala_cli
   SCALA
 end
 
+def csharp_dotnet
+  write_file('Minigit.csproj', <<~XML)
+    <Project Sdk="Microsoft.NET.Sdk">
+      <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net9.0</TargetFramework>
+        <RootNamespace>Minigit</RootNamespace>
+        <AssemblyName>minigit-app</AssemblyName>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Optimize>true</Optimize>
+      </PropertyGroup>
+    </Project>
+  XML
+
+  write_file('build.sh', <<~BASH, executable: true)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    dotnet publish -c Release -r linux-x64 --self-contained -o publish/ -nologo -v quiet
+    cp publish/minigit-app minigit
+    chmod +x minigit
+  BASH
+
+  write_file('src/Program.cs', <<~CS)
+    using System;
+
+    Console.Error.WriteLine("Not implemented");
+    Environment.Exit(1);
+  CS
+end
+
+def vbnet_dotnet
+  write_file('Minigit.vbproj', <<~XML)
+    <Project Sdk="Microsoft.NET.Sdk">
+      <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net9.0</TargetFramework>
+        <RootNamespace>Minigit</RootNamespace>
+        <AssemblyName>minigit-app</AssemblyName>
+        <Optimize>true</Optimize>
+      </PropertyGroup>
+    </Project>
+  XML
+
+  write_file('build.sh', <<~BASH, executable: true)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    dotnet publish -c Release -r linux-x64 --self-contained -o publish/ -nologo -v quiet
+    cp publish/minigit-app minigit
+    chmod +x minigit
+  BASH
+
+  write_file('src/Program.vb', <<~VB)
+    Module Program
+        Sub Main(args As String())
+            Console.Error.WriteLine("Not implemented")
+            Environment.Exit(1)
+        End Sub
+    End Module
+  VB
+end
+
 def fsharp_dotnet
   write_file('Minigit.fsproj', <<~XML)
     <Project Sdk="Microsoft.NET.Sdk">
@@ -905,6 +967,8 @@ when 'python-pip' then python_pip
 when 'scala-sbt-2-13' then scala_sbt_2_13
 when 'scala-sbt-server' then scala_sbt_server
 when 'scala-scala-cli' then scala_scala_cli
+when 'csharp-dotnet' then csharp_dotnet
+when 'vbnet-dotnet' then vbnet_dotnet
 when 'fsharp-dotnet' then fsharp_dotnet
 when 'clojure-lein' then clojure_lein
 when 'java-gradle' then java_gradle

@@ -181,6 +181,28 @@ toolchains:
     version_cmd: scala-cli version | head -1
     extra_prompt: Use Scala CLI as the chosen single-module workflow.
 
+  - id: csharp-dotnet
+    label: C# / dotnet
+    language: csharp
+    workflow: dotnet
+    tier: secondary
+    canonical: true
+    exts: [cs]
+    version_cmd: dotnet --version
+    workspace_setup_cmd: dotnet restore
+    extra_prompt: Use the existing .csproj and dotnet workflow. Keep the C# 13 / .NET 9 target. Build with "dotnet publish -c Release -r linux-x64 --self-contained" to produce a self-contained executable.
+
+  - id: vbnet-dotnet
+    label: VB.NET / dotnet
+    language: vbnet
+    workflow: dotnet
+    tier: secondary
+    canonical: false
+    exts: [vb]
+    version_cmd: dotnet --version
+    workspace_setup_cmd: dotnet restore
+    extra_prompt: Use the existing .vbproj and dotnet workflow. Keep the VB.NET / .NET 9 target. Build with "dotnet publish -c Release -r linux-x64 --self-contained" to produce a self-contained executable.
+
   - id: fsharp-dotnet
     label: F# / dotnet
     language: fsharp
