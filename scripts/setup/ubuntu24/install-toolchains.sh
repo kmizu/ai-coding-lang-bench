@@ -205,6 +205,16 @@ install_dotnet() {
   curl -fsSL https://dot.net/v1/dotnet-install.sh | bash -s -- --channel "${DOTNET_CHANNEL}" --install-dir "${dotnet_dir}"
 }
 
+install_php_composer() {
+  apt_install php8.1-cli
+
+  if [[ -x "${INSTALL_ROOT}/bin/composer" ]]; then
+    return
+  fi
+
+  curl -fsSL https://getcomposer.org/installer | php -- --install-dir="${INSTALL_ROOT}/bin" --filename=composer
+}
+
 install_leiningen() {
   if [[ -x "${INSTALL_ROOT}/bin/lein" ]]; then
     return
@@ -314,6 +324,9 @@ main() {
         ;;
       csharp-dotnet|vbnet-dotnet|fsharp-dotnet)
         install_dotnet
+        ;;
+      php-composer)
+        install_php_composer
         ;;
       clojure-lein)
         install_leiningen

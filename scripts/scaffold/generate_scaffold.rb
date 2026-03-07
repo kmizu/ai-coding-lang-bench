@@ -531,6 +531,41 @@ def scala_scala_cli
   SCALA
 end
 
+def php_composer
+  write_file('composer.json', <<~JSON)
+    {
+      "name": "bench/minigit",
+      "description": "MiniGit benchmark",
+      "type": "project",
+      "require": {
+        "php": ">=8.1"
+      },
+      "autoload": {
+        "psr-4": {
+          "Minigit\\\\": "src/"
+        }
+      },
+      "config": {
+        "optimize-autoloader": true
+      }
+    }
+  JSON
+
+  write_file('minigit', <<~BASH, executable: true)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    exec php "$(dirname "$0")/src/minigit.php" "$@"
+  BASH
+
+  write_file('src/minigit.php', <<~PHP)
+    <?php
+    declare(strict_types=1);
+
+    fwrite(STDERR, "Not implemented\n");
+    exit(1);
+  PHP
+end
+
 def csharp_dotnet
   write_file('Minigit.csproj', <<~XML)
     <Project Sdk="Microsoft.NET.Sdk">
@@ -967,6 +1002,7 @@ when 'python-pip' then python_pip
 when 'scala-sbt-2-13' then scala_sbt_2_13
 when 'scala-sbt-server' then scala_sbt_server
 when 'scala-scala-cli' then scala_scala_cli
+when 'php-composer' then php_composer
 when 'csharp-dotnet' then csharp_dotnet
 when 'vbnet-dotnet' then vbnet_dotnet
 when 'fsharp-dotnet' then fsharp_dotnet

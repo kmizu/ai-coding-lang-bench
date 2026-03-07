@@ -181,6 +181,17 @@ toolchains:
     version_cmd: scala-cli version | head -1
     extra_prompt: Use Scala CLI as the chosen single-module workflow.
 
+  - id: php-composer
+    label: PHP / Composer
+    language: php
+    workflow: composer
+    tier: secondary
+    canonical: true
+    exts: [php]
+    version_cmd: php --version | head -1 && composer --version
+    workspace_setup_cmd: composer install --no-interaction --quiet
+    extra_prompt: Use the existing composer.json and PHP workflow. Keep the single-entry src/minigit.php structure. Run via the minigit launcher script.
+
   - id: csharp-dotnet
     label: C# / dotnet
     language: csharp
