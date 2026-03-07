@@ -1,13 +1,13 @@
 {
-  "date": "2026-03-07 19:31:42",
+  "date": "2026-03-08 02:53:39",
   "claude_version": "2.1.71 (Claude Code)",
   "track": "canonical",
   "seed": 4242,
   "trials": 3,
   "selected_subjects": [
-    "elixir-mix"
+    "powershell-raw"
   ],
   "versions": {
-    "elixir-mix": "Elixir 1.18.2 (compiled with Erlang/OTP 27)"
+    "powershell-raw": "PowerShell 7.5.0"
   }
 }

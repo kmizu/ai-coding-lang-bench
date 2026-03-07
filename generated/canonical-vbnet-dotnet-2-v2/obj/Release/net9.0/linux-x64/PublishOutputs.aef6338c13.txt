@@ -1,0 +1,2 @@
+/home/mizushima/repo/ai-coding-lang-bench/generated/canonical-vbnet-dotnet-2-v2/publish/minigit-app.pdb
+/home/mizushima/repo/ai-coding-lang-bench/generated/canonical-vbnet-dotnet-2-v2/publish/minigit-app

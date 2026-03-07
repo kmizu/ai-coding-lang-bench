@@ -1,0 +1,1 @@
+/home/mizushima/repo/ai-coding-lang-bench/generated/canonical-java-gradle-3-v1/build/classes/java/main:/home/mizushima/repo/ai-coding-lang-bench/generated/canonical-java-gradle-3-v1/build/resources/main

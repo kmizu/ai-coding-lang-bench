@@ -1,0 +1,2 @@
+/home/mizushima/repo/ai-coding-lang-bench/generated/canonical-fsharp-dotnet-3-v1/publish/minigit-app.pdb
+/home/mizushima/repo/ai-coding-lang-bench/generated/canonical-fsharp-dotnet-3-v1/publish/minigit-app

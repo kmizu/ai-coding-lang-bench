@@ -1,7 +1,7 @@
 # AI Coding Language Benchmark Report
 
 ## Environment
-- Date: 2026-03-07 19:31:42
+- Date: 2026-03-08 02:53:39
 - Claude Version: 2.1.71 (Claude Code)
 - Last Run Track: canonical
 - Last Run Seed: 4242
@@ -16,11 +16,18 @@
 | canonical | primary | Ruby / Bundler | Bundler version 2.6.2 / ruby 3.4.1 (2024-12-25 revision 48d4efcb85) +PRISM [x86_64-linux] |
 | canonical | primary | Rust / Cargo | cargo 1.94.0 (85eff7c80 2026-01-15) / rustc 1.94.0 (4a4ef493e 2026-03-02) |
 | canonical | primary | Scala / sbt | 1.12.5 / openjdk 25.0.1 2025-10-21 LTS |
+| canonical | secondary | C# / dotnet | 9.0.311 |
+| canonical | secondary | Clojure / Leiningen | Leiningen 2.12.0 on Java 25.0.1 OpenJDK 64-Bit Server VM |
 | canonical | secondary | Elixir / Mix | Elixir 1.18.2 (compiled with Erlang/OTP 27) |
+| canonical | secondary | F# / dotnet | 9.0.311 |
+| canonical | secondary | Java / Gradle | ------------------------------------------------------------ / Gradle 9.3.1 / openjdk 25.0.1 2025-10-21 LTS |
 | canonical | secondary | JavaScript / Node | v24.14.0 |
+| canonical | secondary | PHP / Composer | PHP 8.1.2-1ubuntu2.23 (cli) (built: Jan  7 2026 08:37:41) (NTS) / Composer version 2.9.5 2026-01-29 11:40:53 |
 | canonical | secondary | Python / pip | Python 3.14.2 / pip 25.3 from /home/linuxbrew/.linuxbrew/lib/python3.14/site-packages/pip (python 3.14) |
 | canonical | secondary | Scala / sbt (server) | 1.12.5 / openjdk 25.0.1 2025-10-21 LTS |
 | canonical | secondary | Scala 2.13 / sbt | 1.12.5 / openjdk 25.0.1 2025-10-21 LTS |
+| canonical | secondary | VB.NET / dotnet | 9.0.311 |
+| canonical | reference | PowerShell / raw | PowerShell 7.5.0 |
 | greenfield | legacy | C | unknown |
 | greenfield | legacy | Go | unknown |
 | greenfield | legacy | Haskell | unknown |
@@ -47,11 +54,18 @@
 | canonical | primary | Ruby / Bundler | 3 | 0.9s | 217.6s±31.5s | $0.00 | 3/3 (100%) | 3/3 (100%) | 272 | 80.00s | $0.0000 |
 | canonical | primary | Rust / Cargo | 1 | 0.3s | 313.8s±0.0s | $0.00 | 1/1 (100%) | 0/1 (0%) | 4 | 7845.00s | $0.0000 |
 | canonical | primary | Scala / sbt | 3 | 6.9s | 321.0s±42.6s | $0.00 | 3/3 (100%) | 3/3 (100%) | 256 | 125.39s | $0.0000 |
+| canonical | secondary | C# / dotnet | 3 | 3.1s | 276.9s±47.7s | $0.00 | 3/3 (100%) | 3/3 (100%) | 353 | 78.44s | $0.0000 |
+| canonical | secondary | Clojure / Leiningen | 3 | 2.4s | 392.8s±54.0s | $0.00 | 3/3 (100%) | 3/3 (100%) | 230 | 170.78s | $0.0000 |
 | canonical | secondary | Elixir / Mix | 3 | 0.7s | 227.0s±35.9s | $0.00 | 3/3 (100%) | 3/3 (100%) | 271 | 83.76s | $0.0000 |
+| canonical | secondary | F# / dotnet | 3 | 2.4s | 258.0s±22.9s | $0.00 | 3/3 (100%) | 3/3 (100%) | 256 | 100.78s | $0.0000 |
+| canonical | secondary | Java / Gradle | 3 | 23.1s | 342.3s±80.0s | $0.00 | 3/3 (100%) | 3/3 (100%) | 328 | 104.36s | $0.0000 |
 | canonical | secondary | JavaScript / Node | 3 | 0.1s | 170.2s±33.6s | $0.00 | 3/3 (100%) | 3/3 (100%) | 238 | 71.51s | $0.0000 |
+| canonical | secondary | PHP / Composer | 3 | 0.8s | 383.1s±25.2s | $0.00 | 3/3 (100%) | 3/3 (100%) | 1340 | 28.59s | $0.0000 |
 | canonical | secondary | Python / pip | 3 | 5.2s | 175.6s±36.7s | $0.00 | 3/3 (100%) | 3/3 (100%) | 267 | 65.77s | $0.0000 |
 | canonical | secondary | Scala / sbt (server) | 3 | 7.9s | 323.1s±26.5s | $0.00 | 3/3 (100%) | 3/3 (100%) | 212 | 152.41s | $0.0000 |
 | canonical | secondary | Scala 2.13 / sbt | 3 | 10.4s | 379.4s±65.0s | $0.00 | 3/3 (100%) | 3/3 (100%) | 239 | 158.74s | $0.0000 |
+| canonical | secondary | VB.NET / dotnet | 3 | 2.0s | 294.5s±23.3s | $0.00 | 3/3 (100%) | 3/3 (100%) | 342 | 86.11s | $0.0000 |
+| canonical | reference | PowerShell / raw | 3 | 0.1s | 698.1s±290.2s | $0.00 | 3/3 (100%) | 3/3 (100%) | 287 | 243.24s | $0.0000 |
 | greenfield | legacy | C | 20 | 0.0s | 155.8s±40.9s | $0.74 | 20/20 (100%) | 20/20 (100%) | 517 | 30.14s | $0.1430 |
 | greenfield | legacy | Go | 20 | 0.0s | 101.6s±37.0s | $0.50 | 20/20 (100%) | 20/20 (100%) | 324 | 31.36s | $0.1531 |
 | greenfield | legacy | Haskell | 20 | 0.0s | 174.0s±44.2s | $0.74 | 19/20 (95%) | 20/20 (100%) | 224 | 77.68s | $0.3301 |
@@ -78,11 +92,18 @@
 | canonical | primary | Ruby / Bundler | 29 | 7,737 | 81,869 | 505,968 | 595,604 |
 | canonical | primary | Rust / Cargo | 200 | 7,059 | 83,446 | 596,282 | 686,987 |
 | canonical | primary | Scala / sbt | 2,415 | 13,315 | 98,409 | 788,760 | 902,899 |
+| canonical | secondary | C# / dotnet | 40 | 12,086 | 95,020 | 969,084 | 1,076,230 |
+| canonical | secondary | Clojure / Leiningen | 977 | 12,511 | 91,791 | 725,536 | 830,814 |
 | canonical | secondary | Elixir / Mix | 30 | 10,282 | 86,111 | 530,805 | 627,228 |
+| canonical | secondary | F# / dotnet | 37 | 10,749 | 94,628 | 927,981 | 1,033,396 |
+| canonical | secondary | Java / Gradle | 36 | 11,462 | 86,378 | 738,087 | 835,963 |
 | canonical | secondary | JavaScript / Node | 23 | 7,632 | 79,809 | 370,875 | 458,339 |
+| canonical | secondary | PHP / Composer | 29 | 21,714 | 97,957 | 563,490 | 683,190 |
 | canonical | secondary | Python / pip | 34 | 8,060 | 103,302 | 804,313 | 915,709 |
 | canonical | secondary | Scala / sbt (server) | 1,942 | 13,210 | 50,372 | 792,151 | 857,674 |
 | canonical | secondary | Scala 2.13 / sbt | 3,057 | 14,430 | 120,495 | 852,588 | 990,569 |
+| canonical | secondary | VB.NET / dotnet | 37 | 13,326 | 97,000 | 962,092 | 1,072,455 |
+| canonical | reference | PowerShell / raw | 38 | 29,213 | 105,298 | 1,132,469 | 1,267,019 |
 | greenfield | legacy | C | 22 | 10,223 | 33,028 | 554,607 | 597,880 |
 | greenfield | legacy | Go | 18 | 6,175 | 24,421 | 377,751 | 408,365 |
 | greenfield | legacy | Haskell | 27 | 8,636 | 29,185 | 681,994 | 719,841 |
@@ -119,12 +140,27 @@
 | canonical | primary | Scala / sbt | 1 | 6.9s | 288.1s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | primary | Scala / sbt | 2 | 7.3s | 305.7s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | primary | Scala / sbt | 3 | 6.6s | 369.1s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | C# / dotnet | 1 | 3.3s | 300.3s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | C# / dotnet | 2 | 2.3s | 222.0s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | C# / dotnet | 3 | 3.8s | 308.4s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | Clojure / Leiningen | 1 | 4.6s | 335.7s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | Clojure / Leiningen | 2 | 1.2s | 443.0s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | Clojure / Leiningen | 3 | 1.3s | 399.6s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | secondary | Elixir / Mix | 1 | 0.7s | 248.3s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | secondary | Elixir / Mix | 2 | 0.7s | 247.1s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | secondary | Elixir / Mix | 3 | 0.6s | 185.5s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | F# / dotnet | 1 | 3.8s | 248.3s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | F# / dotnet | 2 | 1.7s | 284.2s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | F# / dotnet | 3 | 1.7s | 241.6s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | Java / Gradle | 1 | 63.7s | 258.9s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | Java / Gradle | 2 | 2.4s | 418.5s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | Java / Gradle | 3 | 3.3s | 349.4s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | secondary | JavaScript / Node | 1 | 0.2s | 165.0s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | secondary | JavaScript / Node | 2 | 0.1s | 139.4s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | secondary | JavaScript / Node | 3 | 0.1s | 206.1s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | PHP / Composer | 1 | 1.2s | 357.2s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | PHP / Composer | 2 | 0.5s | 407.5s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | PHP / Composer | 3 | 0.6s | 384.6s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | secondary | Python / pip | 1 | 5.3s | 217.7s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | secondary | Python / pip | 2 | 5.3s | 158.0s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | secondary | Python / pip | 3 | 5.1s | 151.0s | 11/11 PASS | 30/30 PASS | $0.00 |
@@ -134,6 +170,12 @@
 | canonical | secondary | Scala 2.13 / sbt | 1 | 6.6s | 418.1s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | secondary | Scala 2.13 / sbt | 2 | 8.2s | 304.4s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | secondary | Scala 2.13 / sbt | 3 | 16.4s | 415.7s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | VB.NET / dotnet | 1 | 2.0s | 319.9s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | VB.NET / dotnet | 2 | 2.4s | 289.5s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | VB.NET / dotnet | 3 | 1.7s | 274.0s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | reference | PowerShell / raw | 1 | 0.1s | 891.0s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | reference | PowerShell / raw | 2 | 0.1s | 838.9s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | reference | PowerShell / raw | 3 | 0.1s | 364.3s | 11/11 PASS | 30/30 PASS | $0.00 |
 | greenfield | legacy | C | 1 | 0s | 136.5s | 11/11 PASS | 30/30 PASS | $0.67 |
 | greenfield | legacy | C | 2 | 0s | 153.8s | 11/11 PASS | 30/30 PASS | $0.66 |
 | greenfield | legacy | C | 3 | 0s | 208.1s | 11/11 PASS | 30/30 PASS | $1.04 |
@@ -472,18 +514,48 @@
 | canonical | Scala / sbt | 2 | v2 | 14 | 4,624 | 52,095 | 284,028 | 340,761 | $0.0000 |
 | canonical | Scala / sbt | 3 | v1 | 19 | 10,836 | 48,972 | 467,985 | 527,812 | $0.0000 |
 | canonical | Scala / sbt | 3 | v2 | 16 | 5,580 | 53,697 | 506,227 | 565,520 | $0.0000 |
+| canonical | C# / dotnet | 1 | v1 | 25 | 6,130 | 40,107 | 554,483 | 600,745 | $0.0000 |
+| canonical | C# / dotnet | 1 | v2 | 17 | 6,132 | 55,225 | 440,371 | 501,745 | $0.0000 |
+| canonical | C# / dotnet | 2 | v1 | 20 | 5,257 | 40,676 | 462,606 | 508,559 | $0.0000 |
+| canonical | C# / dotnet | 2 | v2 | 15 | 4,584 | 50,556 | 322,306 | 377,461 | $0.0000 |
+| canonical | C# / dotnet | 3 | v1 | 27 | 7,087 | 44,933 | 689,803 | 741,850 | $0.0000 |
+| canonical | C# / dotnet | 3 | v2 | 17 | 7,068 | 53,563 | 437,683 | 498,331 | $0.0000 |
+| canonical | Clojure / Leiningen | 1 | v1 | 15 | 5,818 | 39,712 | 256,043 | 301,588 | $0.0000 |
+| canonical | Clojure / Leiningen | 1 | v2 | 15 | 4,606 | 49,441 | 319,604 | 373,666 | $0.0000 |
+| canonical | Clojure / Leiningen | 2 | v1 | 1,436 | 9,562 | 47,040 | 558,537 | 616,575 | $0.0000 |
+| canonical | Clojure / Leiningen | 2 | v2 | 17 | 5,017 | 46,955 | 382,358 | 434,347 | $0.0000 |
+| canonical | Clojure / Leiningen | 3 | v1 | 1,433 | 7,842 | 42,946 | 384,528 | 436,749 | $0.0000 |
+| canonical | Clojure / Leiningen | 3 | v2 | 14 | 4,687 | 49,278 | 275,538 | 329,517 | $0.0000 |
 | canonical | Elixir / Mix | 1 | v1 | 16 | 7,060 | 40,807 | 237,569 | 285,452 | $0.0000 |
 | canonical | Elixir / Mix | 1 | v2 | 14 | 4,010 | 47,888 | 266,525 | 318,437 | $0.0000 |
 | canonical | Elixir / Mix | 2 | v1 | 16 | 7,487 | 41,185 | 310,023 | 358,711 | $0.0000 |
 | canonical | Elixir / Mix | 2 | v2 | 14 | 4,326 | 45,182 | 255,628 | 305,150 | $0.0000 |
 | canonical | Elixir / Mix | 3 | v1 | 14 | 3,376 | 37,098 | 224,420 | 264,908 | $0.0000 |
 | canonical | Elixir / Mix | 3 | v2 | 15 | 4,588 | 46,173 | 298,249 | 349,025 | $0.0000 |
+| canonical | F# / dotnet | 1 | v1 | 20 | 5,166 | 41,407 | 467,049 | 513,642 | $0.0000 |
+| canonical | F# / dotnet | 1 | v2 | 15 | 5,248 | 50,909 | 326,932 | 383,104 | $0.0000 |
+| canonical | F# / dotnet | 2 | v1 | 19 | 5,502 | 43,750 | 446,017 | 495,288 | $0.0000 |
+| canonical | F# / dotnet | 2 | v2 | 19 | 6,641 | 52,751 | 529,854 | 589,265 | $0.0000 |
+| canonical | F# / dotnet | 3 | v1 | 20 | 4,551 | 40,852 | 463,010 | 508,433 | $0.0000 |
+| canonical | F# / dotnet | 3 | v2 | 19 | 5,140 | 54,214 | 551,082 | 610,455 | $0.0000 |
+| canonical | Java / Gradle | 1 | v1 | 18 | 5,585 | 39,902 | 451,908 | 497,413 | $0.0000 |
+| canonical | Java / Gradle | 1 | v2 | 16 | 4,687 | 40,109 | 309,851 | 354,663 | $0.0000 |
+| canonical | Java / Gradle | 2 | v1 | 21 | 7,396 | 42,891 | 425,533 | 475,841 | $0.0000 |
+| canonical | Java / Gradle | 2 | v2 | 14 | 8,625 | 51,370 | 273,310 | 333,319 | $0.0000 |
+| canonical | Java / Gradle | 3 | v1 | 20 | 4,439 | 39,963 | 372,649 | 417,071 | $0.0000 |
+| canonical | Java / Gradle | 3 | v2 | 19 | 3,654 | 44,898 | 381,010 | 429,581 | $0.0000 |
 | canonical | JavaScript / Node | 1 | v1 | 10 | 4,175 | 36,569 | 151,440 | 192,194 | $0.0000 |
 | canonical | JavaScript / Node | 1 | v2 | 13 | 3,302 | 42,627 | 204,556 | 250,498 | $0.0000 |
 | canonical | JavaScript / Node | 2 | v1 | 10 | 2,316 | 34,903 | 149,771 | 187,000 | $0.0000 |
 | canonical | JavaScript / Node | 2 | v2 | 13 | 3,820 | 42,737 | 203,835 | 250,405 | $0.0000 |
 | canonical | JavaScript / Node | 3 | v1 | 10 | 4,957 | 37,937 | 154,670 | 197,574 | $0.0000 |
 | canonical | JavaScript / Node | 3 | v2 | 14 | 4,326 | 44,653 | 248,353 | 297,346 | $0.0000 |
+| canonical | PHP / Composer | 1 | v1 | 15 | 17,085 | 51,977 | 285,344 | 354,421 | $0.0000 |
+| canonical | PHP / Composer | 1 | v2 | 14 | 2,973 | 44,406 | 256,409 | 303,802 | $0.0000 |
+| canonical | PHP / Composer | 2 | v1 | 13 | 18,969 | 53,499 | 287,039 | 359,520 | $0.0000 |
+| canonical | PHP / Composer | 2 | v2 | 14 | 3,263 | 45,069 | 261,235 | 309,581 | $0.0000 |
+| canonical | PHP / Composer | 3 | v1 | 17 | 19,039 | 53,885 | 383,643 | 456,584 | $0.0000 |
+| canonical | PHP / Composer | 3 | v2 | 13 | 3,813 | 45,035 | 216,800 | 265,661 | $0.0000 |
 | canonical | Python / pip | 1 | v1 | 17 | 3,532 | 42,674 | 353,303 | 399,526 | $0.0000 |
 | canonical | Python / pip | 1 | v2 | 21 | 6,389 | 61,167 | 558,649 | 626,226 | $0.0000 |
 | canonical | Python / pip | 2 | v1 | 19 | 3,621 | 44,814 | 373,098 | 421,552 | $0.0000 |
@@ -502,6 +574,18 @@
 | canonical | Scala 2.13 / sbt | 2 | v2 | 6,130 | 4,642 | 107,400 | 447,118 | 565,290 | $0.0000 |
 | canonical | Scala 2.13 / sbt | 3 | v1 | 17 | 9,720 | 48,312 | 393,700 | 451,749 | $0.0000 |
 | canonical | Scala 2.13 / sbt | 3 | v2 | 403 | 4,481 | 52,792 | 326,257 | 383,933 | $0.0000 |
+| canonical | VB.NET / dotnet | 1 | v1 | 16 | 9,827 | 44,160 | 418,790 | 472,793 | $0.0000 |
+| canonical | VB.NET / dotnet | 1 | v2 | 16 | 6,219 | 52,381 | 394,842 | 453,458 | $0.0000 |
+| canonical | VB.NET / dotnet | 2 | v1 | 24 | 5,668 | 43,144 | 641,556 | 690,392 | $0.0000 |
+| canonical | VB.NET / dotnet | 2 | v2 | 16 | 5,757 | 54,530 | 380,194 | 440,497 | $0.0000 |
+| canonical | VB.NET / dotnet | 3 | v1 | 22 | 7,552 | 44,750 | 567,241 | 619,565 | $0.0000 |
+| canonical | VB.NET / dotnet | 3 | v2 | 18 | 4,954 | 52,035 | 483,653 | 540,660 | $0.0000 |
+| canonical | PowerShell / raw | 1 | v1 | 27 | 33,895 | 69,080 | 944,671 | 1,047,673 | $0.0000 |
+| canonical | PowerShell / raw | 1 | v2 | 13 | 3,314 | 44,289 | 213,074 | 260,690 | $0.0000 |
+| canonical | PowerShell / raw | 2 | v1 | 36 | 27,971 | 63,800 | 1,521,947 | 1,613,754 | $0.0000 |
+| canonical | PowerShell / raw | 2 | v2 | 13 | 9,067 | 50,369 | 225,500 | 284,949 | $0.0000 |
+| canonical | PowerShell / raw | 3 | v1 | 12 | 8,612 | 42,826 | 242,835 | 294,285 | $0.0000 |
+| canonical | PowerShell / raw | 3 | v2 | 14 | 4,780 | 45,530 | 249,381 | 299,705 | $0.0000 |
 | greenfield | C | 1 | v1 | 8 | 4,501 | 10,444 | 152,603 | 167,556 | $0.2541 |
 | greenfield | C | 1 | v2 | 12 | 4,988 | 20,199 | 330,911 | 356,110 | $0.4165 |
 | greenfield | C | 2 | v1 | 7 | 4,250 | 10,194 | 123,194 | 137,645 | $0.2316 |

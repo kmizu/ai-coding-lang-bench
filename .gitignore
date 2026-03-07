@@ -26,3 +26,7 @@ generated/**/minigit
 generated/**/*.class
 generated/**/*.beam
 generated/**/*.o
+
+# Clojure
+generated/**/target/
+generated/**/*.jar

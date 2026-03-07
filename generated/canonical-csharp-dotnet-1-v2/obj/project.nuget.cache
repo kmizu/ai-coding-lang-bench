@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "gnt+c8omA00=",
+  "success": true,
+  "projectFilePath": "/home/mizushima/repo/ai-coding-lang-bench/generated/canonical-csharp-dotnet-1-v2/Minigit.csproj",
+  "expectedPackageFiles": [
+    "/home/mizushima/.nuget/packages/microsoft.net.illink.tasks/9.0.13/microsoft.net.illink.tasks.9.0.13.nupkg.sha512",
+    "/home/mizushima/.nuget/packages/microsoft.netcore.app.runtime.linux-x64/9.0.13/microsoft.netcore.app.runtime.linux-x64.9.0.13.nupkg.sha512",
+    "/home/mizushima/.nuget/packages/microsoft.aspnetcore.app.runtime.linux-x64/9.0.13/microsoft.aspnetcore.app.runtime.linux-x64.9.0.13.nupkg.sha512"
+  ],
+  "logs": []
+}

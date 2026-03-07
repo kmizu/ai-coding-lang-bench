@@ -1,0 +1,86 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/mizushima/repo/ai-coding-lang-bench/generated/canonical-fsharp-dotnet-2-v1/Minigit.fsproj": {}
+  },
+  "projects": {
+    "/home/mizushima/repo/ai-coding-lang-bench/generated/canonical-fsharp-dotnet-2-v1/Minigit.fsproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/mizushima/repo/ai-coding-lang-bench/generated/canonical-fsharp-dotnet-2-v1/Minigit.fsproj",
+        "projectName": "minigit-app",
+        "projectPath": "/home/mizushima/repo/ai-coding-lang-bench/generated/canonical-fsharp-dotnet-2-v1/Minigit.fsproj",
+        "packagesPath": "/home/mizushima/.nuget/packages/",
+        "outputPath": "/home/mizushima/repo/ai-coding-lang-bench/generated/canonical-fsharp-dotnet-2-v1/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/mizushima/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "/home/mizushima/.local/share/ai-coding-lang-bench/dotnet/sdk/9.0.311/FSharp/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {}
+          }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "FSharp.Core": {
+              "include": "Runtime, Compile, Build, Native, Analyzers, BuildTransitive",
+              "target": "Package",
+              "version": "[9.0.303, )",
+              "generatePathProperty": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Runtime.linux-x64",
+              "version": "[9.0.13, 9.0.13]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.linux-x64",
+              "version": "[9.0.13, 9.0.13]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/home/mizushima/.local/share/ai-coding-lang-bench/dotnet/sdk/9.0.311/PortableRuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "linux-x64": {
+          "#import": []
+        }
+      }
+    }
+  }
+}
