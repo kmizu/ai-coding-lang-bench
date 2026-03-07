@@ -42,6 +42,7 @@ Each workflow was run **3 trials** (except Python/uv: 1 trial). All runs achieve
 | Java / Gradle | 342.3s | ±80.0s | 328 | 104.4s | static |
 | Scala 2.13 / sbt | 379.4s | ±65.0s | 239 | 158.7s | static |
 | Clojure / Lein ⚠️ | 392.8s | ±54.0s | 230 | 170.8s | dynamic (JVM) |
+| PHP / Composer ⚠️ | 383.1s | ±25.2s | 1340 | **28.6s** | dynamic |
 
 > ⚠️ **Clojure note:** The Clojure/Lein result should not be read as a pure "dynamic typing on JVM" data point. `lein uberjar` performs full AOT compilation (macro expansion → bytecode generation) on every build cycle, which is a heavier pipeline than `javac`. A REPL-driven workflow would likely produce very different numbers. The result reflects the overhead of Leiningen's uberjar packaging model, not Clojure's runtime characteristics alone.
 
@@ -64,6 +65,11 @@ Within the JVM ecosystem alone, agent time ranges from 234s (Kotlin) to 379s (Sc
 **5. F# (static functional) outperforms Clojure (dynamic functional) by 135s.**
 F#/.NET 9 (258.0s ±22.9s) is substantially faster than Clojure/Leiningen (392.8s ±54.0s), despite both being functional languages. F# produces concise code (~256 LOC, comparable to dynamic languages) while retaining static typing. The `dotnet publish --self-contained` pipeline has low per-cycle latency, contributing to the speed advantage. This directly refutes any claim that functional style inherently favours dynamic typing for AI generation tasks.
 
+**7. PHP is verbose but iterates fast: lowest time-per-LOC of all languages tested.**
+PHP/Composer produces ~1340 LOC on average — 4–5× more than other languages — making its absolute agent time high (383s). However, its time-per-100-LOC (28.6s) is the lowest of all languages tested, beating even Go (42.2s). PHP has near-zero build-cycle latency (no compilation step) and Claude has deep PHP familiarity, so each iteration is fast. PHP's slowness in absolute terms is entirely explained by verbosity, not iteration speed.
+
+> ⚠️ **PHP note:** The high LOC likely reflects Claude generating more verbose PHP code (explicit type hints, docblocks, array-style patterns) rather than a fundamental language limitation.
+
 **6. The .NET ecosystem is remarkably consistent across languages.**
 F# (258s), C# (277s), and VB.NET (295s) all finish within 37 seconds of each other despite being very different languages in style and modern popularity. VB.NET — now a relatively niche language — achieves 100% pass rates and competitive timings, suggesting Claude's training data is sufficient for even less-common .NET languages. F#'s edge likely comes from its more concise output (~256 LOC vs ~350 for C#/VB.NET).
 
@@ -81,7 +87,7 @@ Setup time is negligible for most workflows. The exception is Scala/sbt (≈7s s
 
 ## Status
 
-`results/` and `figures/` now contain canonical-track results for 15 workflows (see table above). The legacy greenfield results are preserved in the same `results.json` under `"track": "greenfield"` for continuity.
+`results/` and `figures/` now contain canonical-track results for 16 workflows (see table above). The legacy greenfield results are preserved in the same `results.json` under `"track": "greenfield"` for continuity.
 
 The benchmark harness separates:
 
