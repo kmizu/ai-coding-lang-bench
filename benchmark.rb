@@ -110,7 +110,7 @@ rescue JSON::ParserError => e
 end
 
 def run_claude(prompt, dir:, log_path: nil)
-  cmd = "claude -p #{Shellwords.escape(prompt)} --dangerously-skip-permissions --output-format json"
+  cmd = "unset CLAUDECODE && claude -p #{Shellwords.escape(prompt)} --dangerously-skip-permissions --output-format json"
   started_at = monotonic_now
   result = run_cmd(cmd, dir: dir, timeout: 1_200)
   elapsed = monotonic_now - started_at

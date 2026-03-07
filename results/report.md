@@ -1,7 +1,7 @@
 # AI Coding Language Benchmark Report
 
 ## Environment
-- Date: 2026-03-08 02:53:39
+- Date: 2026-03-08 04:03:54
 - Claude Version: 2.1.71 (Claude Code)
 - Last Run Track: canonical
 - Last Run Seed: 4242
@@ -28,6 +28,7 @@
 | canonical | secondary | Scala 2.13 / sbt | 1.12.5 / openjdk 25.0.1 2025-10-21 LTS |
 | canonical | secondary | VB.NET / dotnet | 9.0.311 |
 | canonical | reference | PowerShell / raw | PowerShell 7.5.0 |
+| canonical | reference | Prolog / SWI-Prolog | SWI-Prolog version 8.4.2 for x86_64-linux |
 | greenfield | legacy | C | unknown |
 | greenfield | legacy | Go | unknown |
 | greenfield | legacy | Haskell | unknown |
@@ -66,6 +67,7 @@
 | canonical | secondary | Scala 2.13 / sbt | 3 | 10.4s | 379.4s±65.0s | $0.00 | 3/3 (100%) | 3/3 (100%) | 239 | 158.74s | $0.0000 |
 | canonical | secondary | VB.NET / dotnet | 3 | 2.0s | 294.5s±23.3s | $0.00 | 3/3 (100%) | 3/3 (100%) | 342 | 86.11s | $0.0000 |
 | canonical | reference | PowerShell / raw | 3 | 0.1s | 698.1s±290.2s | $0.00 | 3/3 (100%) | 3/3 (100%) | 287 | 243.24s | $0.0000 |
+| canonical | reference | Prolog / SWI-Prolog | 5 | 0.1s | 296.9s±276.7s | $0.00 | 3/5 (60%) | 3/5 (60%) | 196 | 151.48s | $0.0000 |
 | greenfield | legacy | C | 20 | 0.0s | 155.8s±40.9s | $0.74 | 20/20 (100%) | 20/20 (100%) | 517 | 30.14s | $0.1430 |
 | greenfield | legacy | Go | 20 | 0.0s | 101.6s±37.0s | $0.50 | 20/20 (100%) | 20/20 (100%) | 324 | 31.36s | $0.1531 |
 | greenfield | legacy | Haskell | 20 | 0.0s | 174.0s±44.2s | $0.74 | 19/20 (95%) | 20/20 (100%) | 224 | 77.68s | $0.3301 |
@@ -104,6 +106,7 @@
 | canonical | secondary | Scala 2.13 / sbt | 3,057 | 14,430 | 120,495 | 852,588 | 990,569 |
 | canonical | secondary | VB.NET / dotnet | 37 | 13,326 | 97,000 | 962,092 | 1,072,455 |
 | canonical | reference | PowerShell / raw | 38 | 29,213 | 105,298 | 1,132,469 | 1,267,019 |
+| canonical | reference | Prolog / SWI-Prolog | 17 | 19,315 | 61,928 | 352,686 | 433,946 |
 | greenfield | legacy | C | 22 | 10,223 | 33,028 | 554,607 | 597,880 |
 | greenfield | legacy | Go | 18 | 6,175 | 24,421 | 377,751 | 408,365 |
 | greenfield | legacy | Haskell | 27 | 8,636 | 29,185 | 681,994 | 719,841 |
@@ -176,6 +179,11 @@
 | canonical | reference | PowerShell / raw | 1 | 0.1s | 891.0s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | reference | PowerShell / raw | 2 | 0.1s | 838.9s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | reference | PowerShell / raw | 3 | 0.1s | 364.3s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | reference | Prolog / SWI-Prolog | 1 | 0.1s | 0.6s | 0/0 FAIL | 0/0 FAIL | $0.00 |
+| canonical | reference | Prolog / SWI-Prolog | 1 | 0.1s | 0.6s | 0/0 FAIL | 0/0 FAIL | $0.00 |
+| canonical | reference | Prolog / SWI-Prolog | 1 | 0.1s | 482.1s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | reference | Prolog / SWI-Prolog | 2 | 0.1s | 582.3s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | reference | Prolog / SWI-Prolog | 3 | 0.1s | 418.9s | 11/11 PASS | 30/30 PASS | $0.00 |
 | greenfield | legacy | C | 1 | 0s | 136.5s | 11/11 PASS | 30/30 PASS | $0.67 |
 | greenfield | legacy | C | 2 | 0s | 153.8s | 11/11 PASS | 30/30 PASS | $0.66 |
 | greenfield | legacy | C | 3 | 0s | 208.1s | 11/11 PASS | 30/30 PASS | $1.04 |
@@ -586,6 +594,16 @@
 | canonical | PowerShell / raw | 2 | v2 | 13 | 9,067 | 50,369 | 225,500 | 284,949 | $0.0000 |
 | canonical | PowerShell / raw | 3 | v1 | 12 | 8,612 | 42,826 | 242,835 | 294,285 | $0.0000 |
 | canonical | PowerShell / raw | 3 | v2 | 14 | 4,780 | 45,530 | 249,381 | 299,705 | $0.0000 |
+| canonical | Prolog / SWI-Prolog | 1 | v1 | - | - | - | - | - | - |
+| canonical | Prolog / SWI-Prolog | 1 | v2 | - | - | - | - | - | - |
+| canonical | Prolog / SWI-Prolog | 1 | v1 | - | - | - | - | - | - |
+| canonical | Prolog / SWI-Prolog | 1 | v2 | - | - | - | - | - | - |
+| canonical | Prolog / SWI-Prolog | 1 | v1 | 15 | 23,452 | 51,195 | 332,552 | 407,214 | $0.0000 |
+| canonical | Prolog / SWI-Prolog | 1 | v2 | 18 | 8,404 | 48,740 | 440,012 | 497,174 | $0.0000 |
+| canonical | Prolog / SWI-Prolog | 2 | v1 | 19 | 30,358 | 63,541 | 432,752 | 526,670 | $0.0000 |
+| canonical | Prolog / SWI-Prolog | 2 | v2 | 10 | 9,136 | 48,931 | 171,824 | 229,901 | $0.0000 |
+| canonical | Prolog / SWI-Prolog | 3 | v1 | 13 | 20,597 | 53,230 | 219,578 | 293,418 | $0.0000 |
+| canonical | Prolog / SWI-Prolog | 3 | v2 | 10 | 4,628 | 44,002 | 166,712 | 215,352 | $0.0000 |
 | greenfield | C | 1 | v1 | 8 | 4,501 | 10,444 | 152,603 | 167,556 | $0.2541 |
 | greenfield | C | 1 | v2 | 12 | 4,988 | 20,199 | 330,911 | 356,110 | $0.4165 |
 | greenfield | C | 2 | v1 | 7 | 4,250 | 10,194 | 123,194 | 137,645 | $0.2316 |
