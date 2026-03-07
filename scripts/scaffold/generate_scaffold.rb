@@ -531,6 +531,23 @@ def scala_scala_cli
   SCALA
 end
 
+def powershell_raw
+  write_file('minigit', <<~BASH, executable: true)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    exec pwsh "$(dirname "$0")/src/minigit.ps1" -- "$@"
+  BASH
+
+  write_file('src/minigit.ps1', <<~PS1)
+    #!/usr/bin/env pwsh
+    [CmdletBinding()]
+    param([Parameter(ValueFromRemainingArguments)][string[]]$Args)
+
+    $host.ui.WriteErrorLine("Not implemented")
+    exit 1
+  PS1
+end
+
 def php_composer
   write_file('composer.json', <<~JSON)
     {
@@ -1002,6 +1019,7 @@ when 'python-pip' then python_pip
 when 'scala-sbt-2-13' then scala_sbt_2_13
 when 'scala-sbt-server' then scala_sbt_server
 when 'scala-scala-cli' then scala_scala_cli
+when 'powershell-raw' then powershell_raw
 when 'php-composer' then php_composer
 when 'csharp-dotnet' then csharp_dotnet
 when 'vbnet-dotnet' then vbnet_dotnet

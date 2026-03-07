@@ -181,6 +181,16 @@ toolchains:
     version_cmd: scala-cli version | head -1
     extra_prompt: Use Scala CLI as the chosen single-module workflow.
 
+  - id: powershell-raw
+    label: PowerShell / raw
+    language: powershell
+    workflow: raw
+    tier: reference
+    canonical: false
+    exts: [ps1]
+    version_cmd: pwsh --version
+    extra_prompt: Use PowerShell 7 (pwsh). Keep the single-entry script structure. The minigit launcher calls pwsh directly.
+
   - id: php-composer
     label: PHP / Composer
     language: php

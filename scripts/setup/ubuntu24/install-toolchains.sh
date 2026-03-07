@@ -205,6 +205,18 @@ install_dotnet() {
   curl -fsSL https://dot.net/v1/dotnet-install.sh | bash -s -- --channel "${DOTNET_CHANNEL}" --install-dir "${dotnet_dir}"
 }
 
+install_powershell() {
+  if [[ -x "${INSTALL_ROOT}/bin/pwsh" ]]; then
+    return
+  fi
+
+  local ps_version="7.5.0"
+  curl -fsSL "https://github.com/PowerShell/PowerShell/releases/download/v${ps_version}/powershell-${ps_version}-linux-x64.tar.gz" \
+    -o "${INSTALL_ROOT}/dist/powershell-${ps_version}-linux-x64.tar.gz"
+  tar -C "${INSTALL_ROOT}/bin" -xzf "${INSTALL_ROOT}/dist/powershell-${ps_version}-linux-x64.tar.gz"
+  chmod +x "${INSTALL_ROOT}/bin/pwsh"
+}
+
 install_php_composer() {
   apt_install php8.1-cli
 
@@ -324,6 +336,9 @@ main() {
         ;;
       csharp-dotnet|vbnet-dotnet|fsharp-dotnet)
         install_dotnet
+        ;;
+      powershell-raw)
+        install_powershell
         ;;
       php-composer)
         install_php_composer
