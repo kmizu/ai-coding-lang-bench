@@ -1,7 +1,7 @@
 # AI Coding Language Benchmark Report
 
 ## Environment
-- Date: 2026-03-08 04:03:54
+- Date: 2026-03-08 05:30:40
 - Claude Version: 2.1.71 (Claude Code)
 - Last Run Track: canonical
 - Last Run Seed: 4242
@@ -27,8 +27,10 @@
 | canonical | secondary | Scala / sbt (server) | 1.12.5 / openjdk 25.0.1 2025-10-21 LTS |
 | canonical | secondary | Scala 2.13 / sbt | 1.12.5 / openjdk 25.0.1 2025-10-21 LTS |
 | canonical | secondary | VB.NET / dotnet | 9.0.311 |
+| canonical | reference | Fortran / gfortran | GNU Fortran (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0 |
 | canonical | reference | PowerShell / raw | PowerShell 7.5.0 |
 | canonical | reference | Prolog / SWI-Prolog | SWI-Prolog version 8.4.2 for x86_64-linux |
+| canonical | reference | Racket / raco | Welcome to Racket v8.2 [cs]. |
 | greenfield | legacy | C | unknown |
 | greenfield | legacy | Go | unknown |
 | greenfield | legacy | Haskell | unknown |
@@ -66,8 +68,10 @@
 | canonical | secondary | Scala / sbt (server) | 3 | 7.9s | 323.1s±26.5s | $0.00 | 3/3 (100%) | 3/3 (100%) | 212 | 152.41s | $0.0000 |
 | canonical | secondary | Scala 2.13 / sbt | 3 | 10.4s | 379.4s±65.0s | $0.00 | 3/3 (100%) | 3/3 (100%) | 239 | 158.74s | $0.0000 |
 | canonical | secondary | VB.NET / dotnet | 3 | 2.0s | 294.5s±23.3s | $0.00 | 3/3 (100%) | 3/3 (100%) | 342 | 86.11s | $0.0000 |
+| canonical | reference | Fortran / gfortran | 3 | 0.2s | 577.5s±98.1s | $0.00 | 3/3 (100%) | 3/3 (100%) | 636 | 90.80s | $0.0000 |
 | canonical | reference | PowerShell / raw | 3 | 0.1s | 698.1s±290.2s | $0.00 | 3/3 (100%) | 3/3 (100%) | 287 | 243.24s | $0.0000 |
 | canonical | reference | Prolog / SWI-Prolog | 5 | 0.1s | 296.9s±276.7s | $0.00 | 3/5 (60%) | 3/5 (60%) | 196 | 151.48s | $0.0000 |
+| canonical | reference | Racket / raco | 3 | 0.2s | 320.9s±141.8s | $0.00 | 3/3 (100%) | 3/3 (100%) | 293 | 109.52s | $0.0000 |
 | greenfield | legacy | C | 20 | 0.0s | 155.8s±40.9s | $0.74 | 20/20 (100%) | 20/20 (100%) | 517 | 30.14s | $0.1430 |
 | greenfield | legacy | Go | 20 | 0.0s | 101.6s±37.0s | $0.50 | 20/20 (100%) | 20/20 (100%) | 324 | 31.36s | $0.1531 |
 | greenfield | legacy | Haskell | 20 | 0.0s | 174.0s±44.2s | $0.74 | 19/20 (95%) | 20/20 (100%) | 224 | 77.68s | $0.3301 |
@@ -105,8 +109,10 @@
 | canonical | secondary | Scala / sbt (server) | 1,942 | 13,210 | 50,372 | 792,151 | 857,674 |
 | canonical | secondary | Scala 2.13 / sbt | 3,057 | 14,430 | 120,495 | 852,588 | 990,569 |
 | canonical | secondary | VB.NET / dotnet | 37 | 13,326 | 97,000 | 962,092 | 1,072,455 |
+| canonical | reference | Fortran / gfortran | 27 | 40,037 | 114,996 | 652,453 | 807,512 |
 | canonical | reference | PowerShell / raw | 38 | 29,213 | 105,298 | 1,132,469 | 1,267,019 |
 | canonical | reference | Prolog / SWI-Prolog | 17 | 19,315 | 61,928 | 352,686 | 433,946 |
+| canonical | reference | Racket / raco | 31 | 14,624 | 87,853 | 546,152 | 648,660 |
 | greenfield | legacy | C | 22 | 10,223 | 33,028 | 554,607 | 597,880 |
 | greenfield | legacy | Go | 18 | 6,175 | 24,421 | 377,751 | 408,365 |
 | greenfield | legacy | Haskell | 27 | 8,636 | 29,185 | 681,994 | 719,841 |
@@ -176,6 +182,9 @@
 | canonical | secondary | VB.NET / dotnet | 1 | 2.0s | 319.9s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | secondary | VB.NET / dotnet | 2 | 2.4s | 289.5s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | secondary | VB.NET / dotnet | 3 | 1.7s | 274.0s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | reference | Fortran / gfortran | 1 | 0.1s | 551.9s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | reference | Fortran / gfortran | 2 | 0.2s | 494.7s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | reference | Fortran / gfortran | 3 | 0.3s | 685.8s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | reference | PowerShell / raw | 1 | 0.1s | 891.0s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | reference | PowerShell / raw | 2 | 0.1s | 838.9s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | reference | PowerShell / raw | 3 | 0.1s | 364.3s | 11/11 PASS | 30/30 PASS | $0.00 |
@@ -184,6 +193,9 @@
 | canonical | reference | Prolog / SWI-Prolog | 1 | 0.1s | 482.1s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | reference | Prolog / SWI-Prolog | 2 | 0.1s | 582.3s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | reference | Prolog / SWI-Prolog | 3 | 0.1s | 418.9s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | reference | Racket / raco | 1 | 0.3s | 464.1s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | reference | Racket / raco | 2 | 0.1s | 180.6s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | reference | Racket / raco | 3 | 0.2s | 317.9s | 11/11 PASS | 30/30 PASS | $0.00 |
 | greenfield | legacy | C | 1 | 0s | 136.5s | 11/11 PASS | 30/30 PASS | $0.67 |
 | greenfield | legacy | C | 2 | 0s | 153.8s | 11/11 PASS | 30/30 PASS | $0.66 |
 | greenfield | legacy | C | 3 | 0s | 208.1s | 11/11 PASS | 30/30 PASS | $1.04 |
@@ -588,6 +600,12 @@
 | canonical | VB.NET / dotnet | 2 | v2 | 16 | 5,757 | 54,530 | 380,194 | 440,497 | $0.0000 |
 | canonical | VB.NET / dotnet | 3 | v1 | 22 | 7,552 | 44,750 | 567,241 | 619,565 | $0.0000 |
 | canonical | VB.NET / dotnet | 3 | v2 | 18 | 4,954 | 52,035 | 483,653 | 540,660 | $0.0000 |
+| canonical | Fortran / gfortran | 1 | v1 | 14 | 30,953 | 63,072 | 418,927 | 512,966 | $0.0000 |
+| canonical | Fortran / gfortran | 1 | v2 | 11 | 10,067 | 52,476 | 230,081 | 292,635 | $0.0000 |
+| canonical | Fortran / gfortran | 2 | v1 | 15 | 22,097 | 54,896 | 319,161 | 396,169 | $0.0000 |
+| canonical | Fortran / gfortran | 2 | v2 | 14 | 9,608 | 53,336 | 277,380 | 340,338 | $0.0000 |
+| canonical | Fortran / gfortran | 3 | v1 | 13 | 31,576 | 63,794 | 365,807 | 461,190 | $0.0000 |
+| canonical | Fortran / gfortran | 3 | v2 | 15 | 15,809 | 57,413 | 346,002 | 419,239 | $0.0000 |
 | canonical | PowerShell / raw | 1 | v1 | 27 | 33,895 | 69,080 | 944,671 | 1,047,673 | $0.0000 |
 | canonical | PowerShell / raw | 1 | v2 | 13 | 3,314 | 44,289 | 213,074 | 260,690 | $0.0000 |
 | canonical | PowerShell / raw | 2 | v1 | 36 | 27,971 | 63,800 | 1,521,947 | 1,613,754 | $0.0000 |
@@ -604,6 +622,12 @@
 | canonical | Prolog / SWI-Prolog | 2 | v2 | 10 | 9,136 | 48,931 | 171,824 | 229,901 | $0.0000 |
 | canonical | Prolog / SWI-Prolog | 3 | v1 | 13 | 20,597 | 53,230 | 219,578 | 293,418 | $0.0000 |
 | canonical | Prolog / SWI-Prolog | 3 | v2 | 10 | 4,628 | 44,002 | 166,712 | 215,352 | $0.0000 |
+| canonical | Racket / raco | 1 | v1 | 19 | 13,499 | 47,488 | 355,708 | 416,714 | $0.0000 |
+| canonical | Racket / raco | 1 | v2 | 14 | 8,982 | 48,864 | 264,708 | 322,568 | $0.0000 |
+| canonical | Racket / raco | 2 | v1 | 15 | 3,473 | 37,664 | 263,267 | 304,419 | $0.0000 |
+| canonical | Racket / raco | 2 | v2 | 14 | 4,809 | 44,868 | 253,045 | 302,736 | $0.0000 |
+| canonical | Racket / raco | 3 | v1 | 18 | 3,523 | 35,326 | 283,458 | 322,325 | $0.0000 |
+| canonical | Racket / raco | 3 | v2 | 13 | 9,587 | 49,348 | 218,271 | 277,219 | $0.0000 |
 | greenfield | C | 1 | v1 | 8 | 4,501 | 10,444 | 152,603 | 167,556 | $0.2541 |
 | greenfield | C | 1 | v2 | 12 | 4,988 | 20,199 | 330,911 | 356,110 | $0.4165 |
 | greenfield | C | 2 | v1 | 7 | 4,250 | 10,194 | 123,194 | 137,645 | $0.2316 |

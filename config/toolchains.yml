@@ -297,3 +297,43 @@ toolchains:
     exts: [lua]
     version_cmd: lua -v
     extra_prompt: This is a reference workflow using raw Lua. Keep the single-entry script structure.
+
+  - id: prolog-swipl
+    label: Prolog / SWI-Prolog
+    language: prolog
+    workflow: swipl
+    tier: reference
+    canonical: false
+    exts: [pl]
+    version_cmd: swipl --version
+    extra_prompt: This is a reference workflow using SWI-Prolog. Implement minigit as a single Prolog source file src/minigit.pl. Use :- initialization(main, main). as the entry point. Access command-line arguments via current_prolog_flag(argv, Argv). No build step is needed; the launcher calls swipl directly.
+
+  - id: fortran-gfortran
+    label: Fortran / gfortran
+    language: fortran
+    workflow: gfortran
+    tier: reference
+    canonical: false
+    exts: [f90, f95]
+    version_cmd: gfortran --version | head -1
+    extra_prompt: This is a reference workflow using gfortran. Implement minigit in modern free-format Fortran (src/minigit.f90). The build.sh compiles with "gfortran -o minigit src/minigit.f90". Use iso_fortran_env for integer(int64). Access command-line arguments with get_command_argument(). Use OPEN/READ/WRITE for file I/O.
+
+  - id: racket-raco
+    label: Racket / raco
+    language: racket
+    workflow: raco
+    tier: reference
+    canonical: false
+    exts: [rkt]
+    version_cmd: racket --version
+    extra_prompt: This is a reference workflow using Racket. Implement minigit as a single Racket source file src/minigit.rkt. Start with #lang racket. Access command-line arguments via (current-command-line-arguments). The launcher calls racket directly; no build step is needed.
+
+  - id: cobol-gnucobol
+    label: COBOL / GnuCOBOL
+    language: cobol
+    workflow: gnucobol
+    tier: reference
+    canonical: false
+    exts: [cob, cbl]
+    version_cmd: cobc --version | head -1
+    extra_prompt: This is a reference workflow using GnuCOBOL. Implement minigit in free-format COBOL (src/minigit.cob). The build.sh compiles with "cobc -x -free -o minigit src/minigit.cob". Use COBOL idioms naturally. Command-line arguments are accessed via ARGUMENT-NUMBER / ACCEPT ... FROM ARGUMENT-VALUE or COMMAND-LINE. Use free-format COBOL (no column restrictions).

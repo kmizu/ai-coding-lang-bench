@@ -1002,6 +1002,75 @@ def lua_raw
   LUA
 end
 
+def fortran_gfortran
+  write_file('build.sh', <<~BASH, executable: true)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd "$(dirname "$0")"
+    gfortran -o minigit src/minigit.f90
+  BASH
+
+  write_file('src/minigit.f90', <<~FORTRAN)
+    program minigit
+      use iso_fortran_env, only: int64
+      implicit none
+      write(*, '(a)') 'Not implemented'
+      stop 1
+    end program minigit
+  FORTRAN
+end
+
+def racket_raco
+  write_file('minigit', <<~BASH, executable: true)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    exec racket "$(dirname "$0")/src/minigit.rkt" "$@"
+  BASH
+
+  write_file('src/minigit.rkt', <<~RACKET)
+    #lang racket
+
+    (define (main)
+      (displayln "Not implemented" (current-error-port))
+      (exit 1))
+
+    (main)
+  RACKET
+end
+
+def cobol_gnucobol
+  write_file('build.sh', <<~BASH, executable: true)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd "$(dirname "$0")"
+    cobc -x -free -o minigit src/minigit.cob
+  BASH
+
+  write_file('src/minigit.cob', <<~COBOL)
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. minigit.
+       PROCEDURE DIVISION.
+           DISPLAY "Not implemented"
+           STOP RUN.
+  COBOL
+end
+
+def prolog_swipl
+  write_file('minigit', <<~BASH, executable: true)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    exec swipl -f "$(dirname "$0")/src/minigit.pl" -g main -t halt -- "$@"
+  BASH
+
+  write_file('src/minigit.pl', <<~PROLOG)
+    :- initialization(main, main).
+
+    main :-
+        write('Not implemented'), nl,
+        halt(1).
+  PROLOG
+end
+
 FileUtils.mkdir_p(TARGET_DIR)
 
 case options[:toolchain]
@@ -1033,6 +1102,10 @@ when 'haskell-cabal' then haskell_cabal
 when 'scheme-guile' then scheme_guile
 when 'perl-raw' then perl_raw
 when 'lua-raw' then lua_raw
+when 'fortran-gfortran' then fortran_gfortran
+when 'racket-raco' then racket_raco
+when 'cobol-gnucobol' then cobol_gnucobol
+when 'prolog-swipl' then prolog_swipl
 else
   abort("Unsupported toolchain: #{options[:toolchain]}")
 end

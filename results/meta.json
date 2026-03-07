@@ -1,13 +1,13 @@
 {
-  "date": "2026-03-08 04:03:54",
+  "date": "2026-03-08 05:30:40",
   "claude_version": "2.1.71 (Claude Code)",
   "track": "canonical",
   "seed": 4242,
-  "trials": 2,
+  "trials": 3,
   "selected_subjects": [
-    "prolog-swipl"
+    "racket-raco"
   ],
   "versions": {
-    "prolog-swipl": "SWI-Prolog version 8.4.2 for x86_64-linux"
+    "racket-raco": "Welcome to Racket v8.2 [cs]."
   }
 }

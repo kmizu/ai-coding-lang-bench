@@ -239,7 +239,7 @@ install_leiningen() {
 }
 
 install_reference_packages() {
-  apt_install guile-3.0 lua5.4 perl
+  apt_install guile-3.0 lua5.4 perl swi-prolog gnucobol3 racket gfortran
 }
 
 write_env_file() {
@@ -352,7 +352,7 @@ main() {
       haskell-cabal)
         install_haskell
         ;;
-      scheme-guile|perl-raw|lua-raw)
+      scheme-guile|perl-raw|lua-raw|prolog-swipl|cobol-gnucobol|racket-raco|fortran-gfortran)
         install_reference_packages
         ;;
       *)
