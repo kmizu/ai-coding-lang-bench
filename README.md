@@ -15,9 +15,58 @@ This repository now distinguishes:
 
 Treat the legacy tables below as exploratory data for the `greenfield` track, not as a language-level conclusion.
 
+## Canonical Track Results (March 2026)
+
+The following results are from the canonical track, where each language uses a benchmark-owned scaffold with its standard toolchain. Setup time (dependency resolution, etc.) is measured separately from agent time.
+
+Each workflow was run **3 trials** (except Python/uv: 1 trial). All runs achieved 100% pass rates on both v1 (11 tests) and v2 (30 tests) unless otherwise noted.
+
+### Agent Time Summary
+
+| Workflow | Avg Agent Time | ±Stddev | Avg LOC | Time/100 LOC | Type system |
+|----------|---------------:|--------:|--------:|-------------:|-------------|
+| Go / go | **158.2s** | ±33.8s | 375 | **42.2s** | static |
+| JavaScript / Node | 170.2s | ±33.6s | 238 | 71.6s | dynamic |
+| Python / uv | 173.8s | — | 274 | 63.4s | dynamic |
+| Python / pip | 175.6s | ±36.7s | 267 | 65.8s | dynamic |
+| Ruby / Bundler | 217.6s | ±31.5s | 272 | 80.0s | dynamic |
+| Elixir / Mix | 227.0s | ±35.9s | 271 | 83.9s | dynamic |
+| Kotlin / Gradle | 234.1s | ±9.9s | 264 | 88.7s | static |
+| Java / Maven | 272.6s | ±40.5s | 271 | 100.7s | static |
+| Scala 3 / sbt | 321.0s | ±42.6s | 256 | 125.4s | static |
+| Scala 2.13 / sbt | 379.4s | ±65.0s | 239 | 158.7s | static |
+
+### Key Findings
+
+**1. Static typing is not inherently slower.**
+Go — a statically typed language with no runtime overhead — outperforms all dynamically typed languages tested (JavaScript, Python, Ruby, Elixir). The claim that "dynamic typing leads to faster AI generation" is not supported by the canonical-track data. The relevant variables appear to be compiler throughput, build-cycle latency, and AI model familiarity with the language, not the type system category per se.
+
+**2. Build-tool daemon lifetime matters within the JVM ecosystem.**
+Kotlin/Gradle benefits from Gradle's default 3-hour daemon lifetime, resulting in highly consistent timings (±9.9s). Scala/sbt with `--batch` mode (no server) shows higher variance (±42.6s). Disabling sbt's idle timeout (`serverIdleTimeout := None`) reduces variance but does not close the speed gap, suggesting the Scala 3 compiler throughput — not JVM startup cost — is the primary driver.
+
+**3. Build tools matter less than the language runtime.**
+Python/uv and Python/pip produce nearly identical results (173.8s vs. 175.6s). Despite `uv` being a significantly faster package manager written in Rust, the speed advantage does not carry over to agent time. Python's performance reflects the language's fast iteration cycle, not the package manager.
+
+**4. The "dynamic vs. static" framing is too coarse.**
+Within the JVM ecosystem alone, agent time ranges from 234s (Kotlin) to 379s (Scala 2.13). Within dynamic languages, Go beats all of them. The dominant factors appear to be build-cycle speed, compiler incremental compilation quality, and AI training data availability — not whether the language is dynamically or statically typed.
+
+### LOC-Normalised Agent Time
+
+![Time per 100 LOC](./figures/time_per_100loc.png)
+
+When agent time is normalised by lines of code written, Go is the clear outlier on the fast end: it writes substantially more code (375 LOC vs. ~240–270 for Python/Ruby/JS) yet finishes faster. This is consistent with `go build` having near-zero per-cycle latency.
+
+### Setup vs. Agent Time
+
+![Setup vs agent time](./figures/stacked_time_breakdown.png)
+
+Setup time is negligible for most workflows. The exception is Scala/sbt (≈7s setup) due to sbt's JVM startup cost during the initial dependency resolution step.
+
 ## Status
 
-The committed `results/` and `figures/` still reflect the original single-track benchmark. The benchmark harness has been reworked so future runs can separate:
+`results/` and `figures/` now contain canonical-track results for 10 workflows (see table above). The legacy greenfield results are preserved in the same `results.json` under `"track": "greenfield"` for continuity.
+
+The benchmark harness separates:
 
 - language/toolchain choice
 - setup cost outside the agent loop

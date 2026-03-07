@@ -106,6 +106,39 @@ toolchains:
     version_cmd: cabal --version | head -1 && ghc --version
     extra_prompt: Use the existing cabal file and Cabal workflow.
 
+  - id: elixir-mix
+    label: Elixir / Mix
+    language: elixir
+    workflow: mix
+    tier: secondary
+    canonical: true
+    exts: [ex, exs]
+    version_cmd: elixir --version | tail -1
+    workspace_setup_cmd: mix deps.get
+    extra_prompt: Use the existing Mix project structure. Keep mix.exs as the canonical entry point. Use escript for the minigit executable.
+
+  - id: python-pip
+    label: Python / pip
+    language: python
+    workflow: pip
+    tier: secondary
+    canonical: true
+    exts: [py]
+    version_cmd: python3 --version && pip3 --version
+    workspace_setup_cmd: python3 -m venv .venv && .venv/bin/pip install -e . -q
+    extra_prompt: Use the existing pyproject.toml with a venv at .venv/. Run the minigit launcher script which uses .venv/bin/python. Do not use uv.
+
+  - id: scala-sbt-2-13
+    label: Scala 2.13 / sbt
+    language: scala
+    workflow: sbt
+    tier: secondary
+    canonical: true
+    exts: [scala]
+    version_cmd: sbt --script-version && java --version 2>&1 | head -1
+    workspace_setup_cmd: sbt update
+    extra_prompt: Use the existing sbt build with Scala 2.13.16. Keep build.sbt and project/build.properties as the canonical entry point. Do NOT use --batch flag when invoking sbt.
+
   - id: scala-sbt-server
     label: Scala / sbt (server)
     language: scala
@@ -116,6 +149,16 @@ toolchains:
     version_cmd: sbt --script-version && java --version 2>&1 | head -1
     workspace_setup_cmd: sbt update
     extra_prompt: Use the existing sbt build with Scala 3.3.7 LTS. The sbt server is already running — do NOT use --batch flag when invoking sbt. Use plain "sbt compile", "sbt test", etc. to connect to the running server.
+
+  - id: javascript-node
+    label: JavaScript / Node
+    language: javascript
+    workflow: node
+    tier: secondary
+    canonical: true
+    exts: [js, mjs]
+    version_cmd: node --version
+    extra_prompt: Use plain JavaScript (no TypeScript). Keep the single-entry script structure with Node.js.
 
   - id: typescript-bun
     label: TypeScript / Bun

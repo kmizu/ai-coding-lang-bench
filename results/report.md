@@ -1,7 +1,7 @@
 # AI Coding Language Benchmark Report
 
 ## Environment
-- Date: 2026-03-07 18:24:20
+- Date: 2026-03-07 19:31:42
 - Claude Version: 2.1.71 (Claude Code)
 - Last Run Track: canonical
 - Last Run Seed: 4242
@@ -9,11 +9,18 @@
 ## Subjects
 | Track | Tier | Subject | Version |
 |-------|------|---------|---------|
+| canonical | primary | Go / go | go version go1.26.0 linux/amd64 |
+| canonical | primary | Java / Maven | Apache Maven 3.9.13 (39d686bd50d8e054301e3a68ad44781df6f80dda) / openjdk 25.0.1 2025-10-21 LTS |
 | canonical | primary | Kotlin / Gradle | ------------------------------------------------------------ / Gradle 9.3.1 / openjdk 25.0.1 2025-10-21 LTS |
 | canonical | primary | Python / uv | uv 0.10.8 / Python 3.14.2 |
+| canonical | primary | Ruby / Bundler | Bundler version 2.6.2 / ruby 3.4.1 (2024-12-25 revision 48d4efcb85) +PRISM [x86_64-linux] |
 | canonical | primary | Rust / Cargo | cargo 1.94.0 (85eff7c80 2026-01-15) / rustc 1.94.0 (4a4ef493e 2026-03-02) |
 | canonical | primary | Scala / sbt | 1.12.5 / openjdk 25.0.1 2025-10-21 LTS |
+| canonical | secondary | Elixir / Mix | Elixir 1.18.2 (compiled with Erlang/OTP 27) |
+| canonical | secondary | JavaScript / Node | v24.14.0 |
+| canonical | secondary | Python / pip | Python 3.14.2 / pip 25.3 from /home/linuxbrew/.linuxbrew/lib/python3.14/site-packages/pip (python 3.14) |
 | canonical | secondary | Scala / sbt (server) | 1.12.5 / openjdk 25.0.1 2025-10-21 LTS |
+| canonical | secondary | Scala 2.13 / sbt | 1.12.5 / openjdk 25.0.1 2025-10-21 LTS |
 | greenfield | legacy | C | unknown |
 | greenfield | legacy | Go | unknown |
 | greenfield | legacy | Haskell | unknown |
@@ -33,11 +40,18 @@
 ## Results Summary
 | Track | Tier | Subject | Trials | Avg Setup | Avg Agent Time | Avg Cost | v1 Pass | v2 Pass | Avg LOC | Time/100L | Cost/100L |
 |-------|------|---------|--------|-----------|----------------|----------|---------|---------|---------|-----------|-----------|
+| canonical | primary | Go / go | 3 | 0.1s | 158.2s±33.8s | $0.00 | 3/3 (100%) | 3/3 (100%) | 375 | 42.19s | $0.0000 |
+| canonical | primary | Java / Maven | 3 | 5.9s | 272.6s±40.5s | $0.00 | 3/3 (100%) | 3/3 (100%) | 271 | 100.59s | $0.0000 |
 | canonical | primary | Kotlin / Gradle | 3 | 0.9s | 234.1s±9.9s | $0.00 | 3/3 (100%) | 3/3 (100%) | 264 | 88.67s | $0.0000 |
 | canonical | primary | Python / uv | 1 | 4.5s | 173.8s±0.0s | $0.00 | 1/1 (100%) | 1/1 (100%) | 274 | 63.43s | $0.0000 |
+| canonical | primary | Ruby / Bundler | 3 | 0.9s | 217.6s±31.5s | $0.00 | 3/3 (100%) | 3/3 (100%) | 272 | 80.00s | $0.0000 |
 | canonical | primary | Rust / Cargo | 1 | 0.3s | 313.8s±0.0s | $0.00 | 1/1 (100%) | 0/1 (0%) | 4 | 7845.00s | $0.0000 |
 | canonical | primary | Scala / sbt | 3 | 6.9s | 321.0s±42.6s | $0.00 | 3/3 (100%) | 3/3 (100%) | 256 | 125.39s | $0.0000 |
+| canonical | secondary | Elixir / Mix | 3 | 0.7s | 227.0s±35.9s | $0.00 | 3/3 (100%) | 3/3 (100%) | 271 | 83.76s | $0.0000 |
+| canonical | secondary | JavaScript / Node | 3 | 0.1s | 170.2s±33.6s | $0.00 | 3/3 (100%) | 3/3 (100%) | 238 | 71.51s | $0.0000 |
+| canonical | secondary | Python / pip | 3 | 5.2s | 175.6s±36.7s | $0.00 | 3/3 (100%) | 3/3 (100%) | 267 | 65.77s | $0.0000 |
 | canonical | secondary | Scala / sbt (server) | 3 | 7.9s | 323.1s±26.5s | $0.00 | 3/3 (100%) | 3/3 (100%) | 212 | 152.41s | $0.0000 |
+| canonical | secondary | Scala 2.13 / sbt | 3 | 10.4s | 379.4s±65.0s | $0.00 | 3/3 (100%) | 3/3 (100%) | 239 | 158.74s | $0.0000 |
 | greenfield | legacy | C | 20 | 0.0s | 155.8s±40.9s | $0.74 | 20/20 (100%) | 20/20 (100%) | 517 | 30.14s | $0.1430 |
 | greenfield | legacy | Go | 20 | 0.0s | 101.6s±37.0s | $0.50 | 20/20 (100%) | 20/20 (100%) | 324 | 31.36s | $0.1531 |
 | greenfield | legacy | Haskell | 20 | 0.0s | 174.0s±44.2s | $0.74 | 19/20 (95%) | 20/20 (100%) | 224 | 77.68s | $0.3301 |
@@ -57,11 +71,18 @@
 ## Token Summary
 | Track | Tier | Subject | Avg Input | Avg Output | Avg Cache Create | Avg Cache Read | Avg Total |
 |-------|------|---------|-----------|------------|------------------|----------------|-----------|
+| canonical | primary | Go / go | 28 | 7,547 | 80,741 | 553,902 | 642,218 |
+| canonical | primary | Java / Maven | 33 | 10,743 | 86,046 | 691,459 | 788,282 |
 | canonical | primary | Kotlin / Gradle | 1,946 | 9,473 | 88,702 | 767,970 | 868,091 |
 | canonical | primary | Python / uv | 31 | 7,961 | 85,832 | 601,824 | 695,648 |
+| canonical | primary | Ruby / Bundler | 29 | 7,737 | 81,869 | 505,968 | 595,604 |
 | canonical | primary | Rust / Cargo | 200 | 7,059 | 83,446 | 596,282 | 686,987 |
 | canonical | primary | Scala / sbt | 2,415 | 13,315 | 98,409 | 788,760 | 902,899 |
+| canonical | secondary | Elixir / Mix | 30 | 10,282 | 86,111 | 530,805 | 627,228 |
+| canonical | secondary | JavaScript / Node | 23 | 7,632 | 79,809 | 370,875 | 458,339 |
+| canonical | secondary | Python / pip | 34 | 8,060 | 103,302 | 804,313 | 915,709 |
 | canonical | secondary | Scala / sbt (server) | 1,942 | 13,210 | 50,372 | 792,151 | 857,674 |
+| canonical | secondary | Scala 2.13 / sbt | 3,057 | 14,430 | 120,495 | 852,588 | 990,569 |
 | greenfield | legacy | C | 22 | 10,223 | 33,028 | 554,607 | 597,880 |
 | greenfield | legacy | Go | 18 | 6,175 | 24,421 | 377,751 | 408,365 |
 | greenfield | legacy | Haskell | 27 | 8,636 | 29,185 | 681,994 | 719,841 |
@@ -81,17 +102,38 @@
 ## Full Results
 | Track | Tier | Subject | Trial | Setup | Agent | v1 Tests | v2 Tests | Cost |
 |-------|------|---------|-------|-------|-------|----------|----------|------|
+| canonical | primary | Go / go | 1 | 0.1s | 138.7s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | primary | Go / go | 2 | 0.1s | 197.2s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | primary | Go / go | 3 | 0.2s | 138.6s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | primary | Java / Maven | 1 | 12.0s | 300.5s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | primary | Java / Maven | 2 | 2.9s | 226.2s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | primary | Java / Maven | 3 | 2.8s | 291.1s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | primary | Kotlin / Gradle | 1 | 0.9s | 226.1s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | primary | Kotlin / Gradle | 2 | 0.9s | 245.2s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | primary | Kotlin / Gradle | 3 | 0.9s | 231.0s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | primary | Python / uv | 1 | 4.5s | 173.8s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | primary | Ruby / Bundler | 1 | 1.7s | 254.0s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | primary | Ruby / Bundler | 2 | 0.6s | 200.6s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | primary | Ruby / Bundler | 3 | 0.3s | 198.3s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | primary | Rust / Cargo | 1 | 0.3s | 313.8s | 11/11 PASS | 0/0 FAIL | $0.00 |
 | canonical | primary | Scala / sbt | 1 | 6.9s | 288.1s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | primary | Scala / sbt | 2 | 7.3s | 305.7s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | primary | Scala / sbt | 3 | 6.6s | 369.1s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | Elixir / Mix | 1 | 0.7s | 248.3s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | Elixir / Mix | 2 | 0.7s | 247.1s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | Elixir / Mix | 3 | 0.6s | 185.5s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | JavaScript / Node | 1 | 0.2s | 165.0s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | JavaScript / Node | 2 | 0.1s | 139.4s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | JavaScript / Node | 3 | 0.1s | 206.1s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | Python / pip | 1 | 5.3s | 217.7s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | Python / pip | 2 | 5.3s | 158.0s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | Python / pip | 3 | 5.1s | 151.0s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | secondary | Scala / sbt (server) | 1 | 6.9s | 348.1s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | secondary | Scala / sbt (server) | 2 | 7.1s | 295.4s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | secondary | Scala / sbt (server) | 3 | 9.6s | 325.8s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | Scala 2.13 / sbt | 1 | 6.6s | 418.1s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | Scala 2.13 / sbt | 2 | 8.2s | 304.4s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | Scala 2.13 / sbt | 3 | 16.4s | 415.7s | 11/11 PASS | 30/30 PASS | $0.00 |
 | greenfield | legacy | C | 1 | 0s | 136.5s | 11/11 PASS | 30/30 PASS | $0.67 |
 | greenfield | legacy | C | 2 | 0s | 153.8s | 11/11 PASS | 30/30 PASS | $0.66 |
 | greenfield | legacy | C | 3 | 0s | 208.1s | 11/11 PASS | 30/30 PASS | $1.04 |
@@ -396,6 +438,18 @@
 ## Full Tokens
 | Track | Subject | Trial | Phase | Input | Output | Cache Create | Cache Read | Total | Cost USD |
 |-------|---------|-------|-------|-------|--------|--------------|------------|-------|----------|
+| canonical | Go / go | 1 | v1 | 14 | 3,106 | 33,908 | 211,278 | 248,306 | $0.0000 |
+| canonical | Go / go | 1 | v2 | 15 | 4,040 | 44,345 | 295,032 | 343,432 | $0.0000 |
+| canonical | Go / go | 2 | v1 | 11 | 3,380 | 36,038 | 191,168 | 230,597 | $0.0000 |
+| canonical | Go / go | 2 | v2 | 16 | 5,649 | 46,289 | 336,090 | 388,044 | $0.0000 |
+| canonical | Go / go | 3 | v1 | 11 | 2,711 | 34,894 | 187,074 | 224,690 | $0.0000 |
+| canonical | Go / go | 3 | v2 | 18 | 3,755 | 46,749 | 441,064 | 491,586 | $0.0000 |
+| canonical | Java / Maven | 1 | v1 | 16 | 6,679 | 40,887 | 305,825 | 353,407 | $0.0000 |
+| canonical | Java / Maven | 1 | v2 | 15 | 3,215 | 43,675 | 292,663 | 339,568 | $0.0000 |
+| canonical | Java / Maven | 2 | v1 | 15 | 6,731 | 40,432 | 346,827 | 394,005 | $0.0000 |
+| canonical | Java / Maven | 2 | v2 | 17 | 3,589 | 43,660 | 368,776 | 416,042 | $0.0000 |
+| canonical | Java / Maven | 3 | v1 | 22 | 5,177 | 40,136 | 446,187 | 491,522 | $0.0000 |
+| canonical | Java / Maven | 3 | v2 | 15 | 6,839 | 49,347 | 314,100 | 370,301 | $0.0000 |
 | canonical | Kotlin / Gradle | 1 | v1 | 22 | 4,162 | 40,720 | 541,661 | 586,565 | $0.0000 |
 | canonical | Kotlin / Gradle | 1 | v2 | 15 | 3,079 | 47,239 | 316,778 | 367,111 | $0.0000 |
 | canonical | Kotlin / Gradle | 2 | v1 | 18 | 5,068 | 39,614 | 373,065 | 417,765 | $0.0000 |
@@ -404,6 +458,12 @@
 | canonical | Kotlin / Gradle | 3 | v2 | 5,746 | 6,883 | 55,295 | 410,650 | 478,574 | $0.0000 |
 | canonical | Python / uv | 1 | v1 | 16 | 4,041 | 39,593 | 300,245 | 343,895 | $0.0000 |
 | canonical | Python / uv | 1 | v2 | 15 | 3,920 | 46,239 | 301,579 | 351,753 | $0.0000 |
+| canonical | Ruby / Bundler | 1 | v1 | 14 | 3,992 | 37,761 | 226,782 | 268,549 | $0.0000 |
+| canonical | Ruby / Bundler | 1 | v2 | 14 | 4,713 | 47,311 | 259,789 | 311,827 | $0.0000 |
+| canonical | Ruby / Bundler | 2 | v1 | 15 | 3,787 | 37,881 | 261,267 | 302,950 | $0.0000 |
+| canonical | Ruby / Bundler | 2 | v2 | 15 | 3,409 | 41,876 | 260,208 | 305,508 | $0.0000 |
+| canonical | Ruby / Bundler | 3 | v1 | 15 | 3,436 | 37,175 | 259,342 | 299,968 | $0.0000 |
+| canonical | Ruby / Bundler | 3 | v2 | 14 | 3,875 | 43,604 | 250,517 | 298,010 | $0.0000 |
 | canonical | Rust / Cargo | 1 | v1 | 183 | 3,033 | 36,620 | 217,916 | 257,752 | $0.0000 |
 | canonical | Rust / Cargo | 1 | v2 | 17 | 4,026 | 46,826 | 378,366 | 429,235 | $0.0000 |
 | canonical | Scala / sbt | 1 | v1 | 1,432 | 7,715 | 46,055 | 374,387 | 429,589 | $0.0000 |
@@ -412,12 +472,36 @@
 | canonical | Scala / sbt | 2 | v2 | 14 | 4,624 | 52,095 | 284,028 | 340,761 | $0.0000 |
 | canonical | Scala / sbt | 3 | v1 | 19 | 10,836 | 48,972 | 467,985 | 527,812 | $0.0000 |
 | canonical | Scala / sbt | 3 | v2 | 16 | 5,580 | 53,697 | 506,227 | 565,520 | $0.0000 |
+| canonical | Elixir / Mix | 1 | v1 | 16 | 7,060 | 40,807 | 237,569 | 285,452 | $0.0000 |
+| canonical | Elixir / Mix | 1 | v2 | 14 | 4,010 | 47,888 | 266,525 | 318,437 | $0.0000 |
+| canonical | Elixir / Mix | 2 | v1 | 16 | 7,487 | 41,185 | 310,023 | 358,711 | $0.0000 |
+| canonical | Elixir / Mix | 2 | v2 | 14 | 4,326 | 45,182 | 255,628 | 305,150 | $0.0000 |
+| canonical | Elixir / Mix | 3 | v1 | 14 | 3,376 | 37,098 | 224,420 | 264,908 | $0.0000 |
+| canonical | Elixir / Mix | 3 | v2 | 15 | 4,588 | 46,173 | 298,249 | 349,025 | $0.0000 |
+| canonical | JavaScript / Node | 1 | v1 | 10 | 4,175 | 36,569 | 151,440 | 192,194 | $0.0000 |
+| canonical | JavaScript / Node | 1 | v2 | 13 | 3,302 | 42,627 | 204,556 | 250,498 | $0.0000 |
+| canonical | JavaScript / Node | 2 | v1 | 10 | 2,316 | 34,903 | 149,771 | 187,000 | $0.0000 |
+| canonical | JavaScript / Node | 2 | v2 | 13 | 3,820 | 42,737 | 203,835 | 250,405 | $0.0000 |
+| canonical | JavaScript / Node | 3 | v1 | 10 | 4,957 | 37,937 | 154,670 | 197,574 | $0.0000 |
+| canonical | JavaScript / Node | 3 | v2 | 14 | 4,326 | 44,653 | 248,353 | 297,346 | $0.0000 |
+| canonical | Python / pip | 1 | v1 | 17 | 3,532 | 42,674 | 353,303 | 399,526 | $0.0000 |
+| canonical | Python / pip | 1 | v2 | 21 | 6,389 | 61,167 | 558,649 | 626,226 | $0.0000 |
+| canonical | Python / pip | 2 | v1 | 19 | 3,621 | 44,814 | 373,098 | 421,552 | $0.0000 |
+| canonical | Python / pip | 2 | v2 | 16 | 3,926 | 59,053 | 400,641 | 463,636 | $0.0000 |
+| canonical | Python / pip | 3 | v1 | 13 | 3,204 | 43,792 | 288,768 | 335,777 | $0.0000 |
+| canonical | Python / pip | 3 | v2 | 17 | 3,508 | 58,406 | 438,479 | 500,410 | $0.0000 |
 | canonical | Scala / sbt (server) | 1 | v1 | 17 | 8,593 | 26,211 | 438,118 | 472,939 | $0.0000 |
 | canonical | Scala / sbt (server) | 1 | v2 | 5,747 | 5,034 | 25,660 | 341,644 | 378,085 | $0.0000 |
 | canonical | Scala / sbt (server) | 2 | v1 | 15 | 9,839 | 23,901 | 428,037 | 461,792 | $0.0000 |
 | canonical | Scala / sbt (server) | 2 | v2 | 14 | 4,008 | 27,153 | 306,133 | 337,308 | $0.0000 |
 | canonical | Scala / sbt (server) | 3 | v1 | 16 | 8,151 | 22,824 | 465,219 | 496,210 | $0.0000 |
 | canonical | Scala / sbt (server) | 3 | v2 | 16 | 4,005 | 25,366 | 397,301 | 426,688 | $0.0000 |
+| canonical | Scala 2.13 / sbt | 1 | v1 | 16 | 13,187 | 54,740 | 384,592 | 452,535 | $0.0000 |
+| canonical | Scala 2.13 / sbt | 1 | v2 | 20 | 4,229 | 52,178 | 584,221 | 640,648 | $0.0000 |
+| canonical | Scala 2.13 / sbt | 2 | v1 | 2,584 | 7,030 | 46,062 | 421,875 | 477,551 | $0.0000 |
+| canonical | Scala 2.13 / sbt | 2 | v2 | 6,130 | 4,642 | 107,400 | 447,118 | 565,290 | $0.0000 |
+| canonical | Scala 2.13 / sbt | 3 | v1 | 17 | 9,720 | 48,312 | 393,700 | 451,749 | $0.0000 |
+| canonical | Scala 2.13 / sbt | 3 | v2 | 403 | 4,481 | 52,792 | 326,257 | 383,933 | $0.0000 |
 | greenfield | C | 1 | v1 | 8 | 4,501 | 10,444 | 152,603 | 167,556 | $0.2541 |
 | greenfield | C | 1 | v2 | 12 | 4,988 | 20,199 | 330,911 | 356,110 | $0.4165 |
 | greenfield | C | 2 | v1 | 7 | 4,250 | 10,194 | 123,194 | 137,645 | $0.2316 |

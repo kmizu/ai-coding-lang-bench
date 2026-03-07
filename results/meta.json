@@ -1,13 +1,13 @@
 {
-  "date": "2026-03-07 18:24:20",
+  "date": "2026-03-07 19:31:42",
   "claude_version": "2.1.71 (Claude Code)",
   "track": "canonical",
   "seed": 4242,
   "trials": 3,
   "selected_subjects": [
-    "scala-sbt-server"
+    "elixir-mix"
   ],
   "versions": {
-    "scala-sbt-server": "1.12.5 / openjdk 25.0.1 2025-10-21 LTS"
+    "elixir-mix": "Elixir 1.18.2 (compiled with Erlang/OTP 27)"
   }
 }

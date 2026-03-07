@@ -140,6 +140,16 @@ def typescript_pnpm
   TS
 end
 
+def javascript_node
+  write_file('minigit', <<~JS, executable: true)
+    #!/usr/bin/env node
+    'use strict';
+
+    process.stderr.write('Not implemented\n');
+    process.exit(1);
+  JS
+end
+
 def typescript_bun
   write_file('package.json', <<~JSON)
     {
@@ -303,6 +313,127 @@ def scala_sbt
     #!/usr/bin/env bash
     set -euo pipefail
     sbt --batch compile writeRuntimeClasspath
+    cat > minigit <<'EOF'
+    #!/usr/bin/env bash
+    set -euo pipefail
+    CP="$(cat target/runtime-classpath.txt)"
+    exec java -cp "$CP" minigit.Main "$@"
+    EOF
+    chmod +x minigit
+  BASH
+
+  write_file('src/main/scala/minigit/Main.scala', <<~SCALA)
+    package minigit
+
+    object Main {
+      def main(args: Array[String]): Unit = {
+        System.err.println("Not implemented")
+        sys.exit(1)
+      }
+    }
+  SCALA
+end
+
+def elixir_mix
+  write_file('mix.exs', <<~ELIXIR)
+    defmodule Minigit.MixProject do
+      use Mix.Project
+
+      def project do
+        [
+          app: :minigit,
+          version: "0.1.0",
+          elixir: "~> 1.18",
+          escript: [main_module: Minigit.Main],
+          deps: []
+        ]
+      end
+    end
+  ELIXIR
+
+  write_file('build.sh', <<~BASH, executable: true)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    mix escript.build --no-deps-check
+    chmod +x minigit
+  BASH
+
+  write_file('lib/minigit/main.ex', <<~ELIXIR)
+    defmodule Minigit.Main do
+      def main(_args) do
+        IO.puts(:stderr, "Not implemented")
+        System.halt(1)
+      end
+    end
+  ELIXIR
+end
+
+def python_pip
+  write_file('pyproject.toml', <<~TOML)
+    [project]
+    name = "minigit"
+    version = "0.1.0"
+    requires-python = ">=3.12"
+    dependencies = []
+
+    [build-system]
+    requires = ["setuptools>=80"]
+    build-backend = "setuptools.build_meta"
+  TOML
+
+  write_file('minigit', <<~BASH, executable: true)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    exec "$(dirname "$0")/.venv/bin/python" src/minigit.py "$@"
+  BASH
+
+  write_file('src/minigit.py', <<~PY)
+    from __future__ import annotations
+
+    import sys
+
+
+    def main() -> int:
+        print("Not implemented", file=sys.stderr)
+        return 1
+
+
+    if __name__ == "__main__":
+        raise SystemExit(main())
+  PY
+end
+
+def scala_sbt_2_13
+  write_file('build.sbt', <<~SCALA)
+    ThisBuild / scalaVersion := "2.13.16"
+    ThisBuild / version := "0.1.0"
+
+    // Keep the sbt server alive throughout the benchmark session (no idle timeout)
+    Global / serverIdleTimeout := None
+
+    lazy val writeRuntimeClasspath = taskKey[File]("Write the runtime classpath for the benchmark launcher.")
+
+    lazy val root = (project in file("."))
+      .settings(
+        name := "minigit",
+        Compile / mainClass := Some("minigit.Main"),
+        writeRuntimeClasspath := {
+          val out = target.value / "runtime-classpath.txt"
+          val cp = (Compile / fullClasspath).value.files.map(_.getAbsolutePath).mkString(java.io.File.pathSeparator)
+          IO.write(out, cp + System.lineSeparator())
+          out
+        }
+      )
+  SCALA
+
+  write_file('project/build.properties', <<~TXT)
+    sbt.version=1.12.5
+  TXT
+
+  write_file('build.sh', <<~BASH, executable: true)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    sbt compile writeRuntimeClasspath
     cat > minigit <<'EOF'
     #!/usr/bin/env bash
     set -euo pipefail
@@ -633,11 +764,15 @@ case options[:toolchain]
 when 'python-uv' then python_uv
 when 'rust-cargo' then rust_cargo
 when 'typescript-pnpm' then typescript_pnpm
+when 'javascript-node' then javascript_node
 when 'typescript-bun' then typescript_bun
 when 'go-go' then go_go
 when 'java-maven' then java_maven
 when 'ruby-bundler' then ruby_bundler
 when 'scala-sbt' then scala_sbt
+when 'elixir-mix' then elixir_mix
+when 'python-pip' then python_pip
+when 'scala-sbt-2-13' then scala_sbt_2_13
 when 'scala-sbt-server' then scala_sbt_server
 when 'scala-scala-cli' then scala_scala_cli
 when 'kotlin-gradle' then kotlin_gradle
