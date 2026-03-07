@@ -1,0 +1,164 @@
+MiniHTTP Specification
+Version: 1.0
+Command name: minihttp
+External libraries: ONE well-known HTTP library per language is allowed (see Section 2)
+Standard library: Allowed
+Persistent storage: In-memory only (no filesystem writes required)
+
+========================================
+1. Overview
+========================================
+
+MiniHTTP is a minimal HTTP/1.1 server.
+
+The executable must be called:
+
+    minihttp
+
+Usage:
+
+    minihttp serve [--port PORT]
+
+Default port: 8080
+
+The server must handle multiple sequential requests (concurrent support is
+optional but allowed). It must not exit until receiving SIGTERM or SIGINT.
+
+----------------------------------------
+
+Supported routes (v3):
+
+    GET  /hello
+    GET  /echo
+    POST /echo
+    Any other path -> 404
+
+========================================
+2. Allowed HTTP Libraries
+========================================
+
+Since HTTP server support varies across language standard libraries, ONE
+minimal HTTP library is allowed per language. The benchmark-owned scaffold
+selects the library. Implementations must not pull in additional dependencies.
+
+Recommended per language (scaffolds will pre-configure these):
+
+    Go          net/http          (standard library)
+    Python      http.server       (standard library)
+    Ruby        WEBrick           (standard library)
+    JavaScript  http              (standard library / Node built-in)
+    Java        com.sun.net.httpserver (JDK built-in)
+    Kotlin      same as Java
+    Rust        tiny_http         (crates.io, minimal)
+    Scala       com.sun.net.httpserver via Java interop
+    Haskell     wai + warp        (Hackage, minimal)
+    Elixir      Plug + Bandit     (Hex, minimal)
+    F#          ASP.NET Core      (included in .NET SDK)
+    C#          ASP.NET Core      (included in .NET SDK)
+    PHP         built-in server   (php -S, standard)
+    TypeScript  http              (Node built-in)
+    OCaml       cohttp-lwt-unix   (opam, minimal)
+
+========================================
+3. Command Specifications
+========================================
+
+----------------------------------------
+3.1 serve [--port PORT]
+----------------------------------------
+
+Start the HTTP server.
+
+If PORT is not specified, use 8080.
+
+Print to stdout when ready:
+
+    Listening on port <PORT>
+
+Then handle requests as described in Section 4 until the process is killed.
+
+Exit code on normal termination (SIGTERM/SIGINT): 0
+
+========================================
+4. Route Specifications
+========================================
+
+All responses must include:
+
+    Content-Type: text/plain
+    HTTP/1.1 status line
+
+Response bodies must NOT have a trailing newline unless explicitly stated.
+
+----------------------------------------
+4.1 GET /hello
+----------------------------------------
+
+Response:
+    200 OK
+    Body: Hello, World!
+
+----------------------------------------
+4.2 GET /echo
+----------------------------------------
+
+Query parameter: msg (required)
+
+If msg is present:
+    200 OK
+    Body: <value of msg>
+
+If msg is missing:
+    400 Bad Request
+    Body: missing msg parameter
+
+----------------------------------------
+4.3 POST /echo
+----------------------------------------
+
+Read the full request body.
+
+Response:
+    200 OK
+    Body: <request body verbatim>
+
+If request body is empty:
+    200 OK
+    Body: (empty string)
+
+----------------------------------------
+4.4 Any other path
+----------------------------------------
+
+Response:
+    404 Not Found
+    Body: 404 not found
+
+========================================
+5. Determinism Rules
+========================================
+
+- Response bodies must match exactly (no trailing newline unless specified)
+- Status codes must be exactly as specified
+- Content-Type must be text/plain (charset optional)
+- No debug output to stdout after "Listening on port <PORT>"
+- Exact string matching required in tests
+
+========================================
+6. Test Protocol
+========================================
+
+The test script will:
+
+1. Start the server:     ./minihttp serve --port <TEST_PORT> &
+2. Wait for ready line:  grep -m1 "Listening on port" (with timeout)
+3. Send requests via:    curl -s
+4. Assert responses
+5. Kill the server:      kill $PID
+
+The server MUST print "Listening on port <PORT>" before accepting any
+connection. Tests will fail if the ready line is not printed.
+
+========================================
+END
+========================================
