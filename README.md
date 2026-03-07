@@ -1,5 +1,7 @@
 # Which Programming Language Is Best for AI Coding Agents?
 
+[![CI](https://github.com/kmizu/true-ai-coding-lang-bench/actions/workflows/ci.yml/badge.svg)](https://github.com/kmizu/true-ai-coding-lang-bench/actions/workflows/ci.yml)
+
 A benchmark harness for comparing how efficiently [Claude Code](https://docs.anthropic.com/en/docs/claude-code) implements the same MiniGit task under different language and workflow setups.
 
 For a detailed discussion, see the blog post: [Which Programming Language Is Best for Claude Code?](https://dev.to/mame/which-programming-language-is-best-for-claude-code-508a) / [日本語版](https://zenn.dev/mametter/articles/3e8580ec034201)
