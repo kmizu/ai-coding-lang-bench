@@ -1,4 +1,28 @@
-generated/
-logs/
+# Python
 __pycache__/
 *.pyc
+generated/**/.venv/
+
+# Elixir
+generated/**/_build/
+generated/**/.elixir_ls/
+
+# Rust
+generated/**/target/
+
+# Scala / Java / Kotlin
+generated/**/target/
+generated/**/.bsp/
+generated/**/.metals/
+
+# Go
+generated/**/minigit
+!generated/**/minigit.go
+!generated/**/minigit.rb
+!generated/**/minigit.py
+!generated/**/minigit.js
+
+# Generic compiled artifacts inside generated/
+generated/**/*.class
+generated/**/*.beam
+generated/**/*.o

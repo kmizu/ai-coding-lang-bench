@@ -1,0 +1,6 @@
+pyproject.toml
+src/minigit.py
+src/minigit.egg-info/PKG-INFO
+src/minigit.egg-info/SOURCES.txt
+src/minigit.egg-info/dependency_links.txt
+src/minigit.egg-info/top_level.txt

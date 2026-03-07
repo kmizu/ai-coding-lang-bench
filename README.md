@@ -361,8 +361,7 @@ The Docker image is for environment reproducibility. Image build time is not par
 
 ### Repository Structure
 
-- **`main` branch**: Benchmark tools, specs, tests, results, and figures
-- **`data` branch** (orphan): Generated source code and Claude JSON logs for verification
+- **`main` branch**: Everything — benchmark tools, specs, tests, results, figures, generated source code, and Claude JSON logs
 
 ## Summary
 
@@ -407,7 +406,7 @@ The updated harness is designed to answer narrower questions more honestly:
 - **Wall-clock time**: Agent time is measured as wall-clock elapsed time including all API round trips, thinking tokens, and output generation. It is not a measure of pure compilation or execution time.
 - **Multi-session runs**: Trials were collected across multiple sessions and days. API response latency may vary by time of day and Anthropic server load.
 - **Rust/Cargo result**: The canonical Rust run completed v1 (11/11 tests passed) but v2 produced an incomplete binary (0 tests). The Rust result should be treated as a partial failure and is excluded from the summary table.
-- **Reproducibility**: All generated source code and raw Claude JSON logs are available on the [`data` branch](https://github.com/kmizu/true-ai-coding-lang-bench/tree/data) for independent verification.
+- **Reproducibility**: All generated source code (`generated/`) and raw Claude JSON logs (`logs/`) are committed to the main branch for independent verification.
 
 ## Notes
 
