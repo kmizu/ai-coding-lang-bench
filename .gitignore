@@ -30,3 +30,4 @@ generated/**/*.o
 # Clojure
 generated/**/target/
 generated/**/*.jar
+testrepo/
