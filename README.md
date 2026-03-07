@@ -34,6 +34,7 @@ Each workflow was run **3 trials** (except Python/uv: 1 trial). All runs achieve
 | Ruby / Bundler | 217.6s | ±31.5s | 272 | 80.0s | dynamic |
 | Elixir / Mix | 227.0s | ±35.9s | 271 | 83.9s | dynamic |
 | Kotlin / Gradle | 234.1s | ±9.9s | 264 | 88.7s | static |
+| F# / dotnet | 258.0s | ±22.9s | 256 | 100.8s | static (functional) |
 | Java / Maven | 272.6s | ±40.5s | 271 | 100.7s | static |
 | Scala 3 / sbt | 321.0s | ±42.6s | 256 | 125.4s | static |
 | Java / Gradle | 342.3s | ±80.0s | 328 | 104.4s | static |
@@ -58,6 +59,9 @@ Python/uv and Python/pip produce nearly identical results (173.8s vs. 175.6s). D
 **4. The "dynamic vs. static" framing is too coarse.**
 Within the JVM ecosystem alone, agent time ranges from 234s (Kotlin) to 379s (Scala 2.13). Within dynamic languages, Go beats all of them. The dominant factors appear to be build-cycle speed, compiler incremental compilation quality, and AI training data availability — not whether the language is dynamically or statically typed.
 
+**5. F# (static functional) outperforms Clojure (dynamic functional) by 135s.**
+F#/.NET 9 (258.0s ±22.9s) is substantially faster than Clojure/Leiningen (392.8s ±54.0s), despite both being functional languages. F# produces concise code (~256 LOC, comparable to dynamic languages) while retaining static typing. The `dotnet publish --self-contained` pipeline has low per-cycle latency, contributing to the speed advantage. This directly refutes any claim that functional style inherently favours dynamic typing for AI generation tasks.
+
 ### LOC-Normalised Agent Time
 
 ![Time per 100 LOC](./figures/time_per_100loc.png)
@@ -72,7 +76,7 @@ Setup time is negligible for most workflows. The exception is Scala/sbt (≈7s s
 
 ## Status
 
-`results/` and `figures/` now contain canonical-track results for 12 workflows (see table above). The legacy greenfield results are preserved in the same `results.json` under `"track": "greenfield"` for continuity.
+`results/` and `figures/` now contain canonical-track results for 13 workflows (see table above). The legacy greenfield results are preserved in the same `results.json` under `"track": "greenfield"` for continuity.
 
 The benchmark harness separates:
 
