@@ -36,7 +36,11 @@ Each workflow was run **3 trials** (except Python/uv: 1 trial). All runs achieve
 | Kotlin / Gradle | 234.1s | ±9.9s | 264 | 88.7s | static |
 | Java / Maven | 272.6s | ±40.5s | 271 | 100.7s | static |
 | Scala 3 / sbt | 321.0s | ±42.6s | 256 | 125.4s | static |
+| Java / Gradle | 342.3s | ±80.0s | 328 | 104.4s | static |
 | Scala 2.13 / sbt | 379.4s | ±65.0s | 239 | 158.7s | static |
+| Clojure / Lein ⚠️ | 392.8s | ±54.0s | 230 | 170.8s | dynamic (JVM) |
+
+> ⚠️ **Clojure note:** The Clojure/Lein result should not be read as a pure "dynamic typing on JVM" data point. `lein uberjar` performs full AOT compilation (macro expansion → bytecode generation) on every build cycle, which is a heavier pipeline than `javac`. A REPL-driven workflow would likely produce very different numbers. The result reflects the overhead of Leiningen's uberjar packaging model, not Clojure's runtime characteristics alone.
 
 ### Key Findings
 
@@ -45,6 +49,8 @@ Go — a statically typed language with no runtime overhead — outperforms all 
 
 **2. Build-tool daemon lifetime matters within the JVM ecosystem.**
 Kotlin/Gradle benefits from Gradle's default 3-hour daemon lifetime, resulting in highly consistent timings (±9.9s). Scala/sbt with `--batch` mode (no server) shows higher variance (±42.6s). Disabling sbt's idle timeout (`serverIdleTimeout := None`) reduces variance but does not close the speed gap, suggesting the Scala 3 compiler throughput — not JVM startup cost — is the primary driver.
+
+Java/Gradle (342.3s ±80.0s) is slower than Java/Maven (272.6s ±40.5s) in agent time despite Gradle's daemon. The daemon dramatically reduces *setup* time (63.7s on first run → ~2s on subsequent runs), but does not help with per-cycle compilation overhead. The higher LOC (328 vs 271) also contributes to the difference.
 
 **3. Build tools matter less than the language runtime.**
 Python/uv and Python/pip produce nearly identical results (173.8s vs. 175.6s). Despite `uv` being a significantly faster package manager written in Rust, the speed advantage does not carry over to agent time. Python's performance reflects the language's fast iteration cycle, not the package manager.
@@ -66,7 +72,7 @@ Setup time is negligible for most workflows. The exception is Scala/sbt (≈7s s
 
 ## Status
 
-`results/` and `figures/` now contain canonical-track results for 10 workflows (see table above). The legacy greenfield results are preserved in the same `results.json` under `"track": "greenfield"` for continuity.
+`results/` and `figures/` now contain canonical-track results for 12 workflows (see table above). The legacy greenfield results are preserved in the same `results.json` under `"track": "greenfield"` for continuity.
 
 The benchmark harness separates:
 
