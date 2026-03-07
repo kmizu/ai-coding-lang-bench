@@ -374,6 +374,35 @@ The updated harness is designed to answer narrower questions more honestly:
 - How expensive is the agent loop once a canonical workflow is fixed?
 - How much of the difference comes from setup, tooling, or project structure rather than from the language alone?
 
+## Experimental Environment
+
+### Hardware and OS
+
+| Item | Value |
+|------|-------|
+| Host OS | Windows 11 Pro 25H2 |
+| Guest OS | Ubuntu 22.04.5 LTS (WSL2) |
+| CPU | AMD Ryzen 7 8700G (8 cores / 16 threads) |
+| RAM | 64 GB |
+| Storage | NVMe SSD (Windows host) |
+
+### Software
+
+| Item | Value |
+|------|-------|
+| Claude Code | 2.1.71 |
+| Date | March 2026 |
+| Random seed | 4242 |
+| Trials per toolchain | 3 (Python/uv: 1) |
+
+### Caveats
+
+- **Network latency**: All agent time includes round-trip API calls to Anthropic's servers. Latency can vary by time of day and network conditions. This adds noise that is difficult to separate from language/toolchain effects.
+- **WSL2 filesystem overhead**: File I/O in WSL2 is slightly slower than native Linux, particularly for cross-filesystem operations. This may affect build tools that do heavy filesystem work (Maven local repository, sbt cache, etc.).
+- **Sequential execution**: Each trial runs one Claude Code process at a time. No parallelism between trials.
+- **Single task**: All results are for the MiniGit task (file I/O, string manipulation, hash computation). Results may differ substantially for tasks involving concurrency, numerical computation, or large codebases.
+- **AI familiarity**: Claude's training data distribution is not public. Languages with more open-source training data (Python, JavaScript, Go) may benefit from better AI familiarity, independently of language properties.
+
 ## Notes
 
 - Evaluated in March 2026. Given the pace of AI progress, results may look different in a few months.
