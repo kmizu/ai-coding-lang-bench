@@ -531,6 +531,40 @@ def scala_scala_cli
   SCALA
 end
 
+def clojure_lein
+  write_file('project.clj', <<~CLJ)
+    (defproject minigit "0.1.0"
+      :description "MiniGit benchmark"
+      :dependencies [[org.clojure/clojure "1.12.0"]]
+      :main minigit.core
+      :aot [minigit.core]
+      :target-path "target/%s"
+      :uberjar-name "minigit-standalone.jar")
+  CLJ
+
+  write_file('build.sh', <<~BASH, executable: true)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    lein uberjar
+    cat > minigit <<'EOF'
+    #!/usr/bin/env bash
+    set -euo pipefail
+    exec java -jar "$(dirname "$0")/target/uberjar/minigit-standalone.jar" "$@"
+    EOF
+    chmod +x minigit
+  BASH
+
+  write_file('src/minigit/core.clj', <<~CLJ)
+    (ns minigit.core
+      (:gen-class))
+
+    (defn -main [& _args]
+      (binding [*out* *err*]
+        (println "Not implemented"))
+      (System/exit 1))
+  CLJ
+end
+
 def java_gradle
   write_file('build.gradle.kts', <<~KOTLIN)
     import org.gradle.api.tasks.SourceSetContainer
@@ -838,6 +872,7 @@ when 'python-pip' then python_pip
 when 'scala-sbt-2-13' then scala_sbt_2_13
 when 'scala-sbt-server' then scala_sbt_server
 when 'scala-scala-cli' then scala_scala_cli
+when 'clojure-lein' then clojure_lein
 when 'java-gradle' then java_gradle
 when 'kotlin-gradle' then kotlin_gradle
 when 'kotlin-maven' then kotlin_maven
