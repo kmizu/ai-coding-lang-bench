@@ -391,9 +391,11 @@ The updated harness is designed to answer narrower questions more honestly:
 | Item | Value |
 |------|-------|
 | Claude Code | 2.1.71 |
+| Claude model | claude-sonnet-4-6 |
 | Date | March 2026 |
 | Random seed | 4242 |
 | Trials per toolchain | 3 (Python/uv: 1) |
+| Internet connection | Residential broadband (Japan) |
 
 ### Caveats
 
@@ -402,6 +404,10 @@ The updated harness is designed to answer narrower questions more honestly:
 - **Sequential execution**: Each trial runs one Claude Code process at a time. No parallelism between trials.
 - **Single task**: All results are for the MiniGit task (file I/O, string manipulation, hash computation). Results may differ substantially for tasks involving concurrency, numerical computation, or large codebases.
 - **AI familiarity**: Claude's training data distribution is not public. Languages with more open-source training data (Python, JavaScript, Go) may benefit from better AI familiarity, independently of language properties.
+- **Wall-clock time**: Agent time is measured as wall-clock elapsed time including all API round trips, thinking tokens, and output generation. It is not a measure of pure compilation or execution time.
+- **Multi-session runs**: Trials were collected across multiple sessions and days. API response latency may vary by time of day and Anthropic server load.
+- **Rust/Cargo result**: The canonical Rust run completed v1 (11/11 tests passed) but v2 produced an incomplete binary (0 tests). The Rust result should be treated as a partial failure and is excluded from the summary table.
+- **Reproducibility**: All generated source code and raw Claude JSON logs are available on the [`data` branch](https://github.com/kmizu/true-ai-coding-lang-bench/tree/data) for independent verification.
 
 ## Notes
 
