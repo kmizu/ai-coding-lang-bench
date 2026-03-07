@@ -531,6 +531,39 @@ def scala_scala_cli
   SCALA
 end
 
+def fsharp_dotnet
+  write_file('Minigit.fsproj', <<~XML)
+    <Project Sdk="Microsoft.NET.Sdk">
+      <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net9.0</TargetFramework>
+        <RootNamespace>Minigit</RootNamespace>
+        <AssemblyName>minigit-app</AssemblyName>
+        <Nullable>enable</Nullable>
+        <Optimize>true</Optimize>
+      </PropertyGroup>
+      <ItemGroup>
+        <Compile Include="src/Program.fs" />
+      </ItemGroup>
+    </Project>
+  XML
+
+  write_file('build.sh', <<~BASH, executable: true)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    dotnet publish -c Release -r linux-x64 --self-contained -o publish/ -nologo -v quiet
+    cp publish/minigit-app minigit
+    chmod +x minigit
+  BASH
+
+  write_file('src/Program.fs', <<~FS)
+    [<EntryPoint>]
+    let main _argv =
+        eprintfn "Not implemented"
+        1
+  FS
+end
+
 def clojure_lein
   write_file('project.clj', <<~CLJ)
     (defproject minigit "0.1.0"
@@ -872,6 +905,7 @@ when 'python-pip' then python_pip
 when 'scala-sbt-2-13' then scala_sbt_2_13
 when 'scala-sbt-server' then scala_sbt_server
 when 'scala-scala-cli' then scala_scala_cli
+when 'fsharp-dotnet' then fsharp_dotnet
 when 'clojure-lein' then clojure_lein
 when 'java-gradle' then java_gradle
 when 'kotlin-gradle' then kotlin_gradle

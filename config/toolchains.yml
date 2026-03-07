@@ -181,6 +181,17 @@ toolchains:
     version_cmd: scala-cli version | head -1
     extra_prompt: Use Scala CLI as the chosen single-module workflow.
 
+  - id: fsharp-dotnet
+    label: F# / dotnet
+    language: fsharp
+    workflow: dotnet
+    tier: secondary
+    canonical: true
+    exts: [fs, fsi, fsx]
+    version_cmd: dotnet --version && dotnet fsi --version 2>/dev/null | head -1
+    workspace_setup_cmd: dotnet restore
+    extra_prompt: Use the existing .fsproj and dotnet workflow. Keep the F# 9 / .NET 9 target. Build with "dotnet publish -c Release -r linux-x64 --self-contained" to produce a self-contained executable.
+
   - id: clojure-lein
     label: Clojure / Leiningen
     language: clojure

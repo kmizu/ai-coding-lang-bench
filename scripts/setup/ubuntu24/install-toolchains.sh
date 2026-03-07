@@ -195,6 +195,27 @@ install_haskell() {
   ghcup install cabal recommended --set
 }
 
+install_dotnet() {
+  local dotnet_dir="${INSTALL_ROOT}/dotnet"
+  if [[ -x "${dotnet_dir}/dotnet" ]]; then
+    return
+  fi
+
+  mkdir -p "${dotnet_dir}"
+  curl -fsSL https://dot.net/v1/dotnet-install.sh | bash -s -- --channel "${DOTNET_CHANNEL}" --install-dir "${dotnet_dir}"
+}
+
+install_leiningen() {
+  if [[ -x "${INSTALL_ROOT}/bin/lein" ]]; then
+    return
+  fi
+
+  curl -fsSL "https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein" -o "${INSTALL_ROOT}/bin/lein"
+  chmod +x "${INSTALL_ROOT}/bin/lein"
+  # Trigger self-install (downloads standalone JAR)
+  "${INSTALL_ROOT}/bin/lein" version
+}
+
 install_reference_packages() {
   apt_install guile-3.0 lua5.4 perl
 }
@@ -208,7 +229,7 @@ export JAVA_HOME="${java_home}"
 export CARGO_HOME="${INSTALL_ROOT}/cargo"
 export RUSTUP_HOME="${INSTALL_ROOT}/rustup"
 export OPAMROOT="${INSTALL_ROOT}/opam"
-export PATH="${INSTALL_ROOT}/uv-bin:${INSTALL_ROOT}/bun/bin:${INSTALL_ROOT}/bin:${INSTALL_ROOT}/go/bin:${INSTALL_ROOT}/node-v${NODE_VERSION}-linux-x64/bin:${INSTALL_ROOT}/apache-maven-${MAVEN_VERSION}/bin:${INSTALL_ROOT}/gradle-${GRADLE_VERSION}/bin:${INSTALL_ROOT}/sbt-${SBT_VERSION}/bin:${INSTALL_ROOT}/cargo/bin:${INSTALL_ROOT}/.ghcup/bin:${INSTALL_ROOT}/opam/default/bin:\$PATH"
+export PATH="${INSTALL_ROOT}/dotnet:${INSTALL_ROOT}/uv-bin:${INSTALL_ROOT}/bun/bin:${INSTALL_ROOT}/bin:${INSTALL_ROOT}/go/bin:${INSTALL_ROOT}/node-v${NODE_VERSION}-linux-x64/bin:${INSTALL_ROOT}/apache-maven-${MAVEN_VERSION}/bin:${INSTALL_ROOT}/gradle-${GRADLE_VERSION}/bin:${INSTALL_ROOT}/sbt-${SBT_VERSION}/bin:${INSTALL_ROOT}/cargo/bin:${INSTALL_ROOT}/.ghcup/bin:${INSTALL_ROOT}/opam/default/bin:\$PATH"
 EOF
 }
 
@@ -288,8 +309,14 @@ main() {
       scala-scala-cli)
         install_scala_cli
         ;;
-      kotlin-gradle)
+      kotlin-gradle|java-gradle)
         install_gradle
+        ;;
+      fsharp-dotnet)
+        install_dotnet
+        ;;
+      clojure-lein)
+        install_leiningen
         ;;
       ocaml-dune)
         install_ocaml_dune
