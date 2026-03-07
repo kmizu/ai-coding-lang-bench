@@ -1,0 +1,14 @@
+module(2, "minigit.m",
+	minigit,
+	{},
+	{builtin, io, private_builtin},
+	{char, dir, int, list, pair, string, uint64},
+	{},
+	{},
+	{},
+	{"C"},
+	{"C" - minigit},
+	no_foreign_export,
+	no_main,
+	{}
+).

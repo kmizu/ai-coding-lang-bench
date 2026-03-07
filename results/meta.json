@@ -1,13 +1,13 @@
 {
-  "date": "2026-03-08 05:30:40",
+  "date": "2026-03-08 06:38:23",
   "claude_version": "2.1.71 (Claude Code)",
   "track": "canonical",
   "seed": 4242,
   "trials": 3,
   "selected_subjects": [
-    "racket-raco"
+    "mercury-mmc"
   ],
   "versions": {
-    "racket-raco": "Welcome to Racket v8.2 [cs]."
+    "mercury-mmc": "Mercury Compiler, version 22.01.8-1~jammy, on x86_64-pc-linux-gnu"
   }
 }

@@ -1,0 +1,34 @@
+// Automatically generated from `minigit.m'
+// by the Mercury compiler,
+// version 22.01.8-1~jammy
+// configured for x86_64-pc-linux-gnu.
+// Do not edit.
+#ifndef MINIGIT_MH
+#define MINIGIT_MH
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef MR_HIGHLEVEL_CODE
+#include "mercury.h"
+#else
+  #ifndef MERCURY_HDR_EXCLUDE_IMP_H
+  #include "mercury_imp.h"
+  #endif
+#endif
+#ifdef MR_DEEP_PROFILING
+#include "mercury_deep_profiling.h"
+#endif
+
+#ifndef MINIGIT_DECL_GUARD
+#define MINIGIT_DECL_GUARD
+#include <time.h>
+
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* MINIGIT_MH */

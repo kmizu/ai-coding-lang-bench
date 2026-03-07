@@ -1002,6 +1002,26 @@ def lua_raw
   LUA
 end
 
+def mercury_mmc
+  write_file('build.sh', <<~BASH, executable: true)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd "$(dirname "$0")/src"
+    mmc --make minigit
+    mv minigit ../ 2>/dev/null || true
+  BASH
+
+  write_file('src/minigit.m', <<~MERCURY)
+    :- module minigit.
+    :- interface.
+    :- import_module io.
+    :- pred main(io::di, io::uo) is det.
+    :- implementation.
+    main(!IO) :-
+        io.write_string("Not implemented\\n", !IO).
+  MERCURY
+end
+
 def fortran_gfortran
   write_file('build.sh', <<~BASH, executable: true)
     #!/usr/bin/env bash
@@ -1102,6 +1122,7 @@ when 'haskell-cabal' then haskell_cabal
 when 'scheme-guile' then scheme_guile
 when 'perl-raw' then perl_raw
 when 'lua-raw' then lua_raw
+when 'mercury-mmc' then mercury_mmc
 when 'fortran-gfortran' then fortran_gfortran
 when 'racket-raco' then racket_raco
 when 'cobol-gnucobol' then cobol_gnucobol

@@ -352,7 +352,7 @@ main() {
       haskell-cabal)
         install_haskell
         ;;
-      scheme-guile|perl-raw|lua-raw|prolog-swipl|cobol-gnucobol|racket-raco|fortran-gfortran)
+      scheme-guile|perl-raw|lua-raw|prolog-swipl|cobol-gnucobol|racket-raco|fortran-gfortran|mercury-mmc)
         install_reference_packages
         ;;
       *)

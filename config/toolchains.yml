@@ -308,6 +308,16 @@ toolchains:
     version_cmd: swipl --version
     extra_prompt: This is a reference workflow using SWI-Prolog. Implement minigit as a single Prolog source file src/minigit.pl. Use :- initialization(main, main). as the entry point. Access command-line arguments via current_prolog_flag(argv, Argv). No build step is needed; the launcher calls swipl directly.
 
+  - id: mercury-mmc
+    label: Mercury / mmc
+    language: mercury
+    workflow: mmc
+    tier: reference
+    canonical: false
+    exts: [m]
+    version_cmd: mmc --version 2>&1 | head -1
+    extra_prompt: This is a reference workflow using Mercury. Implement minigit as src/minigit.m. The build.sh compiles with "cd src && mmc --make minigit && mv minigit ../". Mercury uses Prolog-like syntax but with static types and modes. The main/2 predicate is the entry point (io.command_line_arguments/2 for args). Use det/semidet/nondet mode declarations. Mercury module system requires :- module minigit. at the top.
+
   - id: fortran-gfortran
     label: Fortran / gfortran
     language: fortran
