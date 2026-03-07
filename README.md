@@ -35,7 +35,9 @@ Each workflow was run **3 trials** (except Python/uv: 1 trial). All runs achieve
 | Elixir / Mix | 227.0s | ±35.9s | 271 | 83.9s | dynamic |
 | Kotlin / Gradle | 234.1s | ±9.9s | 264 | 88.7s | static |
 | F# / dotnet | 258.0s | ±22.9s | 256 | 100.8s | static (functional) |
+| C# / dotnet | 276.9s | ±47.7s | 353 | 78.5s | static |
 | Java / Maven | 272.6s | ±40.5s | 271 | 100.7s | static |
+| VB.NET / dotnet | 294.5s | ±23.4s | 342 | 86.1s | static |
 | Scala 3 / sbt | 321.0s | ±42.6s | 256 | 125.4s | static |
 | Java / Gradle | 342.3s | ±80.0s | 328 | 104.4s | static |
 | Scala 2.13 / sbt | 379.4s | ±65.0s | 239 | 158.7s | static |
@@ -62,6 +64,9 @@ Within the JVM ecosystem alone, agent time ranges from 234s (Kotlin) to 379s (Sc
 **5. F# (static functional) outperforms Clojure (dynamic functional) by 135s.**
 F#/.NET 9 (258.0s ±22.9s) is substantially faster than Clojure/Leiningen (392.8s ±54.0s), despite both being functional languages. F# produces concise code (~256 LOC, comparable to dynamic languages) while retaining static typing. The `dotnet publish --self-contained` pipeline has low per-cycle latency, contributing to the speed advantage. This directly refutes any claim that functional style inherently favours dynamic typing for AI generation tasks.
 
+**6. The .NET ecosystem is remarkably consistent across languages.**
+F# (258s), C# (277s), and VB.NET (295s) all finish within 37 seconds of each other despite being very different languages in style and modern popularity. VB.NET — now a relatively niche language — achieves 100% pass rates and competitive timings, suggesting Claude's training data is sufficient for even less-common .NET languages. F#'s edge likely comes from its more concise output (~256 LOC vs ~350 for C#/VB.NET).
+
 ### LOC-Normalised Agent Time
 
 ![Time per 100 LOC](./figures/time_per_100loc.png)
@@ -76,7 +81,7 @@ Setup time is negligible for most workflows. The exception is Scala/sbt (≈7s s
 
 ## Status
 
-`results/` and `figures/` now contain canonical-track results for 13 workflows (see table above). The legacy greenfield results are preserved in the same `results.json` under `"track": "greenfield"` for continuity.
+`results/` and `figures/` now contain canonical-track results for 15 workflows (see table above). The legacy greenfield results are preserved in the same `results.json` under `"track": "greenfield"` for continuity.
 
 The benchmark harness separates:
 
