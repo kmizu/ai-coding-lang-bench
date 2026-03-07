@@ -300,6 +300,7 @@ def main() -> None:
     if not loc_df.empty:
         fig, ax = plt.subplots(figsize=(10, 5))
         boxdot(ax, loc_df, "time_per_100loc", ylabel="Agent Time per 100 LOC (s)", title=f"LOC-Normalised Agent Time ({title_suffix})")
+        ax.set_ylim(bottom=0, top=1000)
         save(fig, args.outdir, "time_per_100loc")
 
         fig, ax = plt.subplots(figsize=(10, 5))
