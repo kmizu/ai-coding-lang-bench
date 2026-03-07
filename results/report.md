@@ -1,16 +1,19 @@
 # AI Coding Language Benchmark Report
 
 ## Environment
-- Date: 2026-03-07 04:38:03
-- Claude Version: 2.1.70 (Claude Code)
+- Date: 2026-03-07 18:24:20
+- Claude Version: 2.1.71 (Claude Code)
 - Last Run Track: canonical
 - Last Run Seed: 4242
 
 ## Subjects
 | Track | Tier | Subject | Version |
 |-------|------|---------|---------|
+| canonical | primary | Kotlin / Gradle | ------------------------------------------------------------ / Gradle 9.3.1 / openjdk 25.0.1 2025-10-21 LTS |
 | canonical | primary | Python / uv | uv 0.10.8 / Python 3.14.2 |
 | canonical | primary | Rust / Cargo | cargo 1.94.0 (85eff7c80 2026-01-15) / rustc 1.94.0 (4a4ef493e 2026-03-02) |
+| canonical | primary | Scala / sbt | 1.12.5 / openjdk 25.0.1 2025-10-21 LTS |
+| canonical | secondary | Scala / sbt (server) | 1.12.5 / openjdk 25.0.1 2025-10-21 LTS |
 | greenfield | legacy | C | unknown |
 | greenfield | legacy | Go | unknown |
 | greenfield | legacy | Haskell | unknown |
@@ -30,8 +33,11 @@
 ## Results Summary
 | Track | Tier | Subject | Trials | Avg Setup | Avg Agent Time | Avg Cost | v1 Pass | v2 Pass | Avg LOC | Time/100L | Cost/100L |
 |-------|------|---------|--------|-----------|----------------|----------|---------|---------|---------|-----------|-----------|
+| canonical | primary | Kotlin / Gradle | 3 | 0.9s | 234.1s±9.9s | $0.00 | 3/3 (100%) | 3/3 (100%) | 264 | 88.67s | $0.0000 |
 | canonical | primary | Python / uv | 1 | 4.5s | 173.8s±0.0s | $0.00 | 1/1 (100%) | 1/1 (100%) | 274 | 63.43s | $0.0000 |
 | canonical | primary | Rust / Cargo | 1 | 0.3s | 313.8s±0.0s | $0.00 | 1/1 (100%) | 0/1 (0%) | 4 | 7845.00s | $0.0000 |
+| canonical | primary | Scala / sbt | 3 | 6.9s | 321.0s±42.6s | $0.00 | 3/3 (100%) | 3/3 (100%) | 256 | 125.39s | $0.0000 |
+| canonical | secondary | Scala / sbt (server) | 3 | 7.9s | 323.1s±26.5s | $0.00 | 3/3 (100%) | 3/3 (100%) | 212 | 152.41s | $0.0000 |
 | greenfield | legacy | C | 20 | 0.0s | 155.8s±40.9s | $0.74 | 20/20 (100%) | 20/20 (100%) | 517 | 30.14s | $0.1430 |
 | greenfield | legacy | Go | 20 | 0.0s | 101.6s±37.0s | $0.50 | 20/20 (100%) | 20/20 (100%) | 324 | 31.36s | $0.1531 |
 | greenfield | legacy | Haskell | 20 | 0.0s | 174.0s±44.2s | $0.74 | 19/20 (95%) | 20/20 (100%) | 224 | 77.68s | $0.3301 |
@@ -51,8 +57,11 @@
 ## Token Summary
 | Track | Tier | Subject | Avg Input | Avg Output | Avg Cache Create | Avg Cache Read | Avg Total |
 |-------|------|---------|-----------|------------|------------------|----------------|-----------|
+| canonical | primary | Kotlin / Gradle | 1,946 | 9,473 | 88,702 | 767,970 | 868,091 |
 | canonical | primary | Python / uv | 31 | 7,961 | 85,832 | 601,824 | 695,648 |
 | canonical | primary | Rust / Cargo | 200 | 7,059 | 83,446 | 596,282 | 686,987 |
+| canonical | primary | Scala / sbt | 2,415 | 13,315 | 98,409 | 788,760 | 902,899 |
+| canonical | secondary | Scala / sbt (server) | 1,942 | 13,210 | 50,372 | 792,151 | 857,674 |
 | greenfield | legacy | C | 22 | 10,223 | 33,028 | 554,607 | 597,880 |
 | greenfield | legacy | Go | 18 | 6,175 | 24,421 | 377,751 | 408,365 |
 | greenfield | legacy | Haskell | 27 | 8,636 | 29,185 | 681,994 | 719,841 |
@@ -72,8 +81,17 @@
 ## Full Results
 | Track | Tier | Subject | Trial | Setup | Agent | v1 Tests | v2 Tests | Cost |
 |-------|------|---------|-------|-------|-------|----------|----------|------|
+| canonical | primary | Kotlin / Gradle | 1 | 0.9s | 226.1s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | primary | Kotlin / Gradle | 2 | 0.9s | 245.2s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | primary | Kotlin / Gradle | 3 | 0.9s | 231.0s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | primary | Python / uv | 1 | 4.5s | 173.8s | 11/11 PASS | 30/30 PASS | $0.00 |
 | canonical | primary | Rust / Cargo | 1 | 0.3s | 313.8s | 11/11 PASS | 0/0 FAIL | $0.00 |
+| canonical | primary | Scala / sbt | 1 | 6.9s | 288.1s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | primary | Scala / sbt | 2 | 7.3s | 305.7s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | primary | Scala / sbt | 3 | 6.6s | 369.1s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | Scala / sbt (server) | 1 | 6.9s | 348.1s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | Scala / sbt (server) | 2 | 7.1s | 295.4s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | secondary | Scala / sbt (server) | 3 | 9.6s | 325.8s | 11/11 PASS | 30/30 PASS | $0.00 |
 | greenfield | legacy | C | 1 | 0s | 136.5s | 11/11 PASS | 30/30 PASS | $0.67 |
 | greenfield | legacy | C | 2 | 0s | 153.8s | 11/11 PASS | 30/30 PASS | $0.66 |
 | greenfield | legacy | C | 3 | 0s | 208.1s | 11/11 PASS | 30/30 PASS | $1.04 |
@@ -378,10 +396,28 @@
 ## Full Tokens
 | Track | Subject | Trial | Phase | Input | Output | Cache Create | Cache Read | Total | Cost USD |
 |-------|---------|-------|-------|-------|--------|--------------|------------|-------|----------|
+| canonical | Kotlin / Gradle | 1 | v1 | 22 | 4,162 | 40,720 | 541,661 | 586,565 | $0.0000 |
+| canonical | Kotlin / Gradle | 1 | v2 | 15 | 3,079 | 47,239 | 316,778 | 367,111 | $0.0000 |
+| canonical | Kotlin / Gradle | 2 | v1 | 18 | 5,068 | 39,614 | 373,065 | 417,765 | $0.0000 |
+| canonical | Kotlin / Gradle | 2 | v2 | 18 | 5,285 | 44,518 | 323,786 | 373,607 | $0.0000 |
+| canonical | Kotlin / Gradle | 3 | v1 | 19 | 3,942 | 38,720 | 337,971 | 380,652 | $0.0000 |
+| canonical | Kotlin / Gradle | 3 | v2 | 5,746 | 6,883 | 55,295 | 410,650 | 478,574 | $0.0000 |
 | canonical | Python / uv | 1 | v1 | 16 | 4,041 | 39,593 | 300,245 | 343,895 | $0.0000 |
 | canonical | Python / uv | 1 | v2 | 15 | 3,920 | 46,239 | 301,579 | 351,753 | $0.0000 |
 | canonical | Rust / Cargo | 1 | v1 | 183 | 3,033 | 36,620 | 217,916 | 257,752 | $0.0000 |
 | canonical | Rust / Cargo | 1 | v2 | 17 | 4,026 | 46,826 | 378,366 | 429,235 | $0.0000 |
+| canonical | Scala / sbt | 1 | v1 | 1,432 | 7,715 | 46,055 | 374,387 | 429,589 | $0.0000 |
+| canonical | Scala / sbt | 1 | v2 | 5,747 | 4,227 | 49,202 | 314,526 | 373,702 | $0.0000 |
+| canonical | Scala / sbt | 2 | v1 | 16 | 6,963 | 45,207 | 419,126 | 471,312 | $0.0000 |
+| canonical | Scala / sbt | 2 | v2 | 14 | 4,624 | 52,095 | 284,028 | 340,761 | $0.0000 |
+| canonical | Scala / sbt | 3 | v1 | 19 | 10,836 | 48,972 | 467,985 | 527,812 | $0.0000 |
+| canonical | Scala / sbt | 3 | v2 | 16 | 5,580 | 53,697 | 506,227 | 565,520 | $0.0000 |
+| canonical | Scala / sbt (server) | 1 | v1 | 17 | 8,593 | 26,211 | 438,118 | 472,939 | $0.0000 |
+| canonical | Scala / sbt (server) | 1 | v2 | 5,747 | 5,034 | 25,660 | 341,644 | 378,085 | $0.0000 |
+| canonical | Scala / sbt (server) | 2 | v1 | 15 | 9,839 | 23,901 | 428,037 | 461,792 | $0.0000 |
+| canonical | Scala / sbt (server) | 2 | v2 | 14 | 4,008 | 27,153 | 306,133 | 337,308 | $0.0000 |
+| canonical | Scala / sbt (server) | 3 | v1 | 16 | 8,151 | 22,824 | 465,219 | 496,210 | $0.0000 |
+| canonical | Scala / sbt (server) | 3 | v2 | 16 | 4,005 | 25,366 | 397,301 | 426,688 | $0.0000 |
 | greenfield | C | 1 | v1 | 8 | 4,501 | 10,444 | 152,603 | 167,556 | $0.2541 |
 | greenfield | C | 1 | v2 | 12 | 4,988 | 20,199 | 330,911 | 356,110 | $0.4165 |
 | greenfield | C | 2 | v1 | 7 | 4,250 | 10,194 | 123,194 | 137,645 | $0.2316 |

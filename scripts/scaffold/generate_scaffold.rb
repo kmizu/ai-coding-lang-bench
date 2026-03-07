@@ -324,6 +324,58 @@ def scala_sbt
   SCALA
 end
 
+def scala_sbt_server
+  write_file('build.sbt', <<~SCALA)
+    ThisBuild / scalaVersion := "3.3.7"
+    ThisBuild / version := "0.1.0"
+
+    // Keep the sbt server alive throughout the benchmark session (no idle timeout)
+    Global / serverIdleTimeout := None
+
+    lazy val writeRuntimeClasspath = taskKey[File]("Write the runtime classpath for the benchmark launcher.")
+
+    lazy val root = (project in file("."))
+      .settings(
+        name := "minigit",
+        Compile / mainClass := Some("minigit.Main"),
+        writeRuntimeClasspath := {
+          val out = target.value / "runtime-classpath.txt"
+          val cp = (Compile / fullClasspath).value.files.map(_.getAbsolutePath).mkString(java.io.File.pathSeparator)
+          IO.write(out, cp + System.lineSeparator())
+          out
+        }
+      )
+  SCALA
+
+  write_file('project/build.properties', <<~TXT)
+    sbt.version=1.12.5
+  TXT
+
+  write_file('build.sh', <<~BASH, executable: true)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    sbt compile writeRuntimeClasspath
+    cat > minigit <<'EOF'
+    #!/usr/bin/env bash
+    set -euo pipefail
+    CP="$(cat target/runtime-classpath.txt)"
+    exec java -cp "$CP" minigit.Main "$@"
+    EOF
+    chmod +x minigit
+  BASH
+
+  write_file('src/main/scala/minigit/Main.scala', <<~SCALA)
+    package minigit
+
+    object Main {
+      def main(args: Array[String]): Unit = {
+        System.err.println("Not implemented")
+        sys.exit(1)
+      }
+    }
+  SCALA
+end
+
 def scala_scala_cli
   write_file('build.sh', <<~BASH, executable: true)
     #!/usr/bin/env bash
@@ -586,6 +638,7 @@ when 'go-go' then go_go
 when 'java-maven' then java_maven
 when 'ruby-bundler' then ruby_bundler
 when 'scala-sbt' then scala_sbt
+when 'scala-sbt-server' then scala_sbt_server
 when 'scala-scala-cli' then scala_scala_cli
 when 'kotlin-gradle' then kotlin_gradle
 when 'kotlin-maven' then kotlin_maven
