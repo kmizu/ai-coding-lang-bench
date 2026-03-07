@@ -93,8 +93,8 @@ end
 report << ''
 
 report << '## Results Summary'
-report << '| Track | Tier | Subject | Trials | Avg Setup | Avg Agent Time | Avg Cost | v1 Tests | v2 Tests |'
-report << '|-------|------|---------|--------|-----------|----------------|----------|----------|----------|'
+report << '| Track | Tier | Subject | Trials | Avg Setup | Avg Agent Time | Avg Cost | v1 Pass | v2 Pass | Avg LOC | Time/100L | Cost/100L |'
+report << '|-------|------|---------|--------|-----------|----------------|----------|---------|---------|---------|-----------|-----------|'
 
 sorted_groups.each do |(_, records)|
   sample = records.first
@@ -107,10 +107,21 @@ sorted_groups.each do |(_, records)|
   avg_cost = records.sum do |record|
     claude_field(record, 'v1', 'cost_usd') + claude_field(record, 'v2', 'cost_usd')
   end / n
-  v1_tests = "#{records.count { |record| record['v1_pass'] }}/#{records.size}"
-  v2_tests = "#{records.count { |record| record['v2_pass'] }}/#{records.size}"
+  v1_pass_count = records.count { |record| record['v1_pass'] }
+  v2_pass_count = records.count { |record| record['v2_pass'] }
+  v1_pct = (v1_pass_count * 100.0 / records.size).round(0).to_i
+  v2_pct = (v2_pass_count * 100.0 / records.size).round(0).to_i
+  v1_tests = "#{v1_pass_count}/#{records.size} (#{v1_pct}%)"
+  v2_tests = "#{v2_pass_count}/#{records.size} (#{v2_pct}%)"
+
+  loc_records = records.select { |r| (r['v2_loc'] || 0) > 0 }
+  avg_loc = loc_records.empty? ? nil : (loc_records.sum { |r| r['v2_loc'] } / loc_records.size.to_f).round(0).to_i
+  time_per_loc = (avg_loc && avg_loc > 0) ? format('%.2f', avg_agent_time / avg_loc * 100) : '-'
+  cost_per_loc = (avg_loc && avg_loc > 0) ? format('$%.4f', avg_cost / avg_loc * 100) : '-'
+
   report << "| #{track(sample)} | #{tier(sample)} | #{subject_label(sample)} | #{records.size} " \
-            "| #{avg_setup}s | #{avg_agent_time}s±#{avg_agent_sd}s | $#{format('%.2f', avg_cost)} | #{v1_tests} | #{v2_tests} |"
+            "| #{avg_setup}s | #{avg_agent_time}s±#{avg_agent_sd}s | $#{format('%.2f', avg_cost)} " \
+            "| #{v1_tests} | #{v2_tests} | #{avg_loc || '-'} | #{time_per_loc}s | #{cost_per_loc} |"
 end
 report << ''
 

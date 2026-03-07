@@ -1,52 +1,58 @@
 # AI Coding Language Benchmark Report
 
 ## Environment
-- Date: 2026-03-04 22:09:41
-- Claude Version: 2.1.68 (Claude Code)
-- Last Run Track: mixed
-- Last Run Seed: unknown
+- Date: 2026-03-07 04:38:03
+- Claude Version: 2.1.70 (Claude Code)
+- Last Run Track: canonical
+- Last Run Seed: 4242
 
 ## Subjects
 | Track | Tier | Subject | Version |
 |-------|------|---------|---------|
-| greenfield | legacy | C | gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0 |
-| greenfield | legacy | Go | go version go1.23.6 linux/amd64 |
-| greenfield | legacy | Haskell | The Glorious Glasgow Haskell Compilation System, version 9.4.7 |
-| greenfield | legacy | Java | openjdk 25.0.2 2026-01-20 |
-| greenfield | legacy | Javascript | v18.19.1 |
-| greenfield | legacy | Lua | Lua 5.4.6  Copyright (C) 1994-2023 Lua.org, PUC-Rio |
-| greenfield | legacy | Ocaml | The OCaml toplevel, version 4.14.1 |
-| greenfield | legacy | Perl | This is perl 5, version 38, subversion 2 (v5.38.2) built for x86_64-linux-gnu-thread-multi |
-| greenfield | legacy | Python | Python 3.12.3 |
-| greenfield | legacy | Python/mypy | Python 3.12.3 |
-| greenfield | legacy | Ruby | ruby 4.0.1 (2026-01-13 revision e04267a14b) +PRISM [x86_64-linux] |
-| greenfield | legacy | Ruby/steep | ruby 4.0.1 (2026-01-13 revision e04267a14b) +PRISM [x86_64-linux] |
-| greenfield | legacy | Rust | rustc 1.93.1 (01f6ddf75 2026-02-11) |
-| greenfield | legacy | Scheme | guile (GNU Guile) 3.0.9 |
-| greenfield | legacy | Typescript | tsx v4.21.0 |
+| canonical | primary | Python / uv | uv 0.10.8 / Python 3.14.2 |
+| canonical | primary | Rust / Cargo | cargo 1.94.0 (85eff7c80 2026-01-15) / rustc 1.94.0 (4a4ef493e 2026-03-02) |
+| greenfield | legacy | C | unknown |
+| greenfield | legacy | Go | unknown |
+| greenfield | legacy | Haskell | unknown |
+| greenfield | legacy | Java | unknown |
+| greenfield | legacy | Javascript | unknown |
+| greenfield | legacy | Lua | unknown |
+| greenfield | legacy | Ocaml | unknown |
+| greenfield | legacy | Perl | unknown |
+| greenfield | legacy | Python | unknown |
+| greenfield | legacy | Python/mypy | unknown |
+| greenfield | legacy | Ruby | unknown |
+| greenfield | legacy | Ruby/steep | unknown |
+| greenfield | legacy | Rust | unknown |
+| greenfield | legacy | Scheme | unknown |
+| greenfield | legacy | Typescript | unknown |
 
 ## Results Summary
-| Track | Tier | Subject | Trials | Avg Setup | Avg Agent Time | Avg Cost | v1 Tests | v2 Tests |
-|-------|------|---------|--------|-----------|----------------|----------|----------|----------|
-| greenfield | legacy | C | 20 | 0.0s | 155.8s±40.9s | $0.74 | 20/20 | 20/20 |
-| greenfield | legacy | Go | 20 | 0.0s | 101.6s±37.0s | $0.50 | 20/20 | 20/20 |
-| greenfield | legacy | Haskell | 20 | 0.0s | 174.0s±44.2s | $0.74 | 19/20 | 20/20 |
-| greenfield | legacy | Java | 20 | 0.0s | 115.4s±34.4s | $0.50 | 20/20 | 20/20 |
-| greenfield | legacy | Javascript | 20 | 0.0s | 81.1s±5.0s | $0.39 | 20/20 | 20/20 |
-| greenfield | legacy | Lua | 20 | 0.0s | 143.6s±43.0s | $0.58 | 20/20 | 20/20 |
-| greenfield | legacy | Ocaml | 20 | 0.0s | 128.1s±28.9s | $0.58 | 20/20 | 20/20 |
-| greenfield | legacy | Perl | 20 | 0.0s | 130.2s±44.2s | $0.55 | 20/20 | 20/20 |
-| greenfield | legacy | Python | 20 | 0.0s | 74.6s±4.5s | $0.38 | 20/20 | 20/20 |
-| greenfield | legacy | Python/mypy | 20 | 0.0s | 125.3s±19.0s | $0.57 | 20/20 | 20/20 |
-| greenfield | legacy | Ruby | 20 | 0.0s | 73.1s±4.2s | $0.36 | 20/20 | 20/20 |
-| greenfield | legacy | Ruby/steep | 20 | 0.0s | 186.6s±69.7s | $0.84 | 20/20 | 20/20 |
-| greenfield | legacy | Rust | 20 | 0.0s | 113.7s±54.8s | $0.54 | 19/20 | 19/20 |
-| greenfield | legacy | Scheme | 20 | 0.0s | 130.6s±39.9s | $0.60 | 20/20 | 20/20 |
-| greenfield | legacy | Typescript | 20 | 0.0s | 133.0s±29.4s | $0.62 | 20/20 | 20/20 |
+| Track | Tier | Subject | Trials | Avg Setup | Avg Agent Time | Avg Cost | v1 Pass | v2 Pass | Avg LOC | Time/100L | Cost/100L |
+|-------|------|---------|--------|-----------|----------------|----------|---------|---------|---------|-----------|-----------|
+| canonical | primary | Python / uv | 1 | 4.5s | 173.8s±0.0s | $0.00 | 1/1 (100%) | 1/1 (100%) | 274 | 63.43s | $0.0000 |
+| canonical | primary | Rust / Cargo | 1 | 0.3s | 313.8s±0.0s | $0.00 | 1/1 (100%) | 0/1 (0%) | 4 | 7845.00s | $0.0000 |
+| greenfield | legacy | C | 20 | 0.0s | 155.8s±40.9s | $0.74 | 20/20 (100%) | 20/20 (100%) | 517 | 30.14s | $0.1430 |
+| greenfield | legacy | Go | 20 | 0.0s | 101.6s±37.0s | $0.50 | 20/20 (100%) | 20/20 (100%) | 324 | 31.36s | $0.1531 |
+| greenfield | legacy | Haskell | 20 | 0.0s | 174.0s±44.2s | $0.74 | 19/20 (95%) | 20/20 (100%) | 224 | 77.68s | $0.3301 |
+| greenfield | legacy | Java | 20 | 0.0s | 115.4s±34.4s | $0.50 | 20/20 (100%) | 20/20 (100%) | 303 | 38.09s | $0.1661 |
+| greenfield | legacy | Javascript | 20 | 0.0s | 81.1s±5.0s | $0.39 | 20/20 (100%) | 20/20 (100%) | 248 | 32.70s | $0.1564 |
+| greenfield | legacy | Lua | 20 | 0.0s | 143.6s±43.0s | $0.58 | 20/20 (100%) | 20/20 (100%) | 398 | 36.08s | $0.1469 |
+| greenfield | legacy | Ocaml | 20 | 0.0s | 128.1s±28.9s | $0.58 | 20/20 (100%) | 20/20 (100%) | 216 | 59.31s | $0.2692 |
+| greenfield | legacy | Perl | 20 | 0.0s | 130.2s±44.2s | $0.55 | 20/20 (100%) | 20/20 (100%) | 315 | 41.33s | $0.1753 |
+| greenfield | legacy | Python | 20 | 0.0s | 74.6s±4.5s | $0.38 | 20/20 (100%) | 20/20 (100%) | 235 | 31.74s | $0.1618 |
+| greenfield | legacy | Python/mypy | 20 | 0.0s | 125.3s±19.0s | $0.57 | 20/20 (100%) | 20/20 (100%) | 326 | 38.44s | $0.1744 |
+| greenfield | legacy | Ruby | 20 | 0.0s | 73.1s±4.2s | $0.36 | 20/20 (100%) | 20/20 (100%) | 219 | 33.38s | $0.1645 |
+| greenfield | legacy | Ruby/steep | 20 | 0.0s | 186.6s±69.7s | $0.84 | 20/20 (100%) | 20/20 (100%) | 304 | 61.38s | $0.2764 |
+| greenfield | legacy | Rust | 20 | 0.0s | 113.7s±54.8s | $0.54 | 19/20 (95%) | 19/20 (95%) | 303 | 37.52s | $0.1780 |
+| greenfield | legacy | Scheme | 20 | 0.0s | 130.6s±39.9s | $0.60 | 20/20 (100%) | 20/20 (100%) | 310 | 42.13s | $0.1944 |
+| greenfield | legacy | Typescript | 20 | 0.0s | 133.0s±29.4s | $0.62 | 20/20 (100%) | 20/20 (100%) | 310 | 42.90s | $0.1996 |
 
 ## Token Summary
 | Track | Tier | Subject | Avg Input | Avg Output | Avg Cache Create | Avg Cache Read | Avg Total |
 |-------|------|---------|-----------|------------|------------------|----------------|-----------|
+| canonical | primary | Python / uv | 31 | 7,961 | 85,832 | 601,824 | 695,648 |
+| canonical | primary | Rust / Cargo | 200 | 7,059 | 83,446 | 596,282 | 686,987 |
 | greenfield | legacy | C | 22 | 10,223 | 33,028 | 554,607 | 597,880 |
 | greenfield | legacy | Go | 18 | 6,175 | 24,421 | 377,751 | 408,365 |
 | greenfield | legacy | Haskell | 27 | 8,636 | 29,185 | 681,994 | 719,841 |
@@ -66,6 +72,8 @@
 ## Full Results
 | Track | Tier | Subject | Trial | Setup | Agent | v1 Tests | v2 Tests | Cost |
 |-------|------|---------|-------|-------|-------|----------|----------|------|
+| canonical | primary | Python / uv | 1 | 4.5s | 173.8s | 11/11 PASS | 30/30 PASS | $0.00 |
+| canonical | primary | Rust / Cargo | 1 | 0.3s | 313.8s | 11/11 PASS | 0/0 FAIL | $0.00 |
 | greenfield | legacy | C | 1 | 0s | 136.5s | 11/11 PASS | 30/30 PASS | $0.67 |
 | greenfield | legacy | C | 2 | 0s | 153.8s | 11/11 PASS | 30/30 PASS | $0.66 |
 | greenfield | legacy | C | 3 | 0s | 208.1s | 11/11 PASS | 30/30 PASS | $1.04 |
@@ -370,6 +378,10 @@
 ## Full Tokens
 | Track | Subject | Trial | Phase | Input | Output | Cache Create | Cache Read | Total | Cost USD |
 |-------|---------|-------|-------|-------|--------|--------------|------------|-------|----------|
+| canonical | Python / uv | 1 | v1 | 16 | 4,041 | 39,593 | 300,245 | 343,895 | $0.0000 |
+| canonical | Python / uv | 1 | v2 | 15 | 3,920 | 46,239 | 301,579 | 351,753 | $0.0000 |
+| canonical | Rust / Cargo | 1 | v1 | 183 | 3,033 | 36,620 | 217,916 | 257,752 | $0.0000 |
+| canonical | Rust / Cargo | 1 | v2 | 17 | 4,026 | 46,826 | 378,366 | 429,235 | $0.0000 |
 | greenfield | C | 1 | v1 | 8 | 4,501 | 10,444 | 152,603 | 167,556 | $0.2541 |
 | greenfield | C | 1 | v2 | 12 | 4,988 | 20,199 | 330,911 | 356,110 | $0.4165 |
 | greenfield | C | 2 | v1 | 7 | 4,250 | 10,194 | 123,194 | 137,645 | $0.2316 |

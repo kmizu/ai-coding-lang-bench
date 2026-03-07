@@ -47,6 +47,9 @@ def load_results(path: Path) -> pd.DataFrame:
     for record in raw:
         v1 = record.get("v1_claude") or {}
         v2 = record.get("v2_claude") or {}
+        total_agent_time = record.get("v1_time", 0) + record.get("v2_time", 0)
+        total_cost = v1.get("cost_usd", 0) + v2.get("cost_usd", 0)
+        v2_loc = record.get("v2_loc", 0)
         rows.append(
             {
                 "track": record.get("track", "greenfield"),
@@ -59,15 +62,17 @@ def load_results(path: Path) -> pd.DataFrame:
                 "v1_time": record.get("v1_time", 0),
                 "v2_time": record.get("v2_time", 0),
                 "total_setup_time": record.get("v1_setup_time", 0) + record.get("v2_setup_time", 0),
-                "total_agent_time": record.get("v1_time", 0) + record.get("v2_time", 0),
+                "total_agent_time": total_agent_time,
                 "v1_loc": record.get("v1_loc", 0),
-                "v2_loc": record.get("v2_loc", 0),
+                "v2_loc": v2_loc,
                 "v1_cost": v1.get("cost_usd", 0),
                 "v2_cost": v2.get("cost_usd", 0),
-                "total_cost": v1.get("cost_usd", 0) + v2.get("cost_usd", 0),
+                "total_cost": total_cost,
                 "v1_turns": v1.get("num_turns", 0),
                 "v2_turns": v2.get("num_turns", 0),
                 "total_turns": v1.get("num_turns", 0) + v2.get("num_turns", 0),
+                "time_per_100loc": (total_agent_time / v2_loc * 100) if v2_loc > 0 else float("nan"),
+                "cost_per_100loc": (total_cost / v2_loc * 100) if v2_loc > 0 else float("nan"),
             }
         )
     return pd.DataFrame(rows)
@@ -143,6 +148,42 @@ def boxdot(ax, df: pd.DataFrame, value_col: str, ylabel: str, title: str) -> Non
     ax.set_xticklabels(labels, rotation=30, ha="right")
     ax.set_ylabel(ylabel)
     ax.set_title(title, pad=15)
+
+
+def stacked_time(ax, df: pd.DataFrame, title: str) -> None:
+    """Stacked bar: avg setup time (bottom) + avg agent time (top) per subject."""
+    labels = ordered_subjects(df, include_track_in_label=df["track"].nunique() > 1)
+    avg = (
+        df.groupby("display_label")[["total_setup_time", "total_agent_time"]]
+        .mean()
+        .reindex(labels)
+    )
+    positions = list(range(len(labels)))
+    tiers = [df.loc[df["display_label"] == lbl, "tier"].iloc[0] for lbl in labels]
+
+    bars_setup = ax.bar(
+        positions,
+        avg["total_setup_time"],
+        color=[TIER_COLOURS.get(t, DEFAULT_COLOUR) for t in tiers],
+        alpha=0.4,
+        label="Setup",
+        zorder=2,
+    )
+    bars_agent = ax.bar(
+        positions,
+        avg["total_agent_time"],
+        bottom=avg["total_setup_time"],
+        color=[TIER_COLOURS.get(t, DEFAULT_COLOUR) for t in tiers],
+        alpha=0.85,
+        label="Agent",
+        zorder=2,
+    )
+    ax.set_ylim(bottom=0)
+    ax.set_xticks(positions)
+    ax.set_xticklabels(labels, rotation=30, ha="right")
+    ax.set_ylabel("Time (s)")
+    ax.set_title(title, pad=15)
+    ax.legend(["Setup time", "Agent time"], loc="upper right")
 
 
 def save(fig, outdir: Path, name: str) -> None:
@@ -248,6 +289,23 @@ def main() -> None:
     fig, ax = plt.subplots(figsize=(8, 6))
     scatter(ax, df, "total_agent_time", "v2_loc", title=f"Agent Time vs LOC ({title_suffix})", ylabel="Lines of Code")
     save(fig, args.outdir, "total_time_vs_loc")
+
+    # Stacked bar: setup time vs agent time (isolates bootstrap cost)
+    fig, ax = plt.subplots(figsize=(10, 5))
+    stacked_time(ax, df, title=f"Setup vs Agent Time per Subject ({title_suffix})")
+    save(fig, args.outdir, "stacked_time_breakdown")
+
+    # LOC-normalised agent time (mediating variable analysis)
+    loc_df = df[df["v2_loc"] > 0].copy()
+    if not loc_df.empty:
+        fig, ax = plt.subplots(figsize=(10, 5))
+        boxdot(ax, loc_df, "time_per_100loc", ylabel="Agent Time per 100 LOC (s)", title=f"LOC-Normalised Agent Time ({title_suffix})")
+        save(fig, args.outdir, "time_per_100loc")
+
+        fig, ax = plt.subplots(figsize=(10, 5))
+        boxdot(ax, loc_df, "cost_per_100loc", ylabel="Cost per 100 LOC (USD)", title=f"LOC-Normalised Cost ({title_suffix})")
+        ax.yaxis.set_major_formatter(ticker.FormatStrFormatter("$%.3f"))
+        save(fig, args.outdir, "cost_per_100loc")
 
 
 if __name__ == "__main__":
